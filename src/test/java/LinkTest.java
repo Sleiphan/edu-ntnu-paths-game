@@ -16,7 +16,7 @@ public class LinkTest {
 
         assertEquals(text, l.getText());
         assertEquals(reference, l.getReference());
-        assertTrue(l.equals(equal));
+        assertEquals(l, equal);
         assertNotEquals(l, unequal);
     }
 
