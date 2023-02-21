@@ -47,12 +47,19 @@ public class Link {
 
     /**
      * Adds a new action to the list of actions to choose from.
+     * The submitted Action-object is only added if no other Action-object with the same state has been added earlier.
      * This method changes this object's hashcode, and thus, marks the hashcode for recalculation.
      * @param action The new action to be added to the list of actions to choose from.
+     * @return true if the submitted action-object was added, otherwise returns false.
      */
-    public void addAction(Action action) {
+    public boolean addAction(Action action) {
+        for (Action a : actions) // Iterate over existing actions
+            if a.equals(action) // Is the new action already present among the actions?
+                return false; // Do not add a duplicate of the same action.
+
         actions.add(action);
         recalculateHash = true;
+        return true;
     }
 
     /**
