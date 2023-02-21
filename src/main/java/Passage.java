@@ -61,6 +61,7 @@ public class Passage {
             }
         }
         links.add(link);
+        hashCode = this.hashCode();
         return true;
     }
 
