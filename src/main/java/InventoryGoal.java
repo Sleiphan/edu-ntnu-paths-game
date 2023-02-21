@@ -1,29 +1,35 @@
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Used to check if a player-object has certain items in their inventory
+ */
 public class InventoryGoal implements Goal{
     private final List<String> mandatoryItems;
 
+    /**
+     * Assigns a mandatory array of items
+     * @param mandatoryItems array of mandatory items
+     */
     public InventoryGoal(List<String> mandatoryItems){
         this.mandatoryItems = mandatoryItems;
     }
 
+    /**
+     * Checks if a player-object fulfills a mandatory list of items
+     * @param player    player-object to check if it has the mandatory list of items
+     * @return          True if requirement met, false if not
+     */
     @Override
     public boolean isFulfilled(Player player) {
         if (mandatoryItems.size() > player.getInventory().size()){
             return false;
-        } else {
-            for(int i = 0; i < mandatoryItems.size(); i++){
-                for (int j = 0; j < player.getInventory().size(); j++){
-                    if (Objects.equals(mandatoryItems.get(i), player.getInventory().get(j))){
-                        i++;
-                        j = 0;
-                    } else if (!Objects.equals(mandatoryItems.get(i), player.getInventory().get(j)) && i == mandatoryItems.size()){
-                        return false;
-                    }
-                }
+        }
+        for (String mandatoryItem : mandatoryItems) {
+            if (!player.getInventory().contains(mandatoryItem)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
