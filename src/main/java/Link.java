@@ -54,12 +54,13 @@ public class Link {
      */
     public boolean addAction(Action action) {
         for (Action a : actions) // Iterate over existing actions
-            if a.equals(action) // Is the new action already present among the actions?
+            if (a.equals(action)) // Is the new action already present among the actions?
                 return false; // Do not add a duplicate of the same action.
 
-        actions.add(action);
-        recalculateHash = true;
-        return true;
+        // If no duplicate was found...
+        actions.add(action); // Add the new action,
+        recalculateHash = true; // recalculate the hashcode,
+        return true; // and return success-status to the caller.
     }
 
     /**
