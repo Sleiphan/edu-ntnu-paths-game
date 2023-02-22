@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A Link creates a connection between two passages, and binds together parts of a story.
@@ -20,6 +19,11 @@ public class Link {
      * @param reference A unique String identifying a Passage object. Usually the title of the passage.
      */
     public Link(String text, String reference) {
+        if (text == null)
+            throw new IllegalArgumentException("A Link-object's text cannot be null");
+        if (reference == null)
+            throw new IllegalArgumentException("A Link-object's reference cannot be null");
+
         this.text = text;
         this.reference = reference;
         actions = new ArrayList<>();
@@ -38,7 +42,7 @@ public class Link {
     }
 
     /**
-     * Returns this Link-object's unique String identifying a Passage-object.
+     * Returns this Link-object's unique String identifying a Passage-object. Usually contains the title of the passage being pointed to.
      * @return this Link-object's unique String identifying a Passage-object.
      */
     public String getReference() {
@@ -68,7 +72,8 @@ public class Link {
      * @return a deep copy of the internal list of available actions in this Link-object.
      */
     public List<Action> getActions() {
-        return new ArrayList<>(actions);
+        return actions;
+        //return new ArrayList<>(actions);
     }
 
     /**
@@ -78,11 +83,16 @@ public class Link {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Link, with reference: \"").append(reference).append("\"\n");
-        sb.append("Text:\n\"").append(text).append("\"\n");
-        sb.append("Possible actions:");
-        for (Action a : actions)
-            sb.append("\n").append("    ").append(a.toString());
+        sb.append("Link {\n    reference: \"").append(reference).append("\"\n");
+        sb.append("    text:\"").append(text).append("\"\n");
+
+        if (actions.size() > 0) {
+            sb.append("    Possible actions: [ ").append(actions.get(0));
+            for (Action a : actions)
+                sb.append(", ").append(a.toString());
+            sb.append(" ]");
+        }
+
         return sb.toString();
     }
 
