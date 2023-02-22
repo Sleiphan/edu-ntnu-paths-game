@@ -10,11 +10,12 @@ public class LinkTest {
     public void equals_method_test() {
         String text = "Testing text";
         String reference = "Testing reference";
+        String item = "Testing item";
 
         Link l       = new Link(text, reference);
         Link equal   = new Link(text, reference);
         Link unequal = new Link(text, reference);
-        unequal.addAction(new InventoryAction());
+        unequal.addAction(new InventoryAction(item));
 
         assertEquals(text, l.getText());
         assertEquals(reference, l.getReference());
@@ -24,11 +25,12 @@ public class LinkTest {
     public boolean has_direct_access_to_internal_arraylist() {
         String text = "Testing text";
         String reference = "Testing reference";
+        String item = "Testing item";
         Link l = new Link(text, reference);
 
-        l.addAction(new InventoryAction());
+        l.addAction(new InventoryAction(item));
         List<Action> list = l.getActions();
-        list.add(new InventoryAction());
+        list.add(new InventoryAction(item));
 
         return l.getActions().size() != 1;
     }
@@ -46,13 +48,14 @@ public class LinkTest {
     public void hashcode_recalculates_correctly() {
         String text = "Testing text";
         String reference = "Testing reference";
+        String item = "Testing item";
         Link l = new Link(text, reference);
 
         int old_hash = l.hashCode();
         int new_hash = l.hashCode();
         assertEquals(old_hash, new_hash);
 
-        l.addAction(new InventoryAction());
+        l.addAction(new InventoryAction(item));
         new_hash = l.hashCode();
         assertNotEquals(old_hash, new_hash);
     }
