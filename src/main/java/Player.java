@@ -64,6 +64,19 @@ public class Player {
     }
 
     /**
+     * Decreases the health of the player-object
+     * @param healthToRemove    int value to decrease health by
+     * @return                  True if health decrease successful, false if not
+     */
+    public boolean reduceHealth(int healthToRemove){
+        if(healthToRemove < 0){
+            health -= healthToRemove;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns the health of the player-object
      * @return the health of the player-object
      */
@@ -79,6 +92,19 @@ public class Player {
     public boolean addScore(int scoreToAdd){
         if(scoreToAdd > 0){
             score += scoreToAdd;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Decreases the score of the player-object
+     * @param scoreToRemove int value to decrease score by
+     * @return              True if decrease successful, false if not
+     */
+    public boolean reduceScore(int scoreToRemove){
+        if(scoreToRemove < 0){
+            score -= scoreToRemove;
             return true;
         }
         return false;
@@ -106,6 +132,19 @@ public class Player {
     }
 
     /**
+     * Reduces the gold of the player-object
+     * @param goldToRemove  int value to decrease gold by
+     * @return              True if decrease successful, false if not
+     */
+    public boolean reduceGold(int goldToRemove){
+        if(goldToRemove < 0){
+            gold -= goldToRemove;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns the gold of the player-object
      * @return the gold of the player-object
      */
@@ -121,6 +160,19 @@ public class Player {
     public boolean addToInventory(String item){
         inventory.add(item);
         return true;
+    }
+
+    /**
+     * Removes an item from the player-objects inventory array
+     * @param item  item to remove from inventory
+     * @return      true if removal successful, false if not
+     */
+    public boolean removeFromInventory(String item){
+        if(inventory.contains(item)){
+            inventory.remove(item);
+            return true;
+        }
+        return false;
     }
 
     /**
