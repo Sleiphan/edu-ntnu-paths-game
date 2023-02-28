@@ -24,19 +24,19 @@ public class Player {
         if (health > 0){
             this.health = health;
         } else {
-            throw new RuntimeException("Health can't be less than 1");
+            throw new IllegalArgumentException("Health can't be less than 1");
         }
 
         if (score >= 0){
             this.score = score;
         } else {
-            throw new RuntimeException("Score can't be less than 0");
+            throw new IllegalArgumentException("Score can't be less than 0");
         }
 
         if (gold >= 0){
             this.gold = gold;
         } else {
-            throw new RuntimeException("Gold can't be less than 0");
+            throw new IllegalArgumentException("Gold can't be less than 0");
         }
 
         inventory = new ArrayList<>();
