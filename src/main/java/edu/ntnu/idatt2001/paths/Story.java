@@ -1,8 +1,6 @@
 package edu.ntnu.idatt2001.paths;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A edu.ntnu.idatt2001.paths.Story is an interactive, nonlinear narrative consisting of a collection of passages.
@@ -92,4 +90,21 @@ public class Story {
     public Collection<Passage> getPassages() {
         return passages.values();
     }
+
+    public void removePassage(Link link){
+        int instancesOfPassage = 0;
+        for(Passage p : passages.values()){
+            if(p.equals(passages.get(link))){
+                instancesOfPassage++;
+            }
+        }
+        if(instancesOfPassage < 1){
+            throw new IllegalArgumentException("no instance of link in passages");
+        } else if (instancesOfPassage > 1) {
+            passages.remove(link);
+
+        }
+
+    }
+
 }
