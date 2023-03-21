@@ -40,4 +40,63 @@ class StoryTest {
         Assertions.assertEquals(s.getPassage(l1), p2);
         Assertions.assertEquals(s.getPassage(l2), p1);
     }
+
+    @Test
+    void removePassage() {
+        String titleTitleScreen = "Title screen";
+        String titleTutorialIsland = "Tutorial Island";
+        String titleTutorial1 = "Tutorial 1";
+        String titleSelfRef = "Self referencing passage";
+
+        Link toTutorialIsland = new Link("Go to Tutorial Island", titleTutorialIsland);
+        Link toTutorial1 = new Link("Go to tutorial 1", titleTutorial1);
+        Link backToTutorialIsland = new Link("Go back to Tutorial Island", titleTutorialIsland);
+        Link linkSelfRef = new Link("Go back to this passage", titleSelfRef);
+
+        ArrayList<Link> linksTitleScreen = new ArrayList<>();
+        linksTitleScreen.add(toTutorialIsland);
+        ArrayList<Link> linksTutorialIsland = new ArrayList<>();
+        linksTutorialIsland.add(toTutorial1);
+        ArrayList<Link> linksTutorial1 = new ArrayList<>();
+        linksTutorial1.add(backToTutorialIsland);
+        ArrayList<Link> linksSelfRef = new ArrayList<>();
+        linksSelfRef.add(linkSelfRef);
+
+        Passage titleScreen = new Passage(titleTitleScreen, "Welcome to the game!", linksTitleScreen);
+        Passage tutorialIsland = new Passage(titleTutorialIsland, "You are at Tutorial Island", linksTutorialIsland);
+        Passage tutorial1 = new Passage(titleTutorial1, "This is tutorial 1", linksTutorial1);
+        Passage selfRef = new Passage(titleSelfRef, "This is a self referring passage", linksSelfRef);
+
+
+        Story s = new Story("Test story", titleScreen);
+        s.addPassage(tutorialIsland);
+        s.addPassage(tutorial1);
+        s.addPassage(selfRef);
+
+
+
+        // Here, we are trying to remove the passage "Tutorial Island".
+        // This should not work, as that passage is pointed to by both links 'toTutorialIsland' and 'backToTutorialIsland'.
+        int lastPassageCount = s.getPassages().size();
+        s.removePassage(toTutorialIsland);
+        assertEquals(lastPassageCount, s.getPassages().size());
+
+        // Here, we are trying to remove the passage "Tutorial 1".
+        // This should not work, as it is pointed to by the link 'toTutorial1'.
+        lastPassageCount = s.getPassages().size();
+        s.removePassage(toTutorial1);//new Link("Placeholder to remove tutorial 1", titleTutorial1));
+        assertEquals(lastPassageCount, s.getPassages().size());
+
+        // Here, we are trying to remove the passage "Title screen".
+        // This should work, as it is not pointed to by any link.
+        lastPassageCount = s.getPassages().size();
+        s.removePassage(new Link("Placeholder to remove title screen", titleTitleScreen));
+        assertEquals(lastPassageCount - 1, s.getPassages().size());
+
+        // Here, we are trying to remove the passage "Self referencing passage".
+        // This should work, as it is only pointed to by itself, aka. the link 'linkSelfRef'
+        lastPassageCount = s.getPassages().size();
+        s.removePassage(new Link("Placeholder to remove self referencing passage", titleSelfRef));
+        assertEquals(lastPassageCount - 1, s.getPassages().size());
+    }
 }
