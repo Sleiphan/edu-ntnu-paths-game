@@ -33,4 +33,11 @@ public class HealthAction implements Action{
         }
         return false;
     }
+
+    public String toPathsFormat() {
+        return null; // TODO: Implement
+    }
+    public static HealthAction fromPathsFormat(String pathsString) {
+        return null; // TODO: Implement
+    }
 }

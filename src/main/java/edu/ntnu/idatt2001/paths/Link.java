@@ -24,9 +24,9 @@ public class Link {
      */
     public Link(String text, String reference) {
         if (text == null)
-            throw new IllegalArgumentException("A edu.ntnu.idatt2001.paths.Link-object's text cannot be null");
+            throw new IllegalArgumentException("A Link-object's text cannot be null");
         if (reference == null)
-            throw new IllegalArgumentException("A edu.ntnu.idatt2001.paths.Link-object's reference cannot be null");
+            throw new IllegalArgumentException("A Link-object's reference cannot be null");
 
         this.text = text;
         this.reference = reference;
@@ -128,5 +128,13 @@ public class Link {
             recalculateHash = false;
         }
         return hashCode;
+    }
+
+
+    public String toPathsFormat() {
+        return null; // TODO: Implement
+    }
+    public static Link fromPathsFormat(String pathsString) {
+        return null; // TODO: Implement
     }
 }

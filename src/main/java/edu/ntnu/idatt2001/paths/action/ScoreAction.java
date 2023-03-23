@@ -33,4 +33,11 @@ public class ScoreAction implements Action{
         }
         return false;
     }
+
+    public String toPathsFormat() {
+        return null; // TODO: Implement
+    }
+    public static ScoreAction fromPathsFormat(String pathsString) {
+        return null; // TODO: Implement
+    }
 }

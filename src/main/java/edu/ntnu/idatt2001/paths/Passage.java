@@ -120,5 +120,10 @@ public class Passage {
         return hashCode;
     }
 
-
+    public String toPathsFormat() {
+        return null; // TODO: Implement
+    }
+    public static Passage fromPathsFormat(String pathsString) {
+        return null; // TODO: Implement
+    }
 }

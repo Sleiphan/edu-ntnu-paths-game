@@ -28,5 +28,12 @@ public class InventoryAction implements Action {
         p.addToInventory(item);
         return true;
     }
+
+    public String toPathsFormat() {
+        return null; // TODO: Implement
+    }
+    public static InventoryAction fromPathsFormat(String pathsString) {
+        return null; // TODO: Implement
+    }
 }
 

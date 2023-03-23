@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -28,6 +29,15 @@ public class Story {
         addPassage(openingPassage);
     }
 
+    /**
+     * Creates a Story object by reading and parsing the contents of the submitted .paths file.
+     * @param file The file to read and parse data from.
+     */
+    public Story(File file) {
+        // TODO: Implement
+        title = "";
+        openingPassage = null;
+    }
     /**
      * Returns the title of this story.
      * @return the title of this story.
@@ -126,5 +136,13 @@ public class Story {
 
         if (instancesOfPassage <= 1)
             passages.remove(link);
+    }
+
+    /**
+     * Stores this story to the specified file.
+     * @param file The file to store this story to.
+     */
+    public void saveToFile(File file) {
+        // TODO: Implement
     }
 }
