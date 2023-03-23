@@ -52,9 +52,12 @@ class StoryTest {
         Link toTutorial1 = new Link("Go to tutorial 1", titleTutorial1);
         Link backToTutorialIsland = new Link("Go back to Tutorial Island", titleTutorialIsland);
         Link linkSelfRef = new Link("Go back to this passage", titleSelfRef);
+        Link linkTitleScreen = new Link("Go to this title screen", titleTitleScreen);
+
 
         ArrayList<Link> linksTitleScreen = new ArrayList<>();
         linksTitleScreen.add(toTutorialIsland);
+        linksTitleScreen.add(linkTitleScreen);
         ArrayList<Link> linksTutorialIsland = new ArrayList<>();
         linksTutorialIsland.add(toTutorial1);
         ArrayList<Link> linksTutorial1 = new ArrayList<>();
@@ -82,21 +85,21 @@ class StoryTest {
         assertEquals(lastPassageCount, s.getPassages().size());
 
         // Here, we are trying to remove the passage "Tutorial 1".
-        // This should not work, as it is pointed to by the link 'toTutorial1'.
+        // This should work, as it is only pointed to by the link 'toTutorial1' in the passage "Tutorial Island".
         lastPassageCount = s.getPassages().size();
-        s.removePassage(toTutorial1);//new Link("Placeholder to remove tutorial 1", titleTutorial1));
-        assertEquals(lastPassageCount, s.getPassages().size());
+        s.removePassage(toTutorial1);
+        assertEquals(lastPassageCount - 1, s.getPassages().size());
 
         // Here, we are trying to remove the passage "Title screen".
         // This should work, as it is not pointed to by any link.
         lastPassageCount = s.getPassages().size();
-        s.removePassage(new Link("Placeholder to remove title screen", titleTitleScreen));
+        s.removePassage(linkTitleScreen);
         assertEquals(lastPassageCount - 1, s.getPassages().size());
 
         // Here, we are trying to remove the passage "Self referencing passage".
         // This should work, as it is only pointed to by itself, aka. the link 'linkSelfRef'
         lastPassageCount = s.getPassages().size();
-        s.removePassage(new Link("Placeholder to remove self referencing passage", titleSelfRef));
+        s.removePassage(linkSelfRef);
         assertEquals(lastPassageCount - 1, s.getPassages().size());
     }
 }

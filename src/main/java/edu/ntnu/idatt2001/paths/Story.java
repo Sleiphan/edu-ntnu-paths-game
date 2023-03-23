@@ -47,17 +47,21 @@ public class Story {
     /**
      * Adds a new passage to this story.
      * <br><br>
-     * If any previously added passages contains edu.ntnu.idatt2001.paths.Link-objects referencing the submitted passage, a mapping between the objects is created.
+     * If any previously added passages contains Link-objects referencing the submitted passage, a mapping between the objects is created.
      * This counts additionally for links within the submitted passage, referencing existing passages within this story.
      * <br><br>
      * If the passage has no associated links, a new link is added to the passage.
-     * That new edu.ntnu.idatt2001.paths.Link-object's title and reference is equal to the edu.ntnu.idatt2001.paths.Passage-object's title, and contains no registered edu.ntnu.idatt2001.paths.action.Action-objects.
+     * That new Link-object's title and reference is equal to the Passage-object's title, and contains no registered Action-objects.
      * @param p The passage to add to this story.
      */
     public void addPassage(Passage p) {
         boolean linked = false;
+        Collection<Passage> existingPassagesCollection = getPassages();
+        Passage[] existingPassages = existingPassagesCollection.toArray(new Passage[0]);
+        List<Passage> existingPassagesWithDup = List.of(existingPassages);
+        List<Passage> existingPassagesNoDup = new ArrayList<>(new HashSet<>(existingPassagesWithDup));
 
-        for (Passage curr : getPassages()) {
+        for (Passage curr : existingPassagesNoDup) {
             // Add mapping between links in existing passages and p.
             for (Link l : curr.getLinks())
                 if (l.getReference().equals(p.getTitle())) {
@@ -68,6 +72,14 @@ public class Story {
             for (Link l : p.getLinks())
                 if (l.getReference().equals(curr.getTitle()))
                     passages.put(l, curr);
+        }
+
+        // Add mapping between links in p and p.
+        for (Link l : p.getLinks()) {
+            if (l.getReference().equals(p.getTitle())) {
+                passages.put(l, p);
+                linked = true;
+            }
         }
 
         if (!linked)
@@ -93,18 +105,26 @@ public class Story {
 
     public void removePassage(Link link){
         int instancesOfPassage = 0;
+        Passage toBeRemoved = passages.get(link);
+
+        if (toBeRemoved == null)
+            throw new IllegalArgumentException("No passage mapped to the submitted link.");
+
         for(Passage p : passages.values()){
-            if(p.equals(passages.get(link))){
-                instancesOfPassage++;
+            if(p.equals(toBeRemoved)){
+                boolean selfRef = false;
+                for (Link l : toBeRemoved.getLinks())
+                    if (l.equals(link)) {
+                        selfRef = true;
+                        break;
+                    }
+
+                if (!selfRef)
+                    instancesOfPassage++;
             }
         }
-        if(instancesOfPassage < 1){
-            throw new IllegalArgumentException("no instance of link in passages");
-        } else if (instancesOfPassage > 1) {
+
+        if (instancesOfPassage <= 1)
             passages.remove(link);
-
-        }
-
     }
-
 }
