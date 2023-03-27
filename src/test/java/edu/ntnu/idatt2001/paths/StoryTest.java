@@ -3,7 +3,7 @@ package edu.ntnu.idatt2001.paths;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,5 +101,19 @@ class StoryTest {
         lastPassageCount = s.getPassages().size();
         s.removePassage(linkSelfRef);
         assertEquals(lastPassageCount - 1, s.getPassages().size());
+    }
+
+    @Test
+    void getBrokenLinks(){
+        List<Link> links = new ArrayList<>();
+        Link link = new Link("Test","Test");
+        links.add(link);
+        Passage passage = new Passage("Test","Test",links);
+        Story story = new Story("Test",passage);
+        assertEquals(0,story.getBrokenLinks().size());
+        assertNotEquals(1,story.getBrokenLinks().size());
+        story.addBrokenLink();
+        assertEquals(1,story.getBrokenLinks().size());
+        assertNotEquals(0,story.getBrokenLinks().size());
     }
 }

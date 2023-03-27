@@ -139,10 +139,33 @@ public class Story {
     }
 
     /**
+     * Gets a list of all links in the passages map that do not have an associated passage value
+     * @return a list of all links in the passages map that do not have an associated passage value
+     */
+    public List<Link> getBrokenLinks(){
+        List<Link> brokenLinks = new ArrayList<>();
+        for(Map.Entry<Link,Passage> entry : passages.entrySet()){
+            if(entry.getValue() == null){
+                brokenLinks.add(entry.getKey());
+            }
+        }
+        return brokenLinks;
+    }
+
+    /**
+     * Adds a broken link to passages for testing purposes
+     */
+    public void addBrokenLink(){
+        passages.put(new Link("Test","Test"),null);
+    }
+
+    /**
      * Stores this story to the specified file.
      * @param file The file to store this story to.
      */
     public void saveToFile(File file) {
         // TODO: Implement
     }
+
+
 }
