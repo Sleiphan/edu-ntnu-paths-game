@@ -4,6 +4,7 @@ import edu.ntnu.idatt2001.paths.action.Action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * A edu.ntnu.idatt2001.paths.Link creates a connection between two passages, and binds together parts of a story.
@@ -132,9 +133,34 @@ public class Link {
 
 
     public String toPathsFormat() {
-        return null; // TODO: Implement
+        StringBuilder sb = new StringBuilder();
+        sb.append("(").append(text).append(")");
+        sb.append("[").append(reference).append("]");
+        for (Action a : actions)
+            sb.append(a.toPathsFormat());
+        return sb.toString();
     }
+
+    private static final String ACTON_SEPARATOR = "}\\{";
     public static Link fromPathsFormat(String pathsString) {
-        return null; // TODO: Implement
+        int index_1 = 1;
+        int index_2 = pathsString.indexOf(")[", index_1);
+        String text = pathsString.substring(index_1, index_2);
+
+        index_1 = index_2 + 2;
+        index_2 = pathsString.indexOf("]", index_1);
+        String ref = pathsString.substring(index_1, index_2);
+
+        Link l = new Link(text, ref);
+
+        if (pathsString.length() <= index_2 + 1)
+            return l;
+
+        String[] linksS = pathsString.substring(index_2 + 2, pathsString.length() - 1).split(ACTON_SEPARATOR);
+
+        for (String s : linksS)
+            l.addAction(Action.fromPathsFormat("{" + s + "}"));
+
+        return l;
     }
 }
