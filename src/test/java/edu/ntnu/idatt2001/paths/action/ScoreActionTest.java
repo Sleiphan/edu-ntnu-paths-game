@@ -17,4 +17,20 @@ class ScoreActionTest {
         ScoreAction testScoreActionZero = new ScoreAction(0);
         Assertions.assertFalse(testScoreActionZero.execute(p));
     }
+
+    @Test
+    void toPathsFormat(){
+        ScoreAction scoreAction = new ScoreAction(10);
+        String scoreActionAsString = scoreAction.toPathsFormat();
+        Assertions.assertEquals("{scoreAction:10}",scoreActionAsString);
+        Assertions.assertNotEquals("{scoreAction:9}",scoreActionAsString);
+    }
+
+    @Test
+    void fromPathsFormat(){
+        String testString = "{inventoryAction:item} {scoreAction:10}";
+        ScoreAction scoreAction = ScoreAction.fromPathsFormat(testString);
+        Assertions.assertEquals(10, scoreAction.getPoints());
+        Assertions.assertNotEquals(9,scoreAction.getPoints());
+    }
 }

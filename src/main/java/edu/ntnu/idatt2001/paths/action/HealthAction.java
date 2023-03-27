@@ -34,10 +34,42 @@ public class HealthAction implements Action{
         return false;
     }
 
+    /**
+     * Converts the HealthAction to string that can be written to the .paths format
+     * @return the HealthAction as a string
+     */
     public String toPathsFormat() {
-        return null; // TODO: Implement
+        return "{healthAction:" + health +"}";
     }
+
+    /**
+     * Reads HealthAction from a string
+     * @param pathsString   The string to search for health action
+     * @return              Null if no health action found, a new health action if health action found
+     */
     public static HealthAction fromPathsFormat(String pathsString) {
-        return null; // TODO: Implement
+        boolean checkIfHealthAction = pathsString.contains("{healthAction:");
+        if(checkIfHealthAction){
+            StringBuilder current = new StringBuilder();
+            StringBuilder health = new StringBuilder();
+            for(int i = 0; i < pathsString.length(); i++){
+                if(current.toString().contains("{healthAction:")){
+                    if (pathsString.charAt(i) == '}') {
+                        return new HealthAction(Integer.parseInt(health.toString()));
+                    }
+                    health.append(pathsString.charAt(i));
+                }
+                current.append(pathsString.charAt(i));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the health value associated with the health action
+     * @return the health value associated with the health action
+     */
+    public int getHealth() {
+        return health;
     }
 }

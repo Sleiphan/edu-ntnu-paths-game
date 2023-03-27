@@ -17,4 +17,21 @@ class GoldActionTest {
         GoldAction testGoldActionZero = new GoldAction(0);
         Assertions.assertFalse(testGoldActionZero.execute(p));
     }
+
+    @Test
+    void toPathsFormat(){
+        GoldAction goldAction = new GoldAction(8);
+        String goldActionAsString = goldAction.toPathsFormat();
+        Assertions.assertEquals("{goldAction:8}",goldActionAsString);
+        Assertions.assertNotEquals("{goldAction:7}",goldActionAsString);
+    }
+
+    @Test
+    void fromPathsFormat(){
+        String testString = "{healthAction:9} {goldAction:10}";
+        GoldAction goldAction = GoldAction.fromPathsFormat(testString);
+        Assertions.assertEquals(10,goldAction.getGold());
+        Assertions.assertNotEquals(9,goldAction.getGold());
+
+    }
 }
