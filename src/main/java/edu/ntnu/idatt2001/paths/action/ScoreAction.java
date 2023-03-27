@@ -7,6 +7,7 @@ import edu.ntnu.idatt2001.paths.Player;
  */
 public class ScoreAction implements Action{
     private final int points;
+    private final int hashCode;
 
     /**
      * Initializes the value to change a player objects score field by
@@ -14,6 +15,7 @@ public class ScoreAction implements Action{
      */
     public ScoreAction(int points){
         this.points = points;
+        this.hashCode = GoldAction.class.hashCode() * points < 0 ? points : points + 1;
     }
 
     /**
@@ -71,5 +73,10 @@ public class ScoreAction implements Action{
      */
     public int getPoints() {
         return points;
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 }

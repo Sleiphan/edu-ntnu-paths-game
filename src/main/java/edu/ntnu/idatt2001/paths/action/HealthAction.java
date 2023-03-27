@@ -7,6 +7,7 @@ import edu.ntnu.idatt2001.paths.Player;
  */
 public class HealthAction implements Action{
     private final int health;
+    private final int hashCode;
 
     /**
      * Initializes the value to change a player objects health field by
@@ -14,6 +15,7 @@ public class HealthAction implements Action{
      */
     public HealthAction(int health){
         this.health = health;
+        this.hashCode = this.getClass().hashCode() * health < 0 ? health : health + 1;
     }
 
     /**
@@ -71,5 +73,10 @@ public class HealthAction implements Action{
      */
     public int getHealth() {
         return health;
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 }

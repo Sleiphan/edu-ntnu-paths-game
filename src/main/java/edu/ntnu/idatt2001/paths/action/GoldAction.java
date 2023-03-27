@@ -8,6 +8,7 @@ import edu.ntnu.idatt2001.paths.Player;
  */
 public class GoldAction implements Action{
     private final int gold;
+    private final int hashCode;
 
     /**
      * Initializes the value to change a player objects gold field by
@@ -15,6 +16,7 @@ public class GoldAction implements Action{
      */
     public GoldAction(int gold){
         this.gold = gold;
+        this.hashCode = this.getClass().hashCode() * gold < 0 ? gold : gold + 1;
     }
 
     /**
@@ -72,5 +74,10 @@ public class GoldAction implements Action{
      */
     public int getGold() {
         return gold;
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 }

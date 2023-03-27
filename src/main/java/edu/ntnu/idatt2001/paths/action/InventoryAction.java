@@ -8,6 +8,7 @@ import edu.ntnu.idatt2001.paths.Player;
 public class InventoryAction implements Action {
 
     private final String item;
+    private final int hashCode;
 
     /**
      * Initializes the item that will be added to the inventory array of a player object
@@ -15,6 +16,7 @@ public class InventoryAction implements Action {
      */
     public InventoryAction(String item){
         this.item = item;
+        this.hashCode = this.getClass().hashCode() * item.hashCode();
     }
 
     /**
@@ -67,6 +69,11 @@ public class InventoryAction implements Action {
      */
     public String getItem() {
         return item;
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 }
 
