@@ -47,4 +47,24 @@ class PassageTest {
         Assertions.assertEquals(p, equal);
         Assertions.assertNotEquals(p, unequal);
     }
+
+    @Test
+    void toPathsFormat(){
+        List<Link> linkList = new ArrayList<>();
+        Link link = new Link("test","test");
+        linkList.add(link);
+        Passage passage = new Passage("test","test",linkList);
+        String referenceString = "::test\ntest\n(test)[test]";
+        Assertions.assertEquals(referenceString,passage.toPathsFormat());
+    }
+
+    @Test
+    void fromPathsFormat(){
+        String referenceString = "::test\ntest\n(test)[test]";
+        Passage passage = Passage.fromPathsFormat(referenceString);
+        Assertions.assertEquals("test",passage.getTitle());
+        Assertions.assertEquals("test",passage.getContent());
+        Assertions.assertEquals("test",passage.getLinks().get(0).getText());
+        Assertions.assertEquals("test",passage.getLinks().get(0).getReference());
+    }
 }

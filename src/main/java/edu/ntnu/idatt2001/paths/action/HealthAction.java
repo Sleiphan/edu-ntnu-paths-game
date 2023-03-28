@@ -7,6 +7,7 @@ import edu.ntnu.idatt2001.paths.Player;
  */
 public class HealthAction implements Action{
     private final int health;
+    private final int hashCode;
 
     /**
      * Initializes the value to change a player objects health field by
@@ -14,6 +15,7 @@ public class HealthAction implements Action{
      */
     public HealthAction(int health){
         this.health = health;
+        this.hashCode = this.getClass().hashCode() * health < 0 ? health : health + 1;
     }
 
     /**
@@ -32,5 +34,49 @@ public class HealthAction implements Action{
             return true;
         }
         return false;
+    }
+
+    /**
+     * Converts the HealthAction to string that can be written to the .paths format
+     * @return the HealthAction as a string
+     */
+    public String toPathsFormat() {
+        return "{healthAction:" + health +"}";
+    }
+
+    /**
+     * Reads HealthAction from a string
+     * @param pathsString   The string to search for health action
+     * @return              Null if no health action found, a new health action if health action found
+     */
+    public static HealthAction fromPathsFormat(String pathsString) {
+        boolean checkIfHealthAction = pathsString.contains("{healthAction:");
+        if(checkIfHealthAction){
+            StringBuilder current = new StringBuilder();
+            StringBuilder health = new StringBuilder();
+            for(int i = 0; i < pathsString.length(); i++){
+                if(current.toString().contains("{healthAction:")){
+                    if (pathsString.charAt(i) == '}') {
+                        return new HealthAction(Integer.parseInt(health.toString()));
+                    }
+                    health.append(pathsString.charAt(i));
+                }
+                current.append(pathsString.charAt(i));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the health value associated with the health action
+     * @return the health value associated with the health action
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 }
