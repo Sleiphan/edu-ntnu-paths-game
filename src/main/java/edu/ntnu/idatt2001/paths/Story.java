@@ -1,7 +1,10 @@
 package edu.ntnu.idatt2001.paths;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * A edu.ntnu.idatt2001.paths.Story is an interactive, nonlinear narrative consisting of a collection of passages.
@@ -11,6 +14,9 @@ public class Story {
     private final String title;
     private final Passage openingPassage;
     private final Map<Link, Passage> passages = new HashMap<>();
+
+    private int hashCode;
+    private boolean recalculateHash;
 
     /**
      * Creates a new edu.ntnu.idatt2001.paths.Story-object, with a title and an initial passage from where the story begins.
@@ -27,17 +33,11 @@ public class Story {
         this.openingPassage = openingPassage;
 
         addPassage(openingPassage);
+
+        this.recalculateHash = true;
+        hashCode();
     }
 
-    /**
-     * Creates a Story object by reading and parsing the contents of the submitted .paths file.
-     * @param file The file to read and parse data from.
-     */
-    public Story(File file) {
-        // TODO: Implement
-        title = "";
-        openingPassage = null;
-    }
     /**
      * Returns the title of this story.
      * @return the title of this story.
@@ -94,6 +94,8 @@ public class Story {
 
         if (!linked)
             passages.put(new Link(p.getTitle(), p.getTitle()), p);
+
+        recalculateHash = true;
     }
 
     /**
@@ -136,6 +138,8 @@ public class Story {
 
         if (instancesOfPassage <= 1)
             passages.remove(link);
+
+        recalculateHash = true;
     }
 
     /**
@@ -157,15 +161,75 @@ public class Story {
      */
     public void addBrokenLink(){
         passages.put(new Link("Test","Test"),null);
+        recalculateHash = true;
+    }
+
+    @Override
+    public int hashCode() {
+        if (recalculateHash) {
+            hashCode = title.hashCode() * openingPassage.hashCode() * passages.hashCode();
+            recalculateHash = false;
+        }
+
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Story))
+            return false;
+
+        Story s = (Story) o;
+        return hashCode() == s.hashCode();
     }
 
     /**
      * Stores this story to the specified file.
      * @param file The file to store this story to.
      */
-    public void saveToFile(File file) {
-        // TODO: Implement
+    public void saveToFile(Path path) throws IOException {
+        Files.writeString(path, this.toPathsString());
     }
 
+    public static Story readFromFile(Path path) throws IOException {
+        String fileString = Files.readString(path);
+        return Story.fromPathsString(fileString);
+    }
 
+    private static final String PATHS_FILE_SPLITTER = "\n\n";
+
+    /**
+     * @return
+     */
+    public String toPathsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getTitle())
+                .append(PATHS_FILE_SPLITTER)
+                .append(getOpeningPassage().toPathsFormat());
+
+        if (getPassages().size() <= 1)
+            return sb.toString();
+
+        // Create a collection of all passages with no duplicates.
+        Set<Passage> passagesWithoutOpening = new HashSet<>(getPassages());
+        passagesWithoutOpening.remove(getOpeningPassage());
+
+        // Iterate over the Set we created in the last step, and add all of them to the output.
+        for (Passage p : passagesWithoutOpening)
+            sb.append(PATHS_FILE_SPLITTER).append(p.toPathsFormat());
+
+        return sb.toString();
+    }
+
+    public static Story fromPathsString(String pathsString) {
+        String[] parts = pathsString.split(PATHS_FILE_SPLITTER);
+        String title = parts[0];
+        Passage opening = Passage.fromPathsFormat(parts[1]);
+        Story story = new Story(title, opening);
+
+        for (int i = 2; i < parts.length; i++)
+            story.addPassage(Passage.fromPathsFormat(parts[i]));
+
+        return story;
+    }
 }

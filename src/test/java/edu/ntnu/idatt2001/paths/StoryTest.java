@@ -1,13 +1,62 @@
 package edu.ntnu.idatt2001.paths;
 
+import edu.ntnu.idatt2001.paths.action.GoldAction;
+import edu.ntnu.idatt2001.paths.action.ScoreAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class StoryTest {
+
+    private Story getTestStory() {
+        // First, create a story we can do parsing with.
+        String titleTitleScreen = "Title screen";
+        String titleTutorialIsland = "Tutorial Island";
+        String titleTutorial1 = "Tutorial 1";
+        String titleSelfRef = "Self referencing passage";
+
+        Link toTutorialIsland = new Link("Go to Tutorial Island", titleTutorialIsland);
+        Link toTutorial1 = new Link("Go to tutorial 1", titleTutorial1);
+        Link backToTutorialIsland = new Link("Go back to Tutorial Island", titleTutorialIsland);
+        Link linkSelfRef = new Link("Go back to this passage", titleSelfRef);
+        Link linkTitleScreen = new Link("Go to this title screen", titleTitleScreen);
+
+        ScoreAction tut1score = new ScoreAction(40);
+        toTutorial1.addAction(tut1score);
+        GoldAction tut1gold = new GoldAction(60);
+        toTutorial1.addAction(tut1gold);
+
+        ArrayList<Link> linksTitleScreen = new ArrayList<>();
+        linksTitleScreen.add(toTutorialIsland);
+        linksTitleScreen.add(linkTitleScreen);
+        ArrayList<Link> linksTutorialIsland = new ArrayList<>();
+        linksTutorialIsland.add(toTutorial1);
+        ArrayList<Link> linksTutorial1 = new ArrayList<>();
+        linksTutorial1.add(backToTutorialIsland);
+        ArrayList<Link> linksSelfRef = new ArrayList<>();
+        linksSelfRef.add(linkSelfRef);
+
+        Passage titleScreen = new Passage(titleTitleScreen, "Welcome to the game!", linksTitleScreen);
+        Passage tutorialIsland = new Passage(titleTutorialIsland, "You are at Tutorial Island", linksTutorialIsland);
+        Passage tutorial1 = new Passage(titleTutorial1, "This is tutorial 1", linksTutorial1);
+        Passage selfRef = new Passage(titleSelfRef, "This is a self referring passage", linksSelfRef);
+
+
+        Story s = new Story("Test story", titleScreen);
+        s.addPassage(tutorialIsland);
+        s.addPassage(tutorial1);
+        s.addPassage(selfRef);
+
+        return s;
+    }
 
     @Test
     void constructor() {
@@ -43,6 +92,7 @@ class StoryTest {
 
     @Test
     void removePassage() {
+        // First, create a story we can do parsing with.
         String titleTitleScreen = "Title screen";
         String titleTutorialIsland = "Tutorial Island";
         String titleTutorial1 = "Tutorial 1";
@@ -54,6 +104,10 @@ class StoryTest {
         Link linkSelfRef = new Link("Go back to this passage", titleSelfRef);
         Link linkTitleScreen = new Link("Go to this title screen", titleTitleScreen);
 
+        ScoreAction tut1score = new ScoreAction(40);
+        toTutorial1.addAction(tut1score);
+        GoldAction tut1gold = new GoldAction(60);
+        toTutorial1.addAction(tut1gold);
 
         ArrayList<Link> linksTitleScreen = new ArrayList<>();
         linksTitleScreen.add(toTutorialIsland);
@@ -115,5 +169,32 @@ class StoryTest {
         story.addBrokenLink();
         assertEquals(1,story.getBrokenLinks().size());
         assertNotEquals(0,story.getBrokenLinks().size());
+    }
+
+    @Test
+    void parsing() {
+        Story s = getTestStory();
+
+        // Second, test the parsing!
+        String parsed = s.toPathsString();
+        Story copy = Story.fromPathsString(parsed);
+
+        assertEquals(s, copy);
+    }
+
+    @Test
+    public void fileHandling() {
+        Story s = getTestStory();
+        Path path = Path.of("temp.paths");
+
+        Story copy = null;
+        try {
+            s.saveToFile(path);
+            copy = Story.readFromFile(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(s, copy);
     }
 }
