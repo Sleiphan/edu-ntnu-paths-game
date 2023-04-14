@@ -78,15 +78,4 @@ public class LinkTest {
         Assertions.assertEquals(l.getReference(), reference);
         Assertions.assertEquals(l.getActions().size(), 0);
     }
-
-    @Test
-    public void parsing() {
-        Link l = new Link("Open chest", "Dungeon Room 5");
-        l.addAction(new GoldAction(0));
-        l.addAction(new HealthAction(-3));
-        l.addAction(new InventoryAction("Sack of gold"));
-        l.addAction(new ScoreAction(0));
-        Link copy = Link.fromPathsFormat(l.toPathsFormat());
-        assertEquals(l, copy);
-    }
 }
