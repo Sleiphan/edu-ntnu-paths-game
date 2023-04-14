@@ -120,34 +120,4 @@ public class Passage {
         }
         return hashCode;
     }
-
-    /**
-     * Converts the passage to a string that can be written to the .paths format
-     * @return the passage as a string
-     */
-    public String toPathsFormat() {
-        StringBuilder passageAsString = new StringBuilder();
-        passageAsString.append("::").append(title).append('\n');
-        passageAsString.append(content);
-        for(Link l : links){
-            passageAsString.append('\n').append(l.toPathsFormat());
-        }
-        return passageAsString.toString();
-    }
-
-    /**
-     * Reads a passage from a string
-     * @param pathsString string to read passage from
-     * @return            Passage found in string
-     */
-    public static Passage fromPathsFormat(String pathsString) {
-        String[] pathsStringSplit = pathsString.split("\n");
-        String title = pathsStringSplit[0].substring(2);
-        String content = pathsStringSplit[1];
-        List<Link> linkList = new ArrayList<>();
-        for(int i = 2; i < pathsStringSplit.length; i++){
-            linkList.add(Link.fromPathsFormat(pathsStringSplit[i]));
-        }
-        return new Passage(title,content,linkList);
-    }
 }
