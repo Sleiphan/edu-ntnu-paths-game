@@ -26,8 +26,8 @@ public class InventoryAction implements Action {
      */
     @Override
     public boolean execute(Player player) {
-        Player p = new Player("Test name", 1,1,1);
-        p.addToInventory(item);
+        //Player p = new Player("Test name", 1,1,1);
+        player.addToInventory(item);
         return true;
     }
 

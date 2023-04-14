@@ -25,12 +25,12 @@ public class HealthAction implements Action{
      */
     @Override
     public boolean execute(Player player) {
-        Player p = new Player("Test name", 1,1,1);
+        //Player p = new Player("Test name", 1,1,1);
         if(health > 0){
-            p.addHealth(health);
+            player.addHealth(health);
             return true;
         } else if (health < 0) {
-            p.reduceHealth(health);
+            player.reduceHealth(health);
             return true;
         }
         return false;

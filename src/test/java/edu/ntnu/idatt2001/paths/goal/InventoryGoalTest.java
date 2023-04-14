@@ -12,11 +12,12 @@ class InventoryGoalTest {
 
     @Test
     void isFulfilled() {
-        Player p = new Player("Test name", 1, 1, 1);
         List<String> mandatoryTest = new ArrayList<>();
         mandatoryTest.add("TestElement1");
         mandatoryTest.add("TestElement2");
         mandatoryTest.add("TestElement3");
+        List<String> testInventory = new ArrayList<>();
+        Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).setInventory(testInventory).build();
         InventoryGoal testGoal = new InventoryGoal(mandatoryTest);
         p.addToInventory("TestElement1");
         p.addToInventory("TestElement2");

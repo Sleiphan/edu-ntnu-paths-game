@@ -9,7 +9,7 @@ class ScoreActionTest {
 
     @Test
     void execute() {
-        Player p = new Player("Test name", 1,1,1);
+        Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).build();
         ScoreAction testScoreAction = new ScoreAction(1);
         Assertions.assertTrue(testScoreAction.execute(p));
         ScoreAction testScoreActionNegative = new ScoreAction(-1);

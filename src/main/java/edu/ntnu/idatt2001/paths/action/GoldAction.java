@@ -26,12 +26,12 @@ public class GoldAction implements Action{
      */
     @Override
     public boolean execute(Player player) {
-        Player p = new Player("Test name", 1,1,1);
+        //Player p = new Player("Test name", 1,1,1);
         if(gold > 0){
-            p.addGold(gold);
+            player.addGold(gold);
             return true;
         } else if (gold < 0) {
-            p.reduceGold(gold);
+            player.reduceGold(gold);
             return true;
         }
         return false;

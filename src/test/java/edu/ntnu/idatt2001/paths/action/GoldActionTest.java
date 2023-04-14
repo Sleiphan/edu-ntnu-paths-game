@@ -9,7 +9,7 @@ class GoldActionTest {
 
     @Test
     void execute() {
-        Player p = new Player("Test name", 1,1,1);
+        Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).build();
         GoldAction testGoldAction = new GoldAction(1);
         Assertions.assertTrue(testGoldAction.execute(p));
         GoldAction testGoldActionNegative = new GoldAction(-1);

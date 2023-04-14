@@ -25,12 +25,12 @@ public class ScoreAction implements Action{
      */
     @Override
     public boolean execute(Player player) {
-        Player p = new Player("Test name", 1,1,1);
+        //Player p = new Player("Test name", 1,1,1);
         if(points > 0){
-            p.addScore(points);
+            player.addScore(points);
             return true;
         } else if (points < 0) {
-            p.reduceScore(points);
+            player.reduceScore(points);
             return true;
         }
         return false;

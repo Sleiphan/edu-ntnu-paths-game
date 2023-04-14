@@ -11,7 +11,7 @@ class HealthActionTest {
 
     @Test
     void execute() {
-        Player p = new Player("Test name", 1,1,1);
+        Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).build();
         HealthAction testHealthAction = new HealthAction(1);
         Assertions.assertTrue(testHealthAction.execute(p));
         HealthAction testHealthActionNegative = new HealthAction(-1);

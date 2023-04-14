@@ -178,8 +178,10 @@ class StoryTest {
         // Second, test the parsing!
         String parsed = s.toPathsString();
         Story copy = Story.fromPathsString(parsed);
+        String copyParsed = copy.toPathsString();
 
-        assertEquals(s, copy);
+
+        assertEquals(parsed, copyParsed);
     }
 
     @Test

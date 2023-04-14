@@ -2,46 +2,106 @@ package edu.ntnu.idatt2001.paths;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A class representing the player character of the game
  */
 public class Player {
+    // Mandatory parameters
     private final String name;
     private int health;
+
+    // Optional parameters
     private int score;
     private int gold;
     private final List<String> inventory;
 
     /**
-     * Initializes a player object. Throws exceptions if health is less than 1, or if score and gold is less than 0
-     * @param name      The name of the player character
-     * @param health    The baseline health of the player character
-     * @param score     The baseline score of the player character
-     * @param gold      The baseline gold of the player character
+     * A private constructor used in the builder to create an instance of the object
+     * @param builder   Builder class used to make the player Object
      */
-    public Player(String name, int health, int score, int gold){
-        this.name = name;
+    private Player(PlayerBuilder builder){
+        this.name = builder.name;
+        this.health = builder.health;
+        this.score = builder.score;
+        this.gold = builder.gold;
+        this.inventory = builder.inventory;
+    }
 
-        if (health > 0){
-            this.health = health;
-        } else {
-            throw new IllegalArgumentException("Health can't be less than 1");
+    /**
+     * A builder class used to make Player objects
+     */
+    public static class PlayerBuilder{
+        // Mandatory parameters
+        private final String name;
+        private final int health;
+
+        // Optional parameters
+        private int score;
+        private int gold;
+        private List<String> inventory;
+
+        /**
+         * Initializes the mandatory parameters of the player object
+         * @param name      name of the player
+         * @param health    baseline health of the player
+         */
+        public PlayerBuilder(String name, int health){
+            this.name = name;
+
+            if (health > 0){
+                this.health = health;
+            } else {
+                throw new IllegalArgumentException("Health can't be less than 1");
+            }
         }
 
-        if (score >= 0){
-            this.score = score;
-        } else {
-            throw new IllegalArgumentException("Score can't be less than 0");
+        /**
+         * Initializes the optional score parameter of the player object
+         * @param score     baseline score
+         * @return          returns this builder
+         */
+        public PlayerBuilder setScore(int score){
+            if (score >= 0){
+                this.score = score;
+                return this;
+            } else {
+                throw new IllegalArgumentException("Score can't be less than 0");
+            }
         }
 
-        if (gold >= 0){
-            this.gold = gold;
-        } else {
-            throw new IllegalArgumentException("Gold can't be less than 0");
+        /**
+         * Initializes the optional gold parameter of the player object
+         * @param gold      baseline score
+         * @return          returns this builder
+         */
+        public PlayerBuilder setGold(int gold){
+            if (gold >= 0){
+                this.gold = gold;
+                return this;
+            } else {
+                throw new IllegalArgumentException("Gold can't be less than 0");
+            }
         }
 
-        inventory = new ArrayList<>();
+        /**
+         * Initializes the optional inventory parameter of the player object
+         * @param inventory     baseline inventory
+         * @return              returns this builder
+         */
+        public PlayerBuilder setInventory(List<String> inventory){
+            this.inventory = inventory;
+            return this;
+        }
+
+        /**
+         * Creates the player object
+         * @return the new player object
+         */
+        public Player build(){
+            return new Player(this);
+        }
     }
 
     /**

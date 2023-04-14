@@ -5,11 +5,15 @@ import edu.ntnu.idatt2001.paths.action.InventoryAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class InventoryActionTest {
 
     @Test
     void execute() {
-        Player p = new Player("Test name", 1,1,1);
+        List<String> testInventory = new ArrayList<>();
+        Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).setInventory(testInventory).build();
         InventoryAction testInventoryAction = new InventoryAction("Test item");
         Assertions.assertTrue(testInventoryAction.execute(p));
     }
