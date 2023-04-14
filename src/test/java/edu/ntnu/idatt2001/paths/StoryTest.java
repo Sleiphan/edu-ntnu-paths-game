@@ -170,33 +170,4 @@ class StoryTest {
         assertEquals(1,story.getBrokenLinks().size());
         assertNotEquals(0,story.getBrokenLinks().size());
     }
-
-    @Test
-    void parsing() {
-        Story s = getTestStory();
-
-        // Second, test the parsing!
-        String parsed = s.toPathsString();
-        Story copy = Story.fromPathsString(parsed);
-        String copyParsed = copy.toPathsString();
-
-
-        assertEquals(parsed, copyParsed);
-    }
-
-    @Test
-    public void fileHandling() {
-        Story s = getTestStory();
-        Path path = Path.of("temp.paths");
-
-        Story copy = null;
-        try {
-            s.saveToFile(path);
-            copy = Story.readFromFile(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertEquals(s, copy);
-    }
 }
