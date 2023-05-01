@@ -9,7 +9,9 @@ import java.util.*;
 
 public class PathsParser {
 
-    private static final String PATHS_FILE_SPLITTER = "\n\n";
+    private static final String CRLF = "\r\n";
+    private static final String LF = "\n";
+    private static final String PATHS_FILE_SPLITTER = LF + LF;
     private static final String ACTON_SEPARATOR = "}\\{";
 
     public static String toPathsFormat(Story s) {
@@ -33,7 +35,11 @@ public class PathsParser {
     }
 
     public static Story fromPathsFormatStory(String pathsString) {
-        String[] parts = pathsString.split(PATHS_FILE_SPLITTER);
+        String dataSeparator = PATHS_FILE_SPLITTER;
+        if (pathsString.contains(CRLF))
+            dataSeparator = CRLF + CRLF;
+
+        String[] parts = pathsString.split(dataSeparator + "");
         String title = parts[0];
         Passage opening = fromPathsFormatPassage(parts[1]);
         Story story = new Story(title, opening);
@@ -64,7 +70,11 @@ public class PathsParser {
      * @return            Passage found in string
      */
     public static Passage fromPathsFormatPassage(String pathsString) {
-        String[] pathsStringSplit = pathsString.split("\n");
+        String dataSeparator = LF;
+        if (pathsString.contains(CRLF))
+            dataSeparator = CRLF;
+
+        String[] pathsStringSplit = pathsString.split(dataSeparator);
         String title = pathsStringSplit[0].substring(2);
         String content = pathsStringSplit[1];
         List<Link> linkList = new ArrayList<>();

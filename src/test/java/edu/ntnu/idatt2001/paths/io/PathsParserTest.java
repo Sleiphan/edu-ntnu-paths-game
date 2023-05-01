@@ -55,6 +55,22 @@ public class PathsParserTest {
     }
 
     @Test
+    void parsing_a_complete_story_CRLF() {
+        Story s = getTestStory();
+
+        final String CRLF = "\r\n";
+        final String LF = "\n";
+
+        String parsed = PathsParser.toPathsFormat(s);
+        String parsedCRLF = parsed.replaceAll(LF+"(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", CRLF);
+        Story copy = PathsParser.fromPathsFormatStory(parsedCRLF);
+        String copyParsed = PathsParser.toPathsFormat(copy);
+
+        boolean equal = parsed.equals(copyParsed);
+        assert equal;
+    }
+
+    @Test
     void parsing_a_complete_story() {
         Story s = getTestStory();
 
