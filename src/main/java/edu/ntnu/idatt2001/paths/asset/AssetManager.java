@@ -97,9 +97,9 @@ public class AssetManager<R, T extends Asset<R>> {
      */
     public String getLastError() {
         if (unreadErrors())
-            return null;
-        else
             return errors.remove(0);
+        else
+            return null;
     }
 
     /**

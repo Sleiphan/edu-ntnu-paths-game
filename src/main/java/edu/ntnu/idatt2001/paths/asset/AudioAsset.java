@@ -3,6 +3,7 @@ package edu.ntnu.idatt2001.paths.asset;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AudioAsset implements Asset<MediaPlayer> {
@@ -11,13 +12,16 @@ public class AudioAsset implements Asset<MediaPlayer> {
     private final String filePath;
     private boolean loaded;
 
-    public AudioAsset(String filePath) {
+    public AudioAsset(String filePath) throws IOException {
         this.filePath = filePath;
     }
 
+    public void
+
     @Override
     public void load() throws IOException {
-        asset = new MediaPlayer(new Media(filePath)); // May cause an exception. If so, try this: new MediaPlayer(new Media(new File(filePath).toURI().toString()));
+        String URI = new File(filePath).toURI().toString();
+        asset = new MediaPlayer(new Media(URI));
         loaded = true;
     }
 

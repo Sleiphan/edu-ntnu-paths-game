@@ -23,20 +23,32 @@ public class PathsAssetStore {
 
 
 
-    public Image loadImage(String key) {
-        return null;
+    public boolean loadImage(String key) {
+        boolean loaded = imageAssets.loadAsset(key);
+
+        String err;
+        while ((err = imageAssets.getLastError()) != null)
+            errors.add(err);
+
+        return loaded;
     }
 
-    public Image unloadImage(String key) {
-        return null;
+    public boolean unloadImage(String key) {
+        return imageAssets.unloadAsset(key);
     }
 
-    public MediaPlayer loadAudio(String key) {
-        return null;
+    public boolean loadAudio(String key) {
+        boolean loaded = audioAssets.loadAsset(key);
+
+        String err;
+        while ((err = audioAssets.getLastError()) != null)
+            errors.add(err);
+
+        return loaded;
     }
 
-    public MediaPlayer unloadAudio(String key) {
-        return null;
+    public boolean unloadAudio(String key) {
+        return audioAssets.unloadAsset(key);
     }
 
     public Image getImageAsset(String key) {
