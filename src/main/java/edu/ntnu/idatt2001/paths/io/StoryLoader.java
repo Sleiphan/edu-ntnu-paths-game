@@ -9,9 +9,11 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A class responsible for loading all parts of a game story, including the story itself and assets.
+ */
 public class StoryLoader {
 
     public static final String PATHS_FILE_ENDING = ".paths";

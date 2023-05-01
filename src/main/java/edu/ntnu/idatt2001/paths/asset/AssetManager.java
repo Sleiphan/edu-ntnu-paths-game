@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Effectively allows a developer to control which assets are kept loaded in memory, through a hashmap structure.
+ *
+ * @param <R> The data type of the asset this class is to manage.
+ * @param <T> A class implementing the Asset interface handling a data object of type R.
+ */
 public class AssetManager<R, T extends Asset<R>> {
 
     private final List<String> errors = new ArrayList<>();
