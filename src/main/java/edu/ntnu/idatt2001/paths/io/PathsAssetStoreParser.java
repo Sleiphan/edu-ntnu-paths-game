@@ -19,12 +19,15 @@ public class PathsAssetStoreParser {
     private List<String> loadErrors = new ArrayList<>();
 
 
+    public boolean errorsOccurredLastParse() {
+        return !loadErrors.isEmpty();
+    }
 
     public String[] getErrorsFromLastParse() {
-        if (loadErrors.isEmpty())
-            return null;
-        else
+        if (errorsOccurredLastParse())
             return loadErrors.toArray(String[]::new);
+        else
+            return null;
     }
 
     public PathsAssetStore parsePathsAssetStore(String assetRegisterData, String assetDirectoryPath) {
