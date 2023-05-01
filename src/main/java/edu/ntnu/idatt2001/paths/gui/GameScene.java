@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.Story;
-import edu.ntnu.idatt2001.paths.gui.appstate.ApplicationState;
 import javafx.scene.Scene;
 
 public class GameScene extends PathsMenu {
