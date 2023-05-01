@@ -16,8 +16,6 @@ public class AudioAsset implements Asset<MediaPlayer> {
         this.filePath = filePath;
     }
 
-    public void
-
     @Override
     public void load() throws IOException {
         String URI = new File(filePath).toURI().toString();
