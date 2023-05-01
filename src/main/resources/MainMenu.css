@@ -1,0 +1,33 @@
+.label{
+
+}
+
+@font-face {
+    font-family: alagard;
+    src: url(alagard/alagard.ttf)
+}
+
+.button{
+    -fx-font-family: alagard;
+    -fx-font-size: 30;
+    -fx-background-image: url(TestImages/Button.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: 200 55;
+}
+
+.root{
+    -fx-background-image: url(TestImages/TestBackground.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 1500, 1500;
+    -fx-background-position: center center;
+
+}
+
+.imageView{
+    -fx-image: url(TestImages/background2.png);
+}
+
+#Test{
+    -fx-image: url(TestImages/Rose1.png);
+}
