@@ -14,12 +14,12 @@ public class StoryLoaderTest {
         StoryLoader loader = new StoryLoader(filePath);
 
         boolean assetsFound = loader.foundAssetStore();
-        boolean errorOccurred = !loader.load();
+        boolean success = loader.load();
         Story story = loader.getStory();
         PathsAssetStore assetStore = loader.getAssetStore();
 
         assert !assetsFound;
-        assert !errorOccurred;
+        assert success;
         assert story != null;
         assert assetStore == null;
     }
@@ -30,12 +30,12 @@ public class StoryLoaderTest {
         StoryLoader loader = new StoryLoader(filePath);
 
         boolean assetsFound = loader.foundAssetStore();
-        boolean errorOccurred = !loader.load();
+        boolean success = loader.load();
         Story story = loader.getStory();
         PathsAssetStore assetStore = loader.getAssetStore();
 
         assert assetsFound;
-        assert !errorOccurred;
+        assert success;
         assert story != null;
         assert assetStore != null;
     }
