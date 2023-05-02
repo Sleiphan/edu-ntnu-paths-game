@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2001.paths.asset;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 public interface Asset<T> {
 
