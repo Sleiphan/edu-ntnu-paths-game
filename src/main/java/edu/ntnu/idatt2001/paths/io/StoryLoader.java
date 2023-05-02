@@ -12,7 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class responsible for loading all parts of a game story, including the story itself and assets.
+ * This class' objective is to load a complete story - along with supplementary elements like assets -
+ * from the file system, and store them together in a convenient way.<br>
+ * <br>
+ * As an outset, the StoryLoader is guaranteed to load a Story-object that can be run as a game, given that
+ * the contents of the file properly adhere to the .paths-format.
+ * The loader will try to uncover and load additional resources in the same directory as the .paths-file
+ * containing the story. <br>
+ * <br>
+ * Any errors that occur during loading can be retrieved by calling
  */
 public class StoryLoader {
 
@@ -29,6 +37,12 @@ public class StoryLoader {
 
     private boolean foundAssetStore;
 
+    /**
+     * Creates a new StoryLoader for use on a single Story-file.
+     * @param storyFilePath The path to the file containing a Story, with contents adhering to the .paths-format.
+     * @throws FileNotFoundException if the file pointed to by <code>storyFilePath</code> could not be found.
+     * @throws IllegalArgumentException if the file pointed to by <code>storyFilePath</code> does not end with ".paths".
+     */
     public StoryLoader(String storyFilePath) throws FileNotFoundException {
         storyFilePath = storyFilePath.replaceAll("\\\\", "/");
 
@@ -47,10 +61,33 @@ public class StoryLoader {
             foundAssetStore = true;
     }
 
+    /**
+     * Loads the Story, and attempts to load additional elements connected to the Story, like assets.
+     * Uses Charset.defaultCharset() as the character encoding for converting data from files to String-objects.<br>
+     * <br>
+     * This method returns <code>true</code> if all discovered elements were successfully loaded. This means that the
+     * method returns <code>false</code> even if a Story-object was successfully loaded, but a discovered asset store could
+     * not be successfully loaded. If a Story was successfully loaded, and no other elements were discovered,
+     * this method returns <code>true</code>.
+     * @return <code>true</code> if all discovered elements were successfully loaded. Otherwise, returns
+     * <code>false</code>.
+     */
     public boolean load() {
         return load(Charset.defaultCharset());
     }
 
+    /**
+     * Loads the Story, and attempts to load additional elements connected to the Story, like assets. <br>
+     * <br>
+     * This method returns <code>true</code> if all discovered elements were successfully loaded. This means that the
+     * method returns <code>false</code> even if a Story-object was successfully loaded, but a discovered asset store could
+     * not be successfully loaded. If a Story was successfully loaded, and no other elements were discovered,
+     * this method returns <code>true</code>.
+     * @param charset The character encoding of the file, e.g. UTF-8. Although not recommended, use
+     *                'Charset.defaultCharset()' if you have no way of knowing the file's encoding.
+     * @return <code>true</code> if all discovered elements were successfully loaded. Otherwise, returns
+     * <code>false</code>.
+     */
     public boolean load(Charset charset) {
         String data;
         try {
@@ -61,20 +98,30 @@ public class StoryLoader {
         }
 
         this.story = PathsParser.fromPathsFormatStory(data);
+        if (this.story == null) {
+            errors.add("Failed to parse a story from the submitted file.");
+            return false;
+        }
 
         boolean success = true;
 
         if (foundAssetStore)
-            success = loadAssetStore(charset);
+            success = loadAssetStore(assetsFilePath, charset);
 
         return success;
     }
 
-    private boolean loadAssetStore(Charset charset) {
+    /**
+     * Loads an asset store.
+     * @param charset The character encoding of the file, e.g. UTF-8. Although not recommended, use
+     *                'Charset.defaultCharset()' if you have no way of knowing the file's encoding.
+     * @return <code>true</code> if the asset store was successfully loaded.
+     */
+    public boolean loadAssetStore(Path assetRegisterPath, Charset charset) {
         PathsAssetStoreParser parser = new PathsAssetStoreParser();
         String data;
         try {
-            data = Files.readString(assetsFilePath, charset);
+            data = Files.readString(assetRegisterPath, charset);
         } catch (IOException e) {
             errors.add("Unknown error reading data from asset file: " + e);
             return false;
@@ -91,25 +138,47 @@ public class StoryLoader {
             return true;
     }
 
+    /**
+     * Indicates whether an asset store has been successfully loaded.
+     * @return <code>true</code> if an asset store has been loaded and is available. Otherwise, returns <code>false</code>.
+     */
     public boolean foundAssetStore() {
         return foundAssetStore;
     }
 
+    /**
+     * Returns the Story-object resulting from a call to <code>this::load</code>.
+     * @return the Story-object resulting from a call to <code>this::load</code>.
+     */
     public Story getStory() {
         return story;
     }
+
 
     public PathsAssetStore getAssetStore() {
         return assetStore;
     }
 
-    public boolean errorsOccurred() {
+    /**
+     * Indicates whether there are unread errors stored in this class from loading operations.
+     * @return <code>true</code> if there are unread errors stored. Otherwise, returns <code>false</code>.
+     */
+    public boolean errorsPending() {
         return !errors.isEmpty();
     }
 
-    public String[] getErrors() {
-        if (errorsOccurred())
-            return errors.toArray(String[]::new);
+    /**
+     * Returns all errors that have occurred from loading since the last call to this method. Since this method
+     * "reads" the errors, they are deleted from this class' internal storage when this method is called.
+     * Calling this method twice consecutively is guaranteed to return <code>null</code> the second time.
+     * @return all errors that have occurred from loading since the last call to this method.
+     */
+    public String[] readAllErrors() {
+        if (errorsPending()) {
+            String[] result = errors.toArray(String[]::new);
+            errors.clear();
+            return result;
+        }
         else
             return null;
     }
