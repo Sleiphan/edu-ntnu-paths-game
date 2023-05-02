@@ -1,13 +1,9 @@
 package edu.ntnu.idatt2001.paths;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
- * A edu.ntnu.idatt2001.paths.Story is an interactive, nonlinear narrative consisting of a collection of passages.
+ * A Story is an interactive, nonlinear narrative consisting of a collection of passages.
  */
 public class Story {
 
@@ -176,10 +172,9 @@ public class Story {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Story))
+        if (!(o instanceof Story s))
             return false;
 
-        Story s = (Story) o;
         return hashCode() == s.hashCode();
     }
 }

@@ -1,8 +1,6 @@
 package edu.ntnu.idatt2001.paths;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A class representing the player character of the game

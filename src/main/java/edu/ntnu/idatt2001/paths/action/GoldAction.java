@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2001.paths.action;
 
-import edu.ntnu.idatt2001.paths.Link;
 import edu.ntnu.idatt2001.paths.Player;
 
 /**
