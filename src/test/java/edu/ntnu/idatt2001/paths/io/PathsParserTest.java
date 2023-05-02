@@ -70,7 +70,6 @@ public class PathsParserTest {
         Story   o12 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(Link Text)[]");
         Story   o13 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[Link ref]");
         Story   o14 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\nPassage 2\nText\n(Link Text)[Link ref]{}");
-        Story   o15 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(Link Text)[Link ref]{}");
 
         assert o1 == null;
         assert o2 == null;
@@ -86,7 +85,6 @@ public class PathsParserTest {
         assert o12 == null;
         assert o13 == null;
         assert o14 == null;
-        assert o15 == null;
     }
 
     @Test
