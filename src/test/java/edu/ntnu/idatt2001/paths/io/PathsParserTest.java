@@ -55,6 +55,41 @@ public class PathsParserTest {
     }
 
     @Test
+    void does_not_throw_exception_and_returns_null_at_failed_parsing() {
+        Story   o1 = PathsParser.fromPathsFormatStory(null);
+        Passage o2 = PathsParser.fromPathsFormatPassage(null);
+        Link    o3 = PathsParser.fromPathsFormatLink(null);
+        Action  o4 = PathsParser.fromPathsFormatAction(null);
+        Story   o5 = PathsParser.fromPathsFormatStory("");
+        Story   o6 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\n\n");
+        Story   o7 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n([]");
+        Story   o8 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()]");
+        Story   o9 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[]");
+        Story   o10 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(]");
+        Story   o11 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n)[");
+        Story   o12 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(Link Text)[]");
+        Story   o13 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[Link ref]");
+        Story   o14 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\nPassage 2\nText\n(Link Text)[Link ref]{}");
+        Story   o15 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(Link Text)[Link ref]{}");
+
+        assert o1 == null;
+        assert o2 == null;
+        assert o3 == null;
+        assert o4 == null;
+        assert o5 == null;
+        assert o6 == null;
+        assert o7 == null;
+        assert o8 == null;
+        assert o9 == null;
+        assert o10 == null;
+        assert o11 == null;
+        assert o12 == null;
+        assert o13 == null;
+        assert o14 == null;
+        assert o15 == null;
+    }
+
+    @Test
     void parsing_a_complete_story_CRLF() {
         Story s = getTestStory();
 
