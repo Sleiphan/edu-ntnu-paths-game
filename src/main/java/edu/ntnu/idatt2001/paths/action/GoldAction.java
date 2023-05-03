@@ -37,37 +37,6 @@ public class GoldAction implements Action{
     }
 
     /**
-     * Converts the GoldAction to string that can be written to the .paths format
-     * @return the GoldAction as a string
-     */
-    public String toPathsFormat() {
-        return "{goldAction:" + gold +"}";
-    }
-
-    /**
-     * Reads GoldAction from a string.
-     * @param pathsString The string to search for gold actions
-     * @return            Null if no gold action found, a new gold action if gold action found.
-     */
-    public static GoldAction fromPathsFormat(String pathsString) {
-        boolean checkIfGoldAction = pathsString.contains("{goldAction:");
-        if(checkIfGoldAction){
-            StringBuilder current = new StringBuilder();
-            StringBuilder gold = new StringBuilder();
-            for(int i = 0; i < pathsString.length(); i++){
-                if(current.toString().contains("{goldAction:")){
-                    if(pathsString.charAt(i) == '}'){
-                        return new GoldAction(Integer.parseInt(gold.toString()));
-                    }
-                    gold.append(pathsString.charAt(i));
-                }
-                current.append(pathsString.charAt(i));
-            }
-        }
-        return null;
-    }
-
-    /**
      * Gets the gold value associated with the gold action
      * @return the gold value associated with the gold action
      */
