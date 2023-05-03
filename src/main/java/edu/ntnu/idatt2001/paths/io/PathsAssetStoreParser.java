@@ -9,6 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The purpose of this class is to create a PathsAssetStore by reading a .pathsassets-file and the contents of
+ * its directory. <br>
+ * <br>
+ *
+ * This class is mainly focused around two methods:
+ * <code>parsePathsAssetStore</code> and <code>getErrorsFromLastParse</code>. The former is the actual parser method.
+ * The latter returns a collection of errors that caused the last call to <code>parsePathsAssetStore</code> to fail.
+ * Note that every time <code>parsePathsAssetStore</code> is called, the errors from the parsing-operation before
+ * will be lost.
+ */
 public class PathsAssetStoreParser {
 
     public static final String[] IMAGE_FILE_ENDINGS = {".bmp", ".gif", ".jpg", ".png"};
@@ -19,10 +30,18 @@ public class PathsAssetStoreParser {
     private List<String> loadErrors = new ArrayList<>();
 
 
+    /**
+     * Indicates whether any errors occurred during the last parse-operation.
+     * @return <code>true</code> if any errors occurred, or <code>false</code> if no errors occurred.
+     */
     public boolean errorsOccurredLastParse() {
         return !loadErrors.isEmpty();
     }
 
+    /**
+     * Returns a collection of the errors that occurred during the last call to <code>parsePathsAssetStore</code>.
+     * @return The errors from the last parse, or <code>null</code> if no errors occurred.
+     */
     public String[] getErrorsFromLastParse() {
         if (errorsOccurredLastParse())
             return loadErrors.toArray(String[]::new);
@@ -30,6 +49,15 @@ public class PathsAssetStoreParser {
             return null;
     }
 
+
+    /**
+     * Attempts to collect all assets specified in <code>assetRegisterData</code> from the directory
+     * <code>assetDirectoryPath</code>, and stores them as Asset-objects in a PathsAssetStore.
+     * @param assetRegisterData Textual data in line-separated key-value format, telling us the key and URI/filepath
+     *                          of each asset we expect to find within the specified <code>assetDirectoryPath</code>.
+     * @param assetDirectoryPath The directory path where we expect to find the assets.
+     * @return A PathsAssetStore containing the assets found in the parsing process.
+     */
     public PathsAssetStore parsePathsAssetStore(String assetRegisterData, String assetDirectoryPath) {
         loadErrors = new ArrayList<>();
         assetDirectoryPath = assetDirectoryPath.replaceAll("\\\\", "/");

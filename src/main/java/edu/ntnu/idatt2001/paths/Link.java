@@ -4,7 +4,6 @@ import edu.ntnu.idatt2001.paths.action.Action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * A edu.ntnu.idatt2001.paths.Link creates a connection between two passages, and binds together parts of a story.
@@ -73,8 +72,8 @@ public class Link {
     }
 
     /**
-     * Returns a deep copy of the internal list of available actions in this edu.ntnu.idatt2001.paths.Link-object.
-     * @return a deep copy of the internal list of available actions in this edu.ntnu.idatt2001.paths.Link-object.
+     * Returns a reference to the internal list of available actions in this edu.ntnu.idatt2001.paths.Link-object.
+     * @return a reference to the internal list of available actions in this edu.ntnu.idatt2001.paths.Link-object.
      */
     public List<Action> getActions() {
         return actions;

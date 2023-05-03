@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2001.paths;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
