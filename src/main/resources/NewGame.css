@@ -1,0 +1,82 @@
+.button{
+    -fx-font-family: alagard;
+    -fx-font-size: 30;
+    -fx-background-image: url(TestImages/Button.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+
+}
+
+#btBack{
+    -fx-background-size: 105 55;
+}
+
+#btStartGame{
+    -fx-background-size: 255 55;
+}
+
+#btAddGoal{
+    -fx-background-size: 225 55;
+}
+
+#btRemoveGoal{
+    -fx-background-size: 225 55;
+}
+
+.root{
+    -fx-background-image: url(TestImages/TestBackground.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 1500, 1500;
+    -fx-background-position: center center;
+}
+
+#MenuBackground{
+    -fx-image: url(TestImages/Background_New_Game.png);
+}
+
+#nameBackground{
+    -fx-image: url(TestImages/Button.png);
+}
+
+#healthBackground{
+    -fx-image: url(TestImages/Button.png);
+}
+
+#goldBackground{
+    -fx-image: url(TestImages/Button.png);
+}
+
+.table-view{
+    -fx-font-family: alagard;
+    -fx-font-size: 20;
+    -fx-background-image: url(TestImages/TableView.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 248 400;
+    -fx-background-position: center center;
+}
+
+.table-view .column-header{
+    -fx-background-image: url(TestImages/Button.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 122 40;
+}
+
+.table-row-cell:even{
+    -fx-background-color: ffffff;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: e8b796;
+}
+
+.text-field{
+    -fx-font-family: alagard;
+    -fx-font-size: 20;
+    -fx-border-color: e8b796;
+}
+
+.label{
+    -fx-font-family: alagard;
+    -fx-font-size: 20;
+}
+
