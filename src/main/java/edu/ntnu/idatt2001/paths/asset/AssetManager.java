@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Effectively allows a developer to control which assets are kept loaded in memory, through a hashmap structure.
@@ -68,6 +69,12 @@ public class AssetManager<R, T extends Asset<R>> {
         return tryLoadAssetOrRegisterError(asset, key);
     }
 
+    public void loadAll() {
+        for (Map.Entry<String, T> assetEntry : assets.entrySet())
+            if (!assetEntry.getValue().isLoaded())
+                tryLoadAssetOrRegisterError(assetEntry.getValue(), assetEntry.getKey());
+    }
+
     /**
      * Unloads an asset from memory, freeing up memory space, but increasing the time it takes for the asset to
      * be accessed through <code>AssetManager::getAsset</code>.
@@ -83,6 +90,25 @@ public class AssetManager<R, T extends Asset<R>> {
         if (asset.isLoaded())
             asset.unload();
         return true;
+    }
+
+    public void unloadAll() {
+        for (T asset : assets.values())
+            asset.unload();
+    }
+
+    /**
+     * Indicates whether an asset is currently loaded into memory.
+     * @param key A key mapped to the requested asset.
+     * @return <code>true</code> if the the asset is currently loaded into memory.
+     * Otherwise, returns <code>false</code>.
+     */
+    public boolean isLoaded(String key) {
+        T asset = assets.get(key);
+        if (asset == null)
+            return false;
+
+        return asset.isLoaded();
     }
 
     /**

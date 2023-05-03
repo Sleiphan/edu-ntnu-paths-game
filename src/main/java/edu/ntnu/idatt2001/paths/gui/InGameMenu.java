@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ public class InGameMenu extends PathsMenu {
 
     private void quitGame(ActionEvent e){}
 
-    private void closeMenu() {
+    private void closeMenu(ActionEvent e) {
         changeState(associatedGameScene);
     }
 
@@ -41,7 +42,7 @@ public class InGameMenu extends PathsMenu {
 
         btSave.setOnAction(this::saveGame);
         btQuit.setOnAction(this::quitGame);
-        btClose.setOnAction(this::quitGame);
+        btClose.setOnAction(this::closeMenu);
 
         int buttonWidth = 200;
         int sceneWidth = handler.getSceneWidth();

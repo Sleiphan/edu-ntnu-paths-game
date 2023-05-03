@@ -23,6 +23,23 @@ public class PathsAssetStore {
 
 
 
+    public AssetManager<Image, ImageAsset> images() {
+        return imageAssets;
+    }
+
+    public AssetManager<MediaPlayer, AudioAsset> audio() {
+        return audioAssets;
+    }
+
+    public void unloadAll() {
+        imageAssets.unloadAll();
+        audioAssets.unloadAll();
+    }
+
+    public boolean isImageLoaded(String key) {
+        return imageAssets.isLoaded(key);
+    }
+
     public boolean loadImage(String key) {
         boolean loaded = imageAssets.loadAsset(key);
 

@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2001.paths.io;
 
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.media.MediaPlayer;
@@ -29,7 +28,7 @@ public class PathsAssetStoreParserTest {
         PathsAssetStoreParser p = new PathsAssetStoreParser();
         PathsAssetStore assetStore = p.parsePathsAssetStore(testData, TEST_DATA_DIR);
 
-        Image img       = assetStore.getImageAsset("Title screen");
+        Image img       = assetStore.getImage("Title screen");
         MediaPlayer aud = assetStore.getAudioAsset("Title screen");
 
         assert img != null;

@@ -2,16 +2,12 @@ package edu.ntnu.idatt2001.paths.asset;
 
 import javafx.scene.image.Image;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class ImageAsset implements Asset<Image> {
 
     private final String URI;
     private Image asset;
-    private boolean loaded;
 
 
     public ImageAsset(String URI) throws Exception {
@@ -38,7 +34,7 @@ public class ImageAsset implements Asset<Image> {
 
     @Override
     public void load() throws IOException {
-        if (loaded)
+        if (isLoaded())
             return;
 
         asset = new Image(URI, true);
@@ -46,18 +42,15 @@ public class ImageAsset implements Asset<Image> {
         Exception err = asset.getException();
         if (err != null)
             throw new IOException(err);
-
-        loaded = true;
     }
 
     @Override
     public void unload() {
-        if (!loaded)
+        if (!isLoaded())
             return;
 
         asset.cancel();
         asset = null;
-        loaded = false;
     }
 
     @Override
@@ -67,6 +60,6 @@ public class ImageAsset implements Asset<Image> {
 
     @Override
     public boolean isLoaded() {
-        return loaded;
+        return asset != null;
     }
 }

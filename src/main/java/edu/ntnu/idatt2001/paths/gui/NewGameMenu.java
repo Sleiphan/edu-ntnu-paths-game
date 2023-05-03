@@ -1,13 +1,15 @@
 package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.Game;
+import edu.ntnu.idatt2001.paths.Player;
 import edu.ntnu.idatt2001.paths.goal.Goal;
 import edu.ntnu.idatt2001.paths.goal.GoldGoal;
 import edu.ntnu.idatt2001.paths.goal.HealthGoal;
+import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
+import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,7 +19,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.lang.reflect.Type;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 public class NewGameMenu extends PathsMenu {
 
@@ -31,14 +34,40 @@ public class NewGameMenu extends PathsMenu {
         changeState(new MainMenu());
     }
 
-    private File start(ActionEvent e){
+    private void start(ActionEvent e){
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("src/main/resources/Stories"));
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Paths Files", "*.path")
+                new FileChooser.ExtensionFilter("Paths Files", "*.paths")
         );
+
         File selectedFile = fileChooser.showOpenDialog(stage);
+
+        StoryLoader loader = null;
+        try {
+            loader = new StoryLoader(selectedFile.getAbsolutePath());// System.getProperty("user.dir") + "/src/test/resources/story_with_assets/story.paths");
+            //loader = new StoryLoader(System.getProperty("user.dir") + "/src/test/resources/story_with_assets/story.paths");
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if (!loader.load())
+            showErrorsToUser(loader.readAllErrors());
+
+        Game game = new Game(new Player.PlayerBuilder("Darrav", 100).build(), loader.getStory(), getGoals());
+        SceneConfig sceneConfig = new SceneConfig(1270, 720);
+
+        GameScene gameScene = new GameScene(game, loader, sceneConfig);
+
+        changeState(gameScene);
+    }
+
+    private void showErrorsToUser(String[] errors) {
+
+    }
+
+    private List<Goal> getGoals() {
         return null;
     }
 
