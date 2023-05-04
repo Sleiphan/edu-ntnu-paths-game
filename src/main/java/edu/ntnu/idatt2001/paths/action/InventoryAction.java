@@ -22,12 +22,10 @@ public class InventoryAction implements Action {
     /**
      * Adds the item to the inventory array of the player object given as a parameter.
      * @param player    edu.ntnu.idatt2001.paths.Player whose inventory will be added to
-     * @return          True after item added
      */
     @Override
-    public boolean execute(Player player) {
+    public void execute(Player player) {
         player.addToInventory(item);
-        return true;
     }
 
     /**

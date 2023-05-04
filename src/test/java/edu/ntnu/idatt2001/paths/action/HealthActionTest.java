@@ -12,27 +12,16 @@ class HealthActionTest {
     @Test
     void execute() {
         Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).build();
-        HealthAction testHealthAction = new HealthAction(1);
-        Assertions.assertTrue(testHealthAction.execute(p));
-        HealthAction testHealthActionNegative = new HealthAction(-1);
-        Assertions.assertTrue(testHealthActionNegative.execute(p));
-        HealthAction testHealthActionZero = new HealthAction(0);
-        Assertions.assertFalse(testHealthActionZero.execute(p));
-    }
 
-    @Test
-    void toPathsFormat(){
-        HealthAction healthAction = new HealthAction(8);
-        String healthActionAsString = healthAction.toPathsFormat();
-        Assertions.assertEquals("{healthAction:8}",healthActionAsString);
-        Assertions.assertNotEquals("{healthAction:7}",healthActionAsString);
-    }
+        new HealthAction(1).execute(p);
+        int health_1 = p.getHealth();
+        new HealthAction(-1).execute(p);
+        int health_2 = p.getHealth();
+        new HealthAction(0).execute(p);
+        int health_3 = p.getHealth();
 
-    @Test
-    void fromPathsFormat(){
-        String testString = "{healthAction:9} {goldAction:10}";
-        HealthAction healthAction = HealthAction.fromPathsFormat(testString);
-        Assertions.assertEquals(9,healthAction.getHealth());
-        Assertions.assertNotEquals(10,healthAction.getHealth());
+        assert health_1 == 2;
+        assert health_2 == 1;
+        assert health_3 == 1;
     }
 }

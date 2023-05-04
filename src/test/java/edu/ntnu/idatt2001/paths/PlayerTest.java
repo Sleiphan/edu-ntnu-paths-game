@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths;
 
+import edu.ntnu.idatt2001.paths.action.GoldAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,179 +12,72 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     @Test
-    void addHealth() {
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
-        List<String> inventory = new ArrayList<>();
+    void changeHealth() {
+        Player p = new Player.PlayerBuilder("Test name",1).setGold(1).setScore(1).build();
 
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
+        p.changeHealth(1);
+        int health_1 = p.getHealth();
+        p.changeHealth(0);
+        int health_2 = p.getHealth();
+        p.changeHealth(-1);
+        int health_3 = p.getHealth();
 
-        int testHealthPos = 1;
-        int testHealthZero = 0;
-        int testHealthNeg = -1;
-
-        Assertions.assertTrue(p.addHealth(testHealthPos));
-        Assertions.assertFalse(p.addHealth(testHealthZero));
-        Assertions.assertFalse(p.addHealth(testHealthNeg));
+        assert health_1 == 2;
+        assert health_2 == 2;
+        assert health_3 == 1;
     }
 
     @Test
-    void reduceHealth(){
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
-        List<String> inventory = new ArrayList<>();
+    void changeScore() {
+        Player p = new Player.PlayerBuilder("Test name",1).setGold(1).setScore(1).build();
 
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
+        p.changeScore(1);
+        int score_1 = p.getScore();
+        p.changeScore(0);
+        int score_2 = p.getScore();
+        p.changeScore(-1);
+        int score_3 = p.getScore();
 
-        int testHealthPos = 1;
-        int testHealthZero = 0;
-        int testHealthNeg = -1;
-
-        Assertions.assertFalse(p.reduceHealth(testHealthPos));
-        Assertions.assertFalse(p.reduceHealth(testHealthZero));
-        Assertions.assertTrue(p.reduceHealth(testHealthNeg));
+        assert score_1 == 2;
+        assert score_2 == 2;
+        assert score_3 == 1;
     }
 
     @Test
-    void addScore() {
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
-        List<String> inventory = new ArrayList<>();
+    void changeGold() {
+        Player p = new Player.PlayerBuilder("Test name",1).setGold(1).setScore(1).build();
 
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
+        p.changeGold(1);
+        int gold_1 = p.getGold();
+        p.changeGold(0);
+        int gold_2 = p.getGold();
+        p.changeGold(-1);
+        int gold_3 = p.getGold();
 
-        int testScorePos = 1;
-        int testScoreZero = 0;
-        int testScoreNeg = -1;
-
-        Assertions.assertTrue(p.addScore(testScorePos));
-        Assertions.assertFalse(p.addScore(testScoreZero));
-        Assertions.assertFalse(p.addScore(testScoreNeg));
-    }
-
-    @Test
-    void reduceScore(){
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
-        List<String> inventory = new ArrayList<>();
-
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
-
-        int testScorePos = 1;
-        int testScoreZero = 0;
-        int testScoreNeg = -1;
-
-        Assertions.assertFalse(p.reduceScore(testScorePos));
-        Assertions.assertFalse(p.reduceScore(testScoreZero));
-        Assertions.assertTrue(p.reduceScore(testScoreNeg));
-    }
-
-    @Test
-    void addGold() {
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
-        List<String> inventory = new ArrayList<>();
-
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
-
-        int testGoldPos = 1;
-        int testGoldZero = 0;
-        int testGoldNeg = -1;
-
-        Assertions.assertTrue(p.addGold(testGoldPos));
-        Assertions.assertFalse(p.addGold(testGoldZero));
-        Assertions.assertFalse(p.addGold(testGoldNeg));
-    }
-
-    @Test
-    void reduceGold() {
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
-        List<String> inventory = new ArrayList<>();
-
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
-
-        int testGoldPos = 1;
-        int testGoldZero = 0;
-        int testGoldNeg = -1;
-
-        Assertions.assertFalse(p.reduceGold(testGoldPos));
-        Assertions.assertFalse(p.reduceGold(testGoldZero));
-        Assertions.assertTrue(p.reduceGold(testGoldNeg));
+        assert gold_1 == 2;
+        assert gold_2 == 2;
+        assert gold_3 == 1;
     }
 
     @Test
     void addToInventory() {
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
         String item = "Test item";
-        List<String> inventory = new ArrayList<>();
+        Player p = new Player.PlayerBuilder("Test name",1).setGold(1).setScore(1).build();
 
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
+        p.addToInventory(item);
 
-        Assertions.assertTrue(p.addToInventory(item));
+        assert p.getInventory().contains(item);
     }
 
     @Test
     void removeFromInventory(){
-        String name = "Test name";
-        int testHealth = 1;
-        int testScore = 1;
-        int testGold = 1;
         String item = "Test item";
-        List<String> inventory = new ArrayList<>();
+        Player p = new Player.PlayerBuilder("Test name",1).setGold(1).setScore(1).build();
 
-        Player p = new Player.PlayerBuilder(name,testHealth).
-                setScore(testScore).
-                setGold(testGold).
-                setInventory(inventory).
-                build();
-
-        Assertions.assertFalse(p.removeFromInventory(item));
         p.addToInventory(item);
-        Assertions.assertTrue(p.removeFromInventory(item));
+        p.removeFromInventory(item);
+
+        assert !p.getInventory().contains(item);
     }
 
     @Test
@@ -193,6 +87,6 @@ class PlayerTest {
         Assertions.assertEquals(player.getHealth(),2);
         Assertions.assertEquals(player.getScore(),4);
         Assertions.assertEquals(player.getGold(),3);
-        assertNull(player.getInventory());
+        assert player.getInventory() != null;
     }
 }

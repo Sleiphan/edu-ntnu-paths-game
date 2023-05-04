@@ -12,25 +12,11 @@ class InventoryActionTest {
 
     @Test
     void execute() {
-        List<String> testInventory = new ArrayList<>();
-        Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).setInventory(testInventory).build();
-        InventoryAction testInventoryAction = new InventoryAction("Test item");
-        Assertions.assertTrue(testInventoryAction.execute(p));
-    }
+        final String item = "Test item";
+        Player p = new Player.PlayerBuilder("Test name",1).build();
 
-    @Test
-    void toPathsFormat(){
-        InventoryAction inventoryAction = new InventoryAction("test");
-        String inventoryActionAsString = inventoryAction.toPathsFormat();
-        Assertions.assertEquals("{inventoryAction:test}",inventoryActionAsString);
-        Assertions.assertNotEquals("{inventoryAction:false}",inventoryActionAsString);
-    }
+        new InventoryAction(item).execute(p);
 
-    @Test
-    void fromPathsFormat(){
-        String testString = "{scoreAction:10} {inventoryAction:item}";
-        InventoryAction inventoryAction = InventoryAction.fromPathsFormat(testString);
-        Assertions.assertEquals("item",inventoryAction.getItem());
-        Assertions.assertNotEquals("10",inventoryAction.getItem());
+        assert p.getInventory().contains(item);
     }
 }
