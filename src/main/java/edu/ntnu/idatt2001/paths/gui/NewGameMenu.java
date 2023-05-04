@@ -2,10 +2,12 @@ package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.Game;
 import edu.ntnu.idatt2001.paths.Player;
+import edu.ntnu.idatt2001.paths.action.InventoryAction;
 import edu.ntnu.idatt2001.paths.goal.*;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -24,6 +26,17 @@ import java.util.List;
 public class NewGameMenu extends PathsMenu {
 
     TableView <Goal> tableView = new TableView<>();
+
+    TextField txName = new TextField();
+    TextField txHealth = new TextField();
+    TextField txGold = new TextField();
+
+    TextField textField = new TextField();
+
+    Stage stage = new Stage();
+
+    String[] types = {"Health", "Gold", "Score", "Inventory"};
+    ComboBox<String> type = new ComboBox<>(FXCollections.observableArrayList(types));
 
 
     public NewGameMenu() {
@@ -68,15 +81,82 @@ public class NewGameMenu extends PathsMenu {
     }
 
     private List<Goal> getGoals() {
-        return null;
+        return tableView.getItems();
     }
 
     private void add(ActionEvent e){
 
+        stage.setWidth(400);
+        stage.setHeight(200);
+
+
+
+        Button cancel = new Button("Cancel");
+        cancel.setId("cancel");
+        Button add = new Button("Add");
+        add.setId("add");
+
+        type.setMaxWidth(147);
+
+
+        cancel.setTranslateX(50);
+        cancel.setTranslateY(100);
+        cancel.setOnAction(this::cancelAddGoal);
+
+        add.setTranslateX(250);
+        add.setTranslateY(100);
+        add.setOnAction(this::addGoal);
+
+        type.setTranslateX(10);
+        type.setTranslateY(31);
+
+        textField.setTranslateX(170);
+        textField.setTranslateY(30);
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setId("AddGoal");
+        anchorPane.getChildren().add(cancel);
+        anchorPane.getChildren().add(add);
+        anchorPane.getChildren().add(type);
+        anchorPane.getChildren().add(textField);
+
+        Scene scene = new Scene(anchorPane);
+        scene.getStylesheets().add("AddGoal.css");
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    private void addGoal(ActionEvent e){
+        ObservableList<Goal> goals = tableView.getItems();
+        if(type.getValue().equals("Health")){
+            HealthGoal healthGoalToAdd = new HealthGoal(Integer.parseInt(textField.getText()));
+            goals.add(healthGoalToAdd);
+        } else if(type.getValue().equals("Gold")){
+            GoldGoal goldGoalToAdd = new GoldGoal(Integer.parseInt(textField.getText()));
+            goals.add(goldGoalToAdd);
+        } else if(type.getValue().equals("Score")){
+            ScoreGoal scoreGoalToAdd = new ScoreGoal(Integer.parseInt(textField.getText()));
+            goals.add(scoreGoalToAdd);
+        } else if(type.getValue().equals("Inventory")){
+            List<String> items = new ArrayList<>();
+            items.add(textField.getText());
+            InventoryGoal inventoryGoalToAdd = new InventoryGoal(items);
+            goals.add(inventoryGoalToAdd);
+        }
+        tableView.setItems(goals);
+        stage.close();
+    }
+
+    private void cancelAddGoal(ActionEvent e){
+        stage.close();
     }
 
     private void remove(ActionEvent e){
-
+        Goal selected = tableView.getSelectionModel().getSelectedItem();
+        ObservableList<Goal> goals =tableView.getItems();
+        goals.remove(selected);
+        tableView.setItems(goals);
     }
 
     @Override
@@ -117,9 +197,7 @@ public class NewGameMenu extends PathsMenu {
         Button btRemoveGoal = new Button("Remove goal");
         btRemoveGoal.setId("btRemoveGoal");
 
-        TextField txName = new TextField();
-        TextField txHealth = new TextField();
-        TextField txGold = new TextField();
+
 
 
         tableView.maxWidth(245);
