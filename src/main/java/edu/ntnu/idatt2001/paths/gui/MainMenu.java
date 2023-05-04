@@ -1,11 +1,14 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.media.Media;
@@ -13,10 +16,18 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+
 
 
 public class MainMenu extends PathsMenu {
+
+    AnchorPane root = new AnchorPane();
 
     public MainMenu() {
 
@@ -26,12 +37,12 @@ public class MainMenu extends PathsMenu {
 
     }
 
-    private void newGame(ActionEvent e) {
+    private void newGame(ActionEvent e){
         changeState(new NewGameMenu());
     }
 
     private void quit(ActionEvent e) {
-
+        Platform.exit();
     }
 
     @Override
@@ -84,7 +95,7 @@ public class MainMenu extends PathsMenu {
         logo.setFitHeight(200);
         logo.setFitWidth(200);
 
-        AnchorPane root = new AnchorPane();
+
 
         root.getChildren().add(btContinue);
         root.getChildren().add(btNewGame);

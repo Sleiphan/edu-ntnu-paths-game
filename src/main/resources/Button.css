@@ -1,0 +1,8 @@
+.button{
+    -fx-font-family: alagard;
+    -fx-font-size: 30;
+    -fx-background-image: url(TestImages/Button.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: 200 55;
+}
