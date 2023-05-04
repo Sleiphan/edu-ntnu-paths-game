@@ -31,6 +31,7 @@ public class GameScene extends PathsMenu {
     private Label healthLabel;
     private Label goldLabel;
     private Label scoreLabel;
+    private AnchorPane root;
     private final Scene scene;
 
 
@@ -81,6 +82,13 @@ public class GameScene extends PathsMenu {
         return scene;
     }
 
+    /**
+     * Returns the root pane of this scene.
+     * @return the root pane of this scene.
+     */
+    public AnchorPane getRootPane() {
+        return root;
+    }
 
     /**
      * The method called when the user selects a link.
@@ -111,11 +119,14 @@ public class GameScene extends PathsMenu {
         }
     }
 
+
+
     private void updateContent(Passage newPassage) {
         updateLinkSelector(newPassage);
         updatePlayerStats();
         updateText(newPassage);
     }
+
     private void updateLinkSelector(Passage newPassage) {
         AnchorPane root = new AnchorPane();
 
@@ -157,13 +168,15 @@ public class GameScene extends PathsMenu {
         passageViewer.setImage(assetFinder.getBackground(newPassage.getTitle()));
     }
 
+
+
     private Scene createScene(SceneConfig sceneConfig) {
         linkSelector = createLinkSelector(sceneConfig);
         Button menuBt = createMenuButton(sceneConfig);
         textViewer = createTextArea(sceneConfig);
         createPlayerStatus();
 
-        AnchorPane root = new AnchorPane();
+        root = new AnchorPane();
         root.getChildren().add(linkSelector);
         root.getChildren().add(menuBt);
         root.getChildren().add(textViewer);
@@ -264,6 +277,7 @@ public class GameScene extends PathsMenu {
 
         return viewer;
     }
+
 
 
     private void openInGameMenu(Event e) {
