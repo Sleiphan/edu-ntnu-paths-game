@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,6 +99,8 @@ public class Player {
          * @return the new player object
          */
         public Player build(){
+            if (inventory == null)
+                inventory = new ArrayList<>();
             return new Player(this);
         }
     }
