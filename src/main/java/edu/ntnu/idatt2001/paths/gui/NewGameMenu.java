@@ -68,7 +68,18 @@ public class NewGameMenu extends PathsMenu {
         if (!loader.load())
             showErrorsToUser(loader.readAllErrors());
 
-        Game game = new Game(new Player.PlayerBuilder("Darrav", 100).build(), loader.getStory(), getGoals());
+        Player player;
+        String goldText = txGold.getText();
+        if(goldText.trim().isEmpty()){
+            player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
+                    .build();
+        } else {
+            player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
+                    .setGold(Integer.parseInt(goldText)).build();
+        }
+
+
+        Game game = new Game(player, loader.getStory(), getGoals());
         SceneConfig sceneConfig = new SceneConfig(1270, 720);
 
         GameScene gameScene = new GameScene(game, loader, sceneConfig);
