@@ -24,16 +24,8 @@ public class GoldAction implements Action{
      * @return          True if gold changed, false if not
      */
     @Override
-    public boolean execute(Player player) {
-        //Player p = new Player("Test name", 1,1,1);
-        if(gold > 0){
-            player.addGold(gold);
-            return true;
-        } else if (gold < 0) {
-            player.reduceGold(gold);
-            return true;
-        }
-        return false;
+    public void execute(Player player) {
+        player.changeGold(gold);
     }
 
     /**

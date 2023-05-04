@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,6 +99,8 @@ public class Player {
          * @return the new player object
          */
         public Player build(){
+            if (inventory == null)
+                inventory = new ArrayList<>();
             return new Player(this);
         }
     }
@@ -111,29 +114,27 @@ public class Player {
     }
 
     /**
-     * Increases the health of the player-object
-     * @param healthToAdd   int value to increase health by
-     * @return              True if health increase successful, false if not
+     * Changes the health of the player.
+     * @param healthChange int value denoting the amount of change.
      */
-    public boolean addHealth(int healthToAdd){
-        if(healthToAdd > 0){
-            health += healthToAdd;
-            return true;
-        }
-        return false;
+    public void changeHealth(int healthChange) {
+        health += healthChange;
     }
 
     /**
-     * Decreases the health of the player-object
-     * @param healthToRemove    int value to decrease health by
-     * @return                  True if health decrease successful, false if not
+     * Changes the player's score.
+     * @param scoreChange int value denoting the amount of change.
      */
-    public boolean reduceHealth(int healthToRemove){
-        if(healthToRemove < 0){
-            health -= healthToRemove;
-            return true;
-        }
-        return false;
+    public void changeScore(int scoreChange) {
+        score += scoreChange;
+    }
+
+    /**
+     * Changes the player's amount of owned gold.
+     * @param goldChange int value denoting the amount of change.
+     */
+    public void changeGold(int goldChange) {
+        gold += goldChange;
     }
 
     /**
@@ -145,63 +146,11 @@ public class Player {
     }
 
     /**
-     * Increases the score of the player-object
-     * @param scoreToAdd    int value to increase score by
-     * @return              True if score increase successful, false if not
-     */
-    public boolean addScore(int scoreToAdd){
-        if(scoreToAdd > 0){
-            score += scoreToAdd;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Decreases the score of the player-object
-     * @param scoreToRemove int value to decrease score by
-     * @return              True if decrease successful, false if not
-     */
-    public boolean reduceScore(int scoreToRemove){
-        if(scoreToRemove < 0){
-            score -= scoreToRemove;
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Returns the score of the player-object
      * @return the score of the player-object
      */
     public int getScore() {
         return score;
-    }
-
-    /**
-     * Increases the gold of the player-object
-     * @param goldToAdd int value to increase by
-     * @return          True if increase successful, false if not
-     */
-    public boolean addGold(int goldToAdd){
-        if(goldToAdd > 0){
-            gold += goldToAdd;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Reduces the gold of the player-object
-     * @param goldToRemove  int value to decrease gold by
-     * @return              True if decrease successful, false if not
-     */
-    public boolean reduceGold(int goldToRemove){
-        if(goldToRemove < 0){
-            gold -= goldToRemove;
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -213,26 +162,20 @@ public class Player {
     }
 
     /**
-     * Adds an item to the player-objects inventory array
-     * @param item  item to add to inventory
-     * @return      true if addition successful
+     * Adds an item to the player-objects inventory.
+     * @param item The item to add to inventory.
      */
-    public boolean addToInventory(String item){
+    public void addToInventory(String item){
         inventory.add(item);
-        return true;
     }
 
     /**
-     * Removes an item from the player-objects inventory array
-     * @param item  item to remove from inventory
-     * @return      true if removal successful, false if not
+     * Removes an item from the player-objects inventory.
+     * @param item The item to remove from inventory.
+     * @return True if an item was found and removed. Otherwise, returns false.
      */
     public boolean removeFromInventory(String item){
-        if(inventory.contains(item)){
-            inventory.remove(item);
-            return true;
-        }
-        return false;
+        return inventory.remove(item);
     }
 
     /**

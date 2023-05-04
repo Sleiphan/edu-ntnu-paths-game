@@ -21,19 +21,10 @@ public class ScoreAction implements Action{
     /**
      * Executes the change to the player object given as a parameter's score field
      * @param player    player to change score of
-     * @return          True if score changed, false if not
      */
     @Override
-    public boolean execute(Player player) {
-        //Player p = new Player("Test name", 1,1,1);
-        if(points > 0){
-            player.addScore(points);
-            return true;
-        } else if (points < 0) {
-            player.reduceScore(points);
-            return true;
-        }
-        return false;
+    public void execute(Player player) {
+        player.changeScore(points);
     }
 
     /**

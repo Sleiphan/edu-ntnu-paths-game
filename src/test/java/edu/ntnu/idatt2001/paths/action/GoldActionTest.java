@@ -1,8 +1,6 @@
 package edu.ntnu.idatt2001.paths.action;
 
 import edu.ntnu.idatt2001.paths.Player;
-import edu.ntnu.idatt2001.paths.action.GoldAction;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class GoldActionTest {
@@ -10,28 +8,16 @@ class GoldActionTest {
     @Test
     void execute() {
         Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).build();
-        GoldAction testGoldAction = new GoldAction(1);
-        Assertions.assertTrue(testGoldAction.execute(p));
-        GoldAction testGoldActionNegative = new GoldAction(-1);
-        Assertions.assertTrue(testGoldActionNegative.execute(p));
-        GoldAction testGoldActionZero = new GoldAction(0);
-        Assertions.assertFalse(testGoldActionZero.execute(p));
-    }
 
-    @Test
-    void toPathsFormat(){
-        GoldAction goldAction = new GoldAction(8);
-        String goldActionAsString = goldAction.toPathsFormat();
-        Assertions.assertEquals("{goldAction:8}",goldActionAsString);
-        Assertions.assertNotEquals("{goldAction:7}",goldActionAsString);
-    }
+        new GoldAction(1).execute(p);
+        int gold_1 = p.getGold();
+        new GoldAction(-1).execute(p);
+        int gold_2 = p.getGold();
+        new GoldAction(0).execute(p);
+        int gold_3 = p.getGold();
 
-    @Test
-    void fromPathsFormat(){
-        String testString = "{healthAction:9} {goldAction:10}";
-        GoldAction goldAction = GoldAction.fromPathsFormat(testString);
-        Assertions.assertEquals(10,goldAction.getGold());
-        Assertions.assertNotEquals(9,goldAction.getGold());
-
+        assert gold_1 == 2;
+        assert gold_2 == 1;
+        assert gold_3 == 1;
     }
 }

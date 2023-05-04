@@ -28,7 +28,7 @@ public class PathsAssetStoreParserTest {
         PathsAssetStoreParser p = new PathsAssetStoreParser();
         PathsAssetStore assetStore = p.parsePathsAssetStore(testData, TEST_DATA_DIR);
 
-        Image img       = assetStore.getImage("Title screen");
+        Image img       = assetStore.images().getAsset("Title screen");
         MediaPlayer aud = assetStore.getAudioAsset("Title screen");
 
         assert img != null;

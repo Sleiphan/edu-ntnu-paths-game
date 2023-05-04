@@ -12,7 +12,7 @@ class GoldGoalTest {
         Player p = new Player.PlayerBuilder("Test name",1).setScore(1).setGold(1).build();
         GoldGoal testGoal = new GoldGoal(5);
         Assertions.assertFalse(testGoal.isFulfilled(p));
-        p.addGold(5);
+        p.changeGold(5);
         Assertions.assertTrue(testGoal.isFulfilled(p));
     }
 }

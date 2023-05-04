@@ -20,20 +20,11 @@ public class HealthAction implements Action{
 
     /**
      * Executes the change to the player object given as a parameter's health field
-     * @param player    player to change health of
-     * @return          True if health changed, false if not
+     * @param player player to change health of
      */
     @Override
-    public boolean execute(Player player) {
-        //Player p = new Player("Test name", 1,1,1);
-        if(health > 0){
-            player.addHealth(health);
-            return true;
-        } else if (health < 0) {
-            player.reduceHealth(health);
-            return true;
-        }
-        return false;
+    public void execute(Player player) {
+        player.changeHealth(health);
     }
 
     /**
