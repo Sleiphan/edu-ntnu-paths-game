@@ -5,7 +5,7 @@ import edu.ntnu.idatt2001.paths.Player;
 /**
  * Used to check if a player-object fulfills a minimum score requirement
  */
-public class ScoreGoal implements Goal {
+public class ScoreGoal implements Goal, GoalInfo {
     private final int minimumPoints;
 
     /**
@@ -24,5 +24,17 @@ public class ScoreGoal implements Goal {
     @Override
     public boolean isFulfilled(Player player) {
         return player.getScore() >= minimumPoints;
+    }
+
+    @Override
+    public String getType() {
+        String type = this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().length() - 4);
+        return type;
+    }
+
+    @Override
+    public Object getValue() {
+        Object value = minimumPoints;
+        return value;
     }
 }

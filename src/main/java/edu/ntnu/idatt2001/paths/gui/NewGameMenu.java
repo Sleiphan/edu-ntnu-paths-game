@@ -2,9 +2,7 @@ package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.Game;
 import edu.ntnu.idatt2001.paths.Player;
-import edu.ntnu.idatt2001.paths.goal.Goal;
-import edu.ntnu.idatt2001.paths.goal.GoldGoal;
-import edu.ntnu.idatt2001.paths.goal.HealthGoal;
+import edu.ntnu.idatt2001.paths.goal.*;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.collections.FXCollections;
@@ -20,10 +18,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewGameMenu extends PathsMenu {
 
+    TableView <Goal> tableView = new TableView<>();
 
 
     public NewGameMenu() {
@@ -121,16 +121,16 @@ public class NewGameMenu extends PathsMenu {
         TextField txHealth = new TextField();
         TextField txGold = new TextField();
 
-        TableView <Goal> tableView = new TableView<>();
+
         tableView.maxWidth(245);
         TableColumn<Goal, String> TypeColumn = new TableColumn<>("Type");
         TypeColumn.setPrefWidth(122.5);
         TypeColumn.setResizable(false);
-        TypeColumn.setCellValueFactory(new PropertyValueFactory<>(""));
+        TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         TableColumn<Goal, String> GoalColumn = new TableColumn<>("Goal");
         GoalColumn.setPrefWidth(122.5);
         GoalColumn.setResizable(false);
-        GoalColumn.setCellValueFactory(new PropertyValueFactory<>(""));
+        GoalColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
         tableView.getColumns().add(TypeColumn);
         tableView.getColumns().add(GoalColumn);
 
@@ -190,9 +190,13 @@ public class NewGameMenu extends PathsMenu {
         tableView.setTranslateX(750);
         tableView.setTranslateY(80);
 
+        ArrayList<String> mand = new ArrayList<>();
+        mand.add("a");
         ObservableList<Goal> test = FXCollections.observableArrayList(
                 new GoldGoal(4),
-                new HealthGoal(10)
+                new HealthGoal(10),
+                new InventoryGoal(mand),
+                new ScoreGoal(10)
         );
 
         tableView.setItems(test);

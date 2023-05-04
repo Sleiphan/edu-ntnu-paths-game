@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Used to check if a player-object has certain items in their inventory
  */
-public class InventoryGoal implements Goal{
+public class InventoryGoal implements Goal, GoalInfo{
     private final List<String> mandatoryItems;
 
     /**
@@ -34,5 +34,16 @@ public class InventoryGoal implements Goal{
             }
         }
         return true;
+    }
+
+    public String getType() {
+        String type = this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().length() - 4);
+        return type;
+    }
+
+    @Override
+    public Object getValue() {
+        Object value = mandatoryItems;
+        return value;
     }
 }
