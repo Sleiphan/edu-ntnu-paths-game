@@ -56,11 +56,12 @@ public class NewGameMenu extends PathsMenu {
         );
 
         File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile == null)
+            return; // The user aborted choosing a story file.
 
         StoryLoader loader = null;
         try {
-            loader = new StoryLoader(selectedFile.getAbsolutePath());// System.getProperty("user.dir") + "/src/test/resources/story_with_assets/story.paths");
-            //loader = new StoryLoader(System.getProperty("user.dir") + "/src/test/resources/story_with_assets/story.paths");
+            loader = new StoryLoader(selectedFile.getAbsolutePath());
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
         }
