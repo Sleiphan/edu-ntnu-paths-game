@@ -37,7 +37,7 @@ public class ImageAsset implements Asset<Image> {
         if (isLoaded())
             return;
 
-        asset = new Image(URI, true);
+        asset = new Image(URI, false);
 
         Exception err = asset.getException();
         if (err != null)
