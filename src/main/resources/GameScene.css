@@ -46,7 +46,7 @@
 .root {
     -fx-background-image: url(TestImages/TestBackground.png);
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 1500, 1500;
+    -fx-background-size: 1500 1500;
     -fx-background-position: center center;
 }
 
@@ -67,18 +67,26 @@
 }
 
 .text-area {
-    -fx-background-color: rgba(53,89,119,0.4);
+    -fx-font-family: alagard;
+    -fx-font-size: 20;
+    -fx-background-color: null;
 }
 
 .text-area .scroll-pane {
-    -fx-background-color: rgba(53,89,119,0.4);
+    -fx-background-color: null;
 }
 
 .text-area .scroll-pane .viewport {
-    -fx-background-color: rgba(53,89,119,0.4);
+    -fx-background-color: null;
 }
 
 .text-area .scroll-pane .content {
-    -fx-background-color: rgba(53,89,119,0.4);
+    -fx-background-color: null;
+}
+
+text-area .scroll-pane .viewport,
+text-area .content {
+    -fx-background-color: null;
+    -fx-background-repeat: no-repeat;
 }
 

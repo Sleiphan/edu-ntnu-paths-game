@@ -9,16 +9,15 @@ import java.io.IOException;
 public class AudioAsset implements Asset<MediaPlayer> {
 
     private MediaPlayer asset = null;
-    private final String filePath;
+    private final String URI;
     private boolean loaded;
 
-    public AudioAsset(String filePath) throws IOException {
-        this.filePath = filePath;
+    public AudioAsset(String URI) throws IOException {
+        this.URI = URI;
     }
 
     @Override
     public void load() throws IOException {
-        String URI = new File(filePath).toURI().toString();
         asset = new MediaPlayer(new Media(URI));
         loaded = true;
     }

@@ -6,7 +6,6 @@ import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import edu.ntnu.idatt2001.paths.gui.SceneConfig;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ public class ItemViewer {
     private final List<String> items = new ArrayList<>();
 
     public ItemViewer(SceneConfig sceneConfig, PathsAssetStore assetStore) {
-        super();
         this.assetStore = assetStore;
 
         final int xPos = 0;
@@ -41,6 +39,8 @@ public class ItemViewer {
         inventoryArea.setFitWidth(width);
         inventoryArea.setFitHeight(height);
 
+        final int itemY = yPos + itemPadY;
+
         for (int i = 0; i < NUM_ITEM_SPOTS; i++) {
             int itemX = i * width / (NUM_ITEM_SPOTS) + itemPadX;
 
@@ -48,14 +48,14 @@ public class ItemViewer {
             itemSlots[i].setFitWidth(itemWidth);
             itemSlots[i].setFitHeight(itemHeight);
             itemSlots[i].setX(itemX);
-            itemSlots[i].setY(itemPadY);
+            itemSlots[i].setY(itemY);
             itemSlots[i].setId("Inventory_slot");
 
             itemSpots[i] = new ImageView();
             itemSpots[i].setFitWidth(itemWidth);
             itemSpots[i].setFitHeight(itemHeight);
             itemSpots[i].setX(itemX);
-            itemSpots[i].setY(itemPadY);
+            itemSpots[i].setY(itemY);
         }
 
         updateSpots();

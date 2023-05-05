@@ -74,11 +74,12 @@ public class PathsAssetStoreParser {
 
             path = path.replaceAll("\\\\", "/");
 
-            if (!path.contains(":")) {
+            if (!path.contains("://")) {
                 if (path.startsWith("/") || assetDirectoryPath.endsWith("/"))
                     path = assetDirectoryPath + path;
                 else
                     path = assetDirectoryPath + "/" + path;
+                path = "file:/" + path;
             }
 
 

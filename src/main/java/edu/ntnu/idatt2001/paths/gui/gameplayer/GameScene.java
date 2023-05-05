@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -24,6 +25,14 @@ public class GameScene extends PathsMenu {
     private static final int LINK_ENTRY_HEIGHT_DISTANCE = 5;
     private static final int LINK_ENTRY_HEIGHT_INTERVAL = LINK_ENTRY_HEIGHT + LINK_ENTRY_HEIGHT_DISTANCE;
     private static final int LINK_ENTRY_LABEL_X = 30;
+
+    private static final int STATS_XPOS = 15;
+    private static final int STATS_YPOS = 20;
+    private static final int STATS_YPOS_INTERVAL = 40;
+    private static final int STATS_ICON_PADDING = 10;
+    private static final int STATS_ICON_SIZE =  STATS_YPOS_INTERVAL - STATS_ICON_PADDING * 2;
+    private static final int STATS_LABEL_XPOS = STATS_XPOS + STATS_YPOS_INTERVAL;
+    private static final int PLAYER_MIN_SIZE = 256;
 
     private final Game game;
     private ScrollPane linkSelector;
@@ -35,15 +44,22 @@ public class GameScene extends PathsMenu {
     private final Scene scene;
 
 
+    private final SceneConfig sceneConfig;
     private final PathsAssetStore assetStore;
     private final AssetFinder assetFinder;
     private ImageView passageViewer;
+    private ImageView playerViewer;
+    private ImageView lookAtViewer;
+    private ImageView healthIcon;
+    private ImageView goldIcon;
+    private ImageView scoreIcon;
     private ItemViewer itemViewer;
     private boolean openingInGameMenu;
 
 
     public GameScene(Game game, StoryLoader s, SceneConfig sceneConfig) {
         this.game = game;
+        this.sceneConfig = sceneConfig;
         this.assetStore = s.getAssetStore();
 
         if (hasAssets())
@@ -54,6 +70,8 @@ public class GameScene extends PathsMenu {
         this.scene = createScene(sceneConfig);
 
         updateContent(game.begin());
+        if (hasAssets())
+            updateAssets(game.begin());
     }
 
     public boolean hasAssets() {
@@ -165,7 +183,59 @@ public class GameScene extends PathsMenu {
     }
 
     private void updateAssets(Passage newPassage) {
-        passageViewer.setImage(assetFinder.getBackground(newPassage.getTitle()));
+        updateBackground(newPassage);
+        updatePlayerAsset(newPassage);
+        updateInteractionObject(newPassage);
+    }
+
+    private void updateBackground(Passage newPassage) {
+        Image background = assetFinder.getBackground(newPassage.getTitle());
+        if (background != null)
+            passageViewer.setImage(background);
+    }
+
+    private void updatePlayerAsset(Passage newPassage) {
+        Image playerImg = assetFinder.getPlayer(newPassage.getTitle());
+        if (playerImg == null)
+            return;
+
+        if (playerImg.getWidth() < PLAYER_MIN_SIZE)
+            playerViewer.setFitWidth(PLAYER_MIN_SIZE);
+        else
+            playerViewer.setFitWidth(0);
+        if (playerImg.getHeight() < PLAYER_MIN_SIZE)
+            playerViewer.setFitHeight(PLAYER_MIN_SIZE);
+        else
+            playerViewer.setFitHeight(0);
+
+        final int playerX = (int) (sceneConfig.getWidth() / 5 - playerViewer.getFitWidth() / 2);
+        final int playerY = (int) (sceneConfig.getHeight() * 2 / 3 - playerViewer.getFitHeight());
+
+        playerViewer.setImage(playerImg);
+        playerViewer.setX(playerX);
+        playerViewer.setY(playerY);
+    }
+
+    private void updateInteractionObject(Passage newPassage) {
+        Image lookAtImg = assetFinder.getLookAt(newPassage.getTitle());
+        if (lookAtImg == null)
+            return;
+
+        if (lookAtImg.getWidth() < PLAYER_MIN_SIZE)
+            lookAtViewer.setFitWidth(PLAYER_MIN_SIZE);
+        else
+            lookAtViewer.setFitWidth(0);
+        if (lookAtImg.getHeight() < PLAYER_MIN_SIZE)
+            lookAtViewer.setFitHeight(PLAYER_MIN_SIZE);
+        else
+            lookAtViewer.setFitHeight(0);
+
+        final int playerX = (int) ((sceneConfig.getWidth() * 4) / 5 - lookAtViewer.getFitWidth() / 2);
+        final int playerY = (int) (sceneConfig.getHeight() * 2 / 3 - lookAtViewer.getFitHeight());
+
+        lookAtViewer.setImage(lookAtImg);
+        lookAtViewer.setX(playerX);
+        lookAtViewer.setY(playerY);
     }
 
 
@@ -177,21 +247,32 @@ public class GameScene extends PathsMenu {
         createPlayerStatus();
 
         root = new AnchorPane();
-        root.getChildren().add(linkSelector);
-        root.getChildren().add(menuBt);
-        root.getChildren().add(textViewer);
-        root.getChildren().add(healthLabel);
-        root.getChildren().add(goldLabel);
-        root.getChildren().add(scoreLabel);
-
 
         if (hasAssets()) {
             itemViewer = createItemViewer(sceneConfig);
             passageViewer = createPassageViewer(sceneConfig);
+            playerViewer = createPlayerViewer(sceneConfig);
+            lookAtViewer = createLookAtViewer(sceneConfig);
+            ImageView interactionArea = createInteractionArea(sceneConfig);
+            createPlayerStatsIcons();
 
-            itemViewer.addToPane(root);
+
             root.getChildren().add(passageViewer);
+            root.getChildren().add(interactionArea);
+            root.getChildren().add(healthIcon);
+            root.getChildren().add(goldIcon);
+            root.getChildren().add(scoreIcon);
+            root.getChildren().add(playerViewer);
+            root.getChildren().add(lookAtViewer);
+            itemViewer.addToPane(root);
         }
+
+        root.getChildren().add(textViewer);
+        root.getChildren().add(healthLabel);
+        root.getChildren().add(goldLabel);
+        root.getChildren().add(scoreLabel);
+        root.getChildren().add(linkSelector);
+        root.getChildren().add(menuBt);
 
         Scene scene = new Scene(root, sceneConfig.getWidth(), sceneConfig.getHeight());
         scene.getStylesheets().add("GameScene.css");
@@ -201,16 +282,26 @@ public class GameScene extends PathsMenu {
     private TextArea createTextArea(SceneConfig sceneConfig) {
         final int height = 150;
         final int width = 350;
-        final int y = sceneConfig.getHeight() - height;
+        final int y = 0;
+        final int x = sceneConfig.getWidth() / 2 - width / 2;
 
         TextArea textViewer = new TextArea();
         textViewer.setWrapText(true);
         textViewer.setEditable(false);
-        textViewer.setTranslateX(0);
+        textViewer.setTranslateX(x);
         textViewer.setTranslateY(y);
         textViewer.setPrefWidth (width);
         textViewer.setPrefHeight(height);
-        textViewer.setId("Text_viewer");
+        if (hasAssets()) {
+            Image img = assetFinder.getTextArea();
+            if (img != null) {
+                String url = img.getUrl();
+                textViewer.setStyle("-fx-background-color: null;\n" +
+                        "-fx-background-repeat: no-repeat;\n" +
+                        "-fx-background-size: "+width+" "+height+";\n" +
+                        "-fx-background-image: url(" + url + ");");
+            }
+        }
 
         return textViewer;
     }
@@ -245,25 +336,31 @@ public class GameScene extends PathsMenu {
 
     private void createPlayerStatus() {
         healthLabel = new Label();
-        healthLabel.setTranslateX(60);
-        healthLabel.setTranslateY(20);
+        healthLabel.setTranslateX(STATS_LABEL_XPOS);
+        healthLabel.setTranslateY(STATS_YPOS + STATS_ICON_PADDING);
         healthLabel.setId("Status_label");
 
         goldLabel = new Label();
-        goldLabel.setTranslateX(60);
-        goldLabel.setTranslateY(40);
+        goldLabel.setTranslateX(STATS_LABEL_XPOS);
+        goldLabel.setTranslateY(STATS_XPOS + STATS_YPOS_INTERVAL + STATS_ICON_PADDING);
         goldLabel.setId("Status_label");
 
         scoreLabel = new Label();
-        scoreLabel.setTranslateX(60);
-        scoreLabel.setTranslateY(60);
+        scoreLabel.setTranslateX(STATS_LABEL_XPOS);
+        scoreLabel.setTranslateY(STATS_XPOS + STATS_YPOS_INTERVAL * 2 + STATS_ICON_PADDING);
         scoreLabel.setId("Status_label");
     }
 
+
+
     private ItemViewer createItemViewer(SceneConfig sceneConfig) {
         ItemViewer itemViewer = new ItemViewer(sceneConfig, assetStore);
-        itemViewer.setInventorySlotImage(assetFinder.getItemSlot());
-        itemViewer.setInventoryAreaImage(assetFinder.getItemArea());
+
+        Image itemSlot = assetFinder.getItemSlot();
+        Image itemArea = assetFinder.getItemArea();
+
+        itemViewer.setInventorySlotImage(itemSlot);
+        itemViewer.setInventoryAreaImage(itemArea);
         return itemViewer;
     }
 
@@ -279,6 +376,57 @@ public class GameScene extends PathsMenu {
     }
 
 
+    private ImageView createInteractionArea(SceneConfig sceneConfig) {
+        final int x = 0;
+        final int y = (sceneConfig.getHeight() * 2) / 3 + 80;
+        final int width = sceneConfig.getWidth();
+        final int height = sceneConfig.getHeight() - y;
+
+
+        ImageView viewer = new ImageView();
+        viewer.setX(x);
+        viewer.setY(y);
+        viewer.setFitWidth(width);
+        viewer.setFitHeight(height);
+        viewer.setImage(assetFinder.getInteractionArea());
+
+        return viewer;
+    }
+
+    private void createPlayerStatsIcons() {
+        healthIcon = new ImageView();
+        goldIcon = new ImageView();
+        scoreIcon = new ImageView();
+
+        healthIcon.setImage(assetFinder.getHealthIcon());
+        goldIcon.setImage(assetFinder.getGoldIcon());
+        scoreIcon.setImage(assetFinder.getScoreIcon());
+
+        healthIcon.setX(STATS_XPOS);
+        goldIcon.setX(STATS_XPOS);
+        scoreIcon.setX(STATS_XPOS);
+
+
+        healthIcon.setY(STATS_YPOS + STATS_ICON_PADDING);
+        goldIcon.setY(STATS_YPOS + STATS_YPOS_INTERVAL + STATS_ICON_PADDING);
+        scoreIcon.setY(STATS_YPOS + STATS_YPOS_INTERVAL * 2 + STATS_ICON_PADDING);
+
+        healthIcon.setFitWidth(STATS_ICON_SIZE);
+        goldIcon.setFitWidth(STATS_ICON_SIZE);
+        scoreIcon.setFitWidth(STATS_ICON_SIZE);
+
+        healthIcon.setFitHeight(STATS_ICON_SIZE);
+        goldIcon.setFitHeight(STATS_ICON_SIZE);
+        scoreIcon.setFitHeight(STATS_ICON_SIZE);
+    }
+
+    private ImageView createPlayerViewer(SceneConfig sceneConfig) {
+        return new ImageView();
+    }
+
+    private ImageView createLookAtViewer(SceneConfig sceneConfig) {
+        return new ImageView();
+    }
 
     private void openInGameMenu(Event e) {
         InGameMenu menu = new InGameMenu(this);
