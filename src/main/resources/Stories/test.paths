@@ -1,0 +1,28 @@
+Themia
+
+::Erdowin home
+You are in the village of Erdowin.
+(The windmill)[Windmill]
+
+::Windmill
+You are at the Windmill.
+(Open the door)[Windmill door]
+(Dig in the garden)[Windmill dig 1]{HealthAction:-2}
+(Back)[Erdowin home]
+
+::Windmill dig 1
+While digging, you get pricked by a thorn bush. You reach something solid, possibly made of metal.
+(Continue digging)[Windmill dig 2]{HealthAction:-5}{InventoryAction:"Axe"}
+
+::Windmill dig 2
+You found an axe! You start bleeding from being scratched by the bush.
+(Back)[Windmill]
+
+::Windmill door
+The door is locked. You try forcing it open, but it wont budge an inch.
+(Attack door)[Windmill door attack]
+(Back)[Windmill]
+
+::Windmill door attack
+You almost hurt yourself from throwing yourself at the door. It wont open.
+(Back)[Windmill]
