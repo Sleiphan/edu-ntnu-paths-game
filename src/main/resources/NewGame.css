@@ -61,10 +61,6 @@
     -fx-background-size: 122 40;
 }
 
-.table-row-cell:even{
-    -fx-background-color: ffffff;
-}
-
 .table-row-cell:odd{
     -fx-background-color: e8b796;
 }
