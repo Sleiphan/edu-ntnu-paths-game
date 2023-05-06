@@ -199,7 +199,7 @@ public class GameScene extends PathsMenu {
         if (playerImg == null)
             return;
 
-        if (playerImg.getWidth() < PLAYER_MIN_SIZE)
+        /*if (playerImg.getWidth() < PLAYER_MIN_SIZE)
             playerViewer.setFitWidth(PLAYER_MIN_SIZE);
         else
             playerViewer.setFitWidth(0);
@@ -207,9 +207,10 @@ public class GameScene extends PathsMenu {
             playerViewer.setFitHeight(PLAYER_MIN_SIZE);
         else
             playerViewer.setFitHeight(0);
+         */
 
-        final int playerX = (int) (sceneConfig.getWidth() / 5 - playerViewer.getFitWidth() / 2);
-        final int playerY = (int) (sceneConfig.getHeight() * 2 / 3 - playerViewer.getFitHeight());
+        final int playerX = (int) (sceneConfig.getWidth() / 5 - playerImg.getWidth() / 2);
+        final int playerY = (int) (sceneConfig.getHeight() * 2 / 3 - playerImg.getHeight());
 
         playerViewer.setImage(playerImg);
         playerViewer.setX(playerX);
