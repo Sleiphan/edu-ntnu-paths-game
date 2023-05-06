@@ -221,7 +221,7 @@ public class GameScene extends PathsMenu {
         if (lookAtImg == null)
             return;
 
-        if (lookAtImg.getWidth() < PLAYER_MIN_SIZE)
+        /*if (lookAtImg.getWidth() < PLAYER_MIN_SIZE)
             lookAtViewer.setFitWidth(PLAYER_MIN_SIZE);
         else
             lookAtViewer.setFitWidth(0);
@@ -230,8 +230,13 @@ public class GameScene extends PathsMenu {
         else
             lookAtViewer.setFitHeight(0);
 
-        final int playerX = (int) ((sceneConfig.getWidth() * 4) / 5 - lookAtViewer.getFitWidth() / 2);
-        final int playerY = (int) (sceneConfig.getHeight() * 2 / 3 - lookAtViewer.getFitHeight());
+         */
+
+        final int playerX = (int) ((sceneConfig.getWidth() * 4) / 5 - lookAtImg.getWidth() / 2);
+        final int playerY = (int) ((sceneConfig.getHeight() * 2) / 3 - lookAtImg.getHeight());
+
+        System.out.println(playerX);
+        System.out.println(playerY);
 
         lookAtViewer.setImage(lookAtImg);
         lookAtViewer.setX(playerX);
