@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.asset.AudioAsset;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -27,6 +28,7 @@ import java.io.IOException;
 
 public class MainMenu extends PathsMenu {
 
+
     AnchorPane root = new AnchorPane();
 
     public MainMenu() {
@@ -48,18 +50,25 @@ public class MainMenu extends PathsMenu {
     @Override
     public Scene getScene() {
 
-        String musicFile = "src/main/resources/TestAudio/Test.mp3";
+        if(!handler.getCurrentAudio().equals("MainMenu")){
+            handler.setCurrentAudio("MainMenu");
+            String musicFile = "src/main/resources/TestAudio/Test.mp3";
 
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setVolume(0.05);
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                mediaPlayer.seek(Duration.ZERO);
-            }
-        });
-        mediaPlayer.play();
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setVolume(0.05);
+            mediaPlayer.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    mediaPlayer.seek(Duration.ZERO);
+                }
+            });
+
+            mediaPlayer.play();
+
+        }
+
+
 
         Button btContinue = new Button("Continue");
         Button btNewGame  = new Button("New Game");

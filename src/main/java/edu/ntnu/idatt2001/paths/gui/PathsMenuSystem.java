@@ -8,6 +8,8 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
     private PathsMenu currentState;
     private final Stage applicationWindow;
 
+    private String currentAudio = "";
+
     /**
      * Creates a new instance of FXHandler running an initial FXAppState.
      *
@@ -41,5 +43,13 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
         currentState.setHandlerRef(this);
         currentState.setup();
         applicationWindow.setScene(newState.getScene());
+    }
+
+    public void setCurrentAudio(String currentAudio){
+        this.currentAudio = currentAudio;
+    }
+
+    public String getCurrentAudio(){
+        return currentAudio;
     }
 }
