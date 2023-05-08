@@ -40,7 +40,7 @@
     -fx-background-image: url(TestImages/Button.png);
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
-    -fx-background-size: 35 35;
+    -fx-background-size: 115 55;
 }
 
 .root {
