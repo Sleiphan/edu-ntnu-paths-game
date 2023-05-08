@@ -11,15 +11,14 @@ import edu.ntnu.idatt2001.paths.gui.SceneConfig;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.event.Event;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.util.Optional;
 
 public class GameScene extends PathsMenu {
 
@@ -124,8 +123,10 @@ public class GameScene extends PathsMenu {
     private void goLink(Link link) {
         Passage newPassage = game.go(link);
 
-        if (newPassage == null)
+        if (newPassage == null) {
+            reachedBrokenLink();
             return;
+        }
 
         performLinkActions(link);
         updateContent(newPassage);
@@ -134,8 +135,12 @@ public class GameScene extends PathsMenu {
             updateAssets(newPassage);
     }
 
-    private void keyEvent(KeyEvent e) {
-
+    private void reachedBrokenLink() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Broken link");
+        alert.setHeaderText("You reached a broken link");
+        alert.setContentText("This option does not lead anywhere in this story.");
+        alert.showAndWait();
     }
 
     private void performLinkActions(Link link) {
@@ -275,7 +280,12 @@ public class GameScene extends PathsMenu {
     private void updateInfoLabels(){
         fileNameLabel.setText(handler.getCurrentFileName());
         pathLabel.setText(handler.getCurrentPath());
-        brokenLinksLabel.setText(handler.getCurrentBrokenLinks().toString());
+
+        StringBuilder sb = new StringBuilder();
+        for (Link l : handler.getCurrentBrokenLinks())
+            sb.append("(").append(l.getText()).append(")[").append(l.getReference()).append("]").append("\n");
+
+        brokenLinksLabel.setText(sb.toString());
     }
 
 

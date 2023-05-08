@@ -57,11 +57,11 @@ public class NewGameMenu extends PathsMenu {
         );
 
         File selectedFile = fileChooser.showOpenDialog(stage);
-        handler.setCurrentFileName(selectedFile.getName());
-        handler.setCurrentPath(selectedFile.getPath());
-
         if (selectedFile == null)
             return; // The user aborted choosing a story file.
+
+        handler.setCurrentFileName(selectedFile.getName());
+        handler.setCurrentPath(selectedFile.getPath());
 
         StoryLoader loader = null;
         try {
@@ -71,16 +71,14 @@ public class NewGameMenu extends PathsMenu {
             throw new RuntimeException(ex);
         }
 
-        try {
-            handler.setCurrentBrokenLinks(loader.getStory().getBrokenLinks());
-        } catch (Exception ex){
-            List<Link> emptyList = new ArrayList<>();
-            handler.setCurrentBrokenLinks(emptyList);
-        }
-
 
         if (!loader.load())
             showErrorsToUser(loader.readAllErrors());
+
+        if (loader.getStory() == null)
+            return;
+
+        handler.setCurrentBrokenLinks(loader.getStory().getBrokenLinks());
 
         Player player;
         String goldText = txGold.getText();
