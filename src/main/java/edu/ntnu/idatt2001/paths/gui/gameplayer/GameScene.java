@@ -30,7 +30,7 @@ public class GameScene extends PathsMenu {
     private static final int STATS_YPOS = 20;
     private static final int STATS_YPOS_INTERVAL = 40;
     private static final int STATS_ICON_PADDING = 10;
-    private static final int STATS_ICON_SIZE =  STATS_YPOS_INTERVAL - STATS_ICON_PADDING * 2;
+    private static final int STATS_ICON_SIZE =  STATS_YPOS_INTERVAL - STATS_ICON_PADDING;
     private static final int STATS_LABEL_XPOS = STATS_XPOS + STATS_YPOS_INTERVAL;
     private static final int PLAYER_MIN_SIZE = 256;
 
