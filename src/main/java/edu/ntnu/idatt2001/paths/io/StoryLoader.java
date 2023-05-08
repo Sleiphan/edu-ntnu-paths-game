@@ -34,6 +34,7 @@ public class StoryLoader {
 
     private Story story;
     private PathsAssetStore assetStore;
+    private PathsParser parser = new PathsParser();
 
     private boolean foundAssetStore;
 
@@ -97,9 +98,11 @@ public class StoryLoader {
             return false;
         }
 
-        this.story = PathsParser.fromPathsFormatStory(data);
+        this.story = parser.fromPathsFormatStory(data);
+
         if (this.story == null) {
             errors.add("Failed to parse a story from the submitted file.");
+            errors.addAll(parser.readAllErrors());
             return false;
         }
 

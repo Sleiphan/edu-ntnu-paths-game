@@ -50,6 +50,14 @@ public class InventoryAction implements Action {
         return item;
     }
 
+    /**
+     * Indicates whether this action adds or consumes an item.
+     * @return <code>true</code> if this action adds an item to a players inventory. Otherwise, returns false.
+     */
+    public boolean addsItem() {
+        return add;
+    }
+
     @Override
     public int hashCode() {
         return hashCode;
