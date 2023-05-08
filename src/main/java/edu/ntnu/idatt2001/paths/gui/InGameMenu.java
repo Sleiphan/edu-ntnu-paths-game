@@ -5,9 +5,13 @@ import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+
+import java.util.Optional;
 
 public class InGameMenu extends PathsMenu {
 
@@ -18,9 +22,18 @@ public class InGameMenu extends PathsMenu {
     }
 
     private void restartGame(ActionEvent e){
-        System.out.println(handler.getInitialPlayer().getHealth());
-        Game initialGame = new Game(handler.getInitialPlayer(), handler.getStoryLoader().getStory(),handler.getInitialGoals());
-        changeState(new GameScene(initialGame,handler.getStoryLoader(),handler.getSceneConfig()));
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Reset");
+        alert.setHeaderText("Reset game");
+        alert.setContentText("Are you sure you want to reset the game?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            System.out.println(handler.getInitialPlayer().getHealth());
+            Game initialGame = new Game(handler.getInitialPlayer(), handler.getStoryLoader().getStory(),handler.getInitialGoals());
+            changeState(new GameScene(initialGame,handler.getStoryLoader(),handler.getSceneConfig()));
+        }
+
     }
 
     private void options(ActionEvent e){}
