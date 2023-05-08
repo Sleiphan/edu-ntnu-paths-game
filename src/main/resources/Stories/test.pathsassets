@@ -3,7 +3,7 @@
 "UI: Score icon":"img/rock_3.png"
 "UI: Item slot":"/img/InventorySlot.png"
 "UI: Interaction area":"img/Interaction.png"
-"UI: Text area":"img/InventorySlot.png"
+"UI: Text area":"img/TextBackground.png"
 "Windmill door:Player":"put_URI_here"
 "Windmill door:LookAt":"put_URI_here"
 "Windmill door:Background":"put_URI_here"

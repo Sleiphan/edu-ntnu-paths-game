@@ -238,9 +238,6 @@ public class GameScene extends PathsMenu {
         final int playerX = (int) ((sceneConfig.getWidth() * 4) / 5 - lookAtImg.getWidth() / 2);
         final int playerY = (int) ((sceneConfig.getHeight() * 2) / 3 - lookAtImg.getHeight());
 
-        System.out.println(playerX);
-        System.out.println(playerY);
-
         lookAtViewer.setImage(lookAtImg);
         lookAtViewer.setX(playerX);
         lookAtViewer.setY(playerY);
@@ -273,8 +270,8 @@ public class GameScene extends PathsMenu {
 
 
             root.getChildren().add(passageViewer);
-            root.getChildren().add(interactionArea);
             root.getChildren().add(playerStatusBackground);
+            root.getChildren().add(interactionArea);
             root.getChildren().add(healthIcon);
             root.getChildren().add(goldIcon);
             root.getChildren().add(scoreIcon);
@@ -299,7 +296,7 @@ public class GameScene extends PathsMenu {
         final int height = 150;
         final int width = 350;
         final int y = 0;
-        final int x = sceneConfig.getWidth() / 2 - width / 2;
+        final int x = 100;
 
         TextArea textViewer = new TextArea();
         textViewer.setWrapText(true);
