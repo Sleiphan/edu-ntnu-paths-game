@@ -17,6 +17,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class GameScene extends PathsMenu {
@@ -132,6 +134,10 @@ public class GameScene extends PathsMenu {
             updateAssets(newPassage);
     }
 
+    private void keyEvent(KeyEvent e) {
+
+    }
+
     private void performLinkActions(Link link) {
         for (Action a : link.getActions()) {
             a.execute(game.getPlayer());
@@ -158,6 +164,7 @@ public class GameScene extends PathsMenu {
             label.setId("Link_entry_label");
             label.setTranslateX(LINK_ENTRY_LABEL_X);
             label.setTranslateY(y);
+            label.setOnMouseReleased(e -> this.goLink(l));
 
             Button b = new Button("X");
             b.setId("Link_entry_button");
@@ -170,8 +177,21 @@ public class GameScene extends PathsMenu {
             root.getChildren().add(b);
             root.getChildren().add(label);
 
+
             y += LINK_ENTRY_HEIGHT_INTERVAL;
         }
+
+        scene.setOnKeyReleased(e -> {
+            int key;
+            try {
+                key = Integer.parseInt(e.getText()) - 1;
+            } catch (NumberFormatException err) {
+                return;
+            }
+
+            if (key >= 0 && key < newPassage.getLinks().size())
+                goLink(newPassage.getLinks().get(key));
+        });
 
         linkSelector.setContent(root);
     }
