@@ -28,4 +28,8 @@ public interface ApplicationStateHandler<STATE_TYPE extends ApplicationState> {
      * @param newState The new application state to be the new current state.
      */
     void changeState(STATE_TYPE newState);
+
+    void setCurrentAudio(String currentAudio);
+
+    String getCurrentAudio();
 }
