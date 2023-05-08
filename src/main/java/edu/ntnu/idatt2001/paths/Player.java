@@ -179,6 +179,18 @@ public class Player {
     }
 
     /**
+     * Checks the inventory of this player, and indicates whether an item with the submitted name is present or not.
+     * This method does not take into account the amount of items available. If there is 1 or more item
+     * with the specified name present, this method will return <code>true</code>.
+     *
+     * @param item The item to find.
+     * @return <code>true</code> if an item with the submitted name is present. Otherwise, returns <code>false</code>.
+     */
+    public boolean hasItem(String item) {
+        return inventory.stream().anyMatch(item::equals);
+    }
+
+    /**
      * Returns the player-objects inventory array
      * @return the player-objects inventory array
      */
