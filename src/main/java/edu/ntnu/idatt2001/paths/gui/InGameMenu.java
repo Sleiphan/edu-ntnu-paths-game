@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.Game;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,7 +17,11 @@ public class InGameMenu extends PathsMenu {
         this.associatedGameScene = currentGameScene;
     }
 
-    private void saveGame(ActionEvent e){}
+    private void restartGame(ActionEvent e){
+        System.out.println(handler.getInitialPlayer().getHealth());
+        Game initialGame = new Game(handler.getInitialPlayer(), handler.getStoryLoader().getStory(),handler.getInitialGoals());
+        changeState(new GameScene(initialGame,handler.getStoryLoader(),handler.getSceneConfig()));
+    }
 
     private void options(ActionEvent e){}
 
@@ -51,19 +56,19 @@ public class InGameMenu extends PathsMenu {
         overlay.setFitWidth(10000);
         overlay.setFitWidth(10000);
 
-        Button btSave = new Button("Save");
+        Button btRestart = new Button("Restart");
         Button btOptions = new Button("Options");
         Button btMainMenu = new Button("Main menu");
         Button btQuit = new Button("Quit");
         Button btClose = new Button("Close");
 
-        btSave.setId("Save");
+        btRestart.setId("Restart");
         btOptions.setId("Options");
         btMainMenu.setId("MainMenu");
         btQuit.setId("Quit");
         btClose.setId("Close");
 
-        btSave.setOnAction(this::saveGame);
+        btRestart.setOnAction(this::restartGame);
         btOptions.setOnAction(this::options);
         btMainMenu.setOnAction(this::mainMenu);
         btQuit.setOnAction(this::quitGame);
@@ -72,7 +77,7 @@ public class InGameMenu extends PathsMenu {
         int buttonWidth = 200;
         int sceneWidth = handler.getSceneWidth();
 
-        btSave.setPrefWidth(200);
+        btRestart.setPrefWidth(200);
         btOptions.setPrefWidth(200);
         btMainMenu.setPrefWidth(200);
         btQuit.setPrefWidth(200);
@@ -80,13 +85,13 @@ public class InGameMenu extends PathsMenu {
 
         int buttonX = sceneWidth / 2 - buttonWidth / 2;
 
-        btSave.setTranslateX(buttonX);
+        btRestart.setTranslateX(buttonX);
         btOptions.setTranslateX(buttonX);
         btMainMenu.setTranslateX(buttonX);
         btQuit.setTranslateX(buttonX);
         btClose.setTranslateX(buttonX);
 
-        btSave.setTranslateY(170);
+        btRestart.setTranslateY(170);
         btOptions.setTranslateY(270);
         btMainMenu.setTranslateY(370);
         btQuit.setTranslateY(470);
@@ -95,7 +100,7 @@ public class InGameMenu extends PathsMenu {
         AnchorPane root = new AnchorPane();
 
         //root.getChildren().add(overlay);
-        root.getChildren().add(btSave);
+        root.getChildren().add(btRestart);
         root.getChildren().add(btOptions);
         root.getChildren().add(btMainMenu);
         root.getChildren().add(btQuit);

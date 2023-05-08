@@ -66,6 +66,7 @@ public class NewGameMenu extends PathsMenu {
         StoryLoader loader = null;
         try {
             loader = new StoryLoader(selectedFile.getAbsolutePath());
+            handler.setStoryLoader(loader);
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
         }
@@ -86,14 +87,21 @@ public class NewGameMenu extends PathsMenu {
         if(goldText.trim().isEmpty()){
             player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
                     .build();
+            handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth()).build());
         } else {
             player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
                     .setGold(Integer.parseInt(goldText)).build();
+            handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth())
+                            .setGold(player.getGold()).build());
+
         }
 
+        handler.setInitialGoals(getGoals());
 
         Game game = new Game(player, loader.getStory(), getGoals());
-        SceneConfig sceneConfig = new SceneConfig(1270, 720);
+
+
+        SceneConfig sceneConfig = handler.getSceneConfig();
 
         GameScene gameScene = new GameScene(game, loader, sceneConfig);
 
@@ -112,8 +120,6 @@ public class NewGameMenu extends PathsMenu {
 
         stage.setWidth(400);
         stage.setHeight(200);
-
-
 
         Button cancel = new Button("Cancel");
         cancel.setId("cancel");

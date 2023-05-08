@@ -1,6 +1,11 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.Game;
 import edu.ntnu.idatt2001.paths.Link;
+import edu.ntnu.idatt2001.paths.Player;
+import edu.ntnu.idatt2001.paths.Story;
+import edu.ntnu.idatt2001.paths.goal.Goal;
+import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -19,6 +24,14 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
     private String currentPath = "";
 
     private List<Link> currentBrokenLinks = new ArrayList<>();
+
+    StoryLoader storyLoader;
+
+    Player initialPlayer;
+
+    List<Goal> initialGoals = new ArrayList<>();
+
+    SceneConfig sceneConfig = new SceneConfig(1270, 720);
 
     /**
      * Creates a new instance of FXHandler running an initial FXAppState.
@@ -93,5 +106,33 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
 
     public List<Link> getCurrentBrokenLinks() {
         return currentBrokenLinks;
+    }
+
+    public Player getInitialPlayer() {
+        return initialPlayer;
+    }
+
+    public void setInitialPlayer(Player initialPlayer) {
+        this.initialPlayer = initialPlayer;
+    }
+
+    public List<Goal> getInitialGoals() {
+        return initialGoals;
+    }
+
+    public void setInitialGoals(List<Goal> initialGoals) {
+        this.initialGoals = initialGoals;
+    }
+
+    public SceneConfig getSceneConfig() {
+        return sceneConfig;
+    }
+
+    public StoryLoader getStoryLoader() {
+        return storyLoader;
+    }
+
+    public void setStoryLoader(StoryLoader storyLoader) {
+        this.storyLoader = storyLoader;
     }
 }
