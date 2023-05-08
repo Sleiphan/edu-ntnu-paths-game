@@ -14,7 +14,6 @@ public class AssetFinder {
     public static final String HEALTH_ICON = "UI: Health icon";
     public static final String GOLD_ICON   = "UI: Gold icon";
     public static final String SCORE_ICON  = "UI: Score icon";
-    public static final String ITEM_AREA   = "UI: Item area";
     public static final String ITEM_SLOT   = "UI: Item slot";
     public static final String INTERACTION_AREA = "UI: Interaction area";
     public static final String TEXT_AREA = "UI: Text area";
@@ -22,6 +21,7 @@ public class AssetFinder {
     public static final String PASSAGE_PLAYER = "Player"; // "Passage:Player":"C:/"
     public static final String PASSAGE_LOOK_AT = "LookAt"; // "Passage:LookAt":"C:/"
     public static final String PASSAGE_BACKGROUND = "Background"; // "Passage:Background":"C:/"
+    public static final String ITEM_AREA   = "Item area";
 
     public static final String LINK_ICON = "Icon"; // "Passage:Link:Background":"C:/"
 
@@ -41,7 +41,6 @@ public class AssetFinder {
         assetStore.images().loadAsset(HEALTH_ICON);
         assetStore.images().loadAsset(GOLD_ICON);
         assetStore.images().loadAsset(SCORE_ICON);
-        assetStore.images().loadAsset(ITEM_AREA);
         assetStore.images().loadAsset(ITEM_SLOT);
         assetStore.images().loadAsset(INTERACTION_AREA);
     }
@@ -50,7 +49,6 @@ public class AssetFinder {
         assetStore.images().unloadAsset(HEALTH_ICON);
         assetStore.images().unloadAsset(GOLD_ICON);
         assetStore.images().unloadAsset(SCORE_ICON);
-        assetStore.images().unloadAsset(ITEM_AREA);
         assetStore.images().unloadAsset(ITEM_SLOT);
         assetStore.images().unloadAsset(INTERACTION_AREA);
     }
@@ -65,7 +63,6 @@ public class AssetFinder {
         sb.append("\"" + HEALTH_ICON + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + GOLD_ICON   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + SCORE_ICON  + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + ITEM_AREA   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + ITEM_SLOT   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + INTERACTION_AREA + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
 
@@ -83,6 +80,7 @@ public class AssetFinder {
         sb.append("\"").append(passageTitle).append(SEP).append(PASSAGE_PLAYER)    .append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"").append(passageTitle).append(SEP).append(PASSAGE_LOOK_AT)   .append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"").append(passageTitle).append(SEP).append(PASSAGE_BACKGROUND).append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"").append(passageTitle).append(SEP).append(ITEM_AREA)         .append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
 
         for (String s : linkTitles)
             sb.append("\"").append(passageTitle).append(SEP).append(s).append(SEP).append(LINK_ICON).append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
@@ -102,16 +100,16 @@ public class AssetFinder {
         return assetStore.images().getAsset(SCORE_ICON);
     }
 
-    public Image getItemArea() {
-        return assetStore.images().getAsset(ITEM_AREA);
-    }
-
     public Image getItemSlot() {
         return assetStore.images().getAsset(ITEM_SLOT);
     }
 
     public Image getInteractionArea() {
         return assetStore.images().getAsset(INTERACTION_AREA);
+    }
+
+    public Image getItemArea(String passageTitle) {
+        return assetStore.images().getAsset(passageTitle + SEP + ITEM_AREA);
     }
 
     public Image getPlayer(String passageTitle) {

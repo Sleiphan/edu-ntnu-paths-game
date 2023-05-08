@@ -186,6 +186,7 @@ public class GameScene extends PathsMenu {
         updateBackground(newPassage);
         updatePlayerAsset(newPassage);
         updateInteractionObject(newPassage);
+        updateItemAreaBG(newPassage);
     }
 
     private void updateBackground(Passage newPassage) {
@@ -244,6 +245,11 @@ public class GameScene extends PathsMenu {
         lookAtViewer.setY(playerY);
     }
 
+    private void updateItemAreaBG(Passage newPassage) {
+        Image img = assetFinder.getItemArea(newPassage.getTitle());
+        if (img != null)
+            itemViewer.setInventoryAreaImage(img);
+    }
 
 
     private Scene createScene(SceneConfig sceneConfig) {
@@ -361,12 +367,7 @@ public class GameScene extends PathsMenu {
 
     private ItemViewer createItemViewer(SceneConfig sceneConfig) {
         ItemViewer itemViewer = new ItemViewer(sceneConfig, assetStore);
-
-        Image itemSlot = assetFinder.getItemSlot();
-        Image itemArea = assetFinder.getItemArea();
-
-        itemViewer.setInventorySlotImage(itemSlot);
-        itemViewer.setInventoryAreaImage(itemArea);
+        itemViewer.setInventorySlotImage(assetFinder.getItemSlot());
         return itemViewer;
     }
 
