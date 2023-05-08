@@ -54,6 +54,7 @@ public class GameScene extends PathsMenu {
     private ImageView goldIcon;
     private ImageView scoreIcon;
     private ItemViewer itemViewer;
+    private ImageView playerStatusBackground;
     private boolean openingInGameMenu;
 
 
@@ -265,12 +266,15 @@ public class GameScene extends PathsMenu {
             passageViewer = createPassageViewer(sceneConfig);
             playerViewer = createPlayerViewer(sceneConfig);
             lookAtViewer = createLookAtViewer(sceneConfig);
+            playerStatusBackground = createPlayerStatsBackground();
+
             ImageView interactionArea = createInteractionArea(sceneConfig);
             createPlayerStatsIcons();
 
 
             root.getChildren().add(passageViewer);
             root.getChildren().add(interactionArea);
+            root.getChildren().add(playerStatusBackground);
             root.getChildren().add(healthIcon);
             root.getChildren().add(goldIcon);
             root.getChildren().add(scoreIcon);
@@ -425,6 +429,17 @@ public class GameScene extends PathsMenu {
         healthIcon.setFitHeight(STATS_ICON_SIZE);
         goldIcon.setFitHeight(STATS_ICON_SIZE);
         scoreIcon.setFitHeight(STATS_ICON_SIZE);
+    }
+
+    private ImageView createPlayerStatsBackground(){
+        ImageView viewer = new ImageView();
+        viewer.setImage(assetFinder.getItemSlot());
+        viewer.setX(0);
+        viewer.setY(0);
+        viewer.setFitWidth(100);
+        viewer.setFitHeight(180);
+
+        return viewer;
     }
 
     private ImageView createPlayerViewer(SceneConfig sceneConfig) {
