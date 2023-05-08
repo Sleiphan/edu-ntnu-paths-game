@@ -9,23 +9,37 @@ public class InventoryAction implements Action {
 
     private final String item;
     private final int hashCode;
+    private final boolean add;
 
     /**
      * Initializes the item that will be added to the inventory array of a player object
      * @param item item that will be added to the inventory array of a player object
      */
-    public InventoryAction(String item){
-        this.item = item;
-        this.hashCode = this.getClass().hashCode() * item.hashCode();
+    public InventoryAction(String item) {
+        this(item, true);
     }
 
     /**
-     * Adds the item to the inventory array of the player object given as a parameter.
-     * @param player    edu.ntnu.idatt2001.paths.Player whose inventory will be added to
+     * Sets the item to either add or consume with this action
+     * @param item The item that will be added to the inventory array of a player object
+     * @param add Whether this action will add or consume the item specified in the <code>item</code>-argument.
+     */
+    public InventoryAction(String item, boolean add) {
+        this.item = item;
+        this.add = add;
+        this.hashCode = this.getClass().hashCode() * item.hashCode() * (add ? 1 : 2);
+    }
+
+    /**
+     * Performs this item action on the inventory of the player-argument.
+     * @param player Player whose inventory will be changed.
      */
     @Override
     public void execute(Player player) {
-        player.addToInventory(item);
+        if (add)
+            player.addToInventory(item);
+        else
+            player.removeFromInventory(item);
     }
 
     /**
