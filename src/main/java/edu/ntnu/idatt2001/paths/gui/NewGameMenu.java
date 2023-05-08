@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.Game;
+import edu.ntnu.idatt2001.paths.Link;
 import edu.ntnu.idatt2001.paths.Player;
 import edu.ntnu.idatt2001.paths.action.InventoryAction;
 import edu.ntnu.idatt2001.paths.goal.*;
@@ -56,6 +57,9 @@ public class NewGameMenu extends PathsMenu {
         );
 
         File selectedFile = fileChooser.showOpenDialog(stage);
+        handler.setCurrentFileName(selectedFile.getName());
+        handler.setCurrentPath(selectedFile.getPath());
+
         if (selectedFile == null)
             return; // The user aborted choosing a story file.
 
@@ -65,6 +69,14 @@ public class NewGameMenu extends PathsMenu {
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
         }
+
+        try {
+            handler.setCurrentBrokenLinks(loader.getStory().getBrokenLinks());
+        } catch (Exception ex){
+            List<Link> emptyList = new ArrayList<>();
+            handler.setCurrentBrokenLinks(emptyList);
+        }
+
 
         if (!loader.load())
             showErrorsToUser(loader.readAllErrors());

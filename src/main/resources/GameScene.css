@@ -90,3 +90,7 @@ text-area .content {
     -fx-background-repeat: no-repeat;
 }
 
+#infoLabel{
+    -fx-text-fill: white;
+}
+

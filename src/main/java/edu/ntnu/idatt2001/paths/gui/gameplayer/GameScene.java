@@ -40,10 +40,12 @@ public class GameScene extends PathsMenu {
     private Label healthLabel;
     private Label goldLabel;
     private Label scoreLabel;
+
+    private Label fileNameLabel;
+    private Label pathLabel;
+    private Label brokenLinksLabel;
     private AnchorPane root;
     private final Scene scene;
-
-
     private final SceneConfig sceneConfig;
     private final PathsAssetStore assetStore;
     private final AssetFinder assetFinder;
@@ -85,6 +87,7 @@ public class GameScene extends PathsMenu {
             openingInGameMenu = false;
             return;
         }
+        updateInfoLabels();
     }
 
     @Override
@@ -249,12 +252,21 @@ public class GameScene extends PathsMenu {
             itemViewer.setInventoryAreaImage(img);
     }
 
+    private void updateInfoLabels(){
+        fileNameLabel.setText(handler.getCurrentFileName());
+        pathLabel.setText(handler.getCurrentPath());
+        brokenLinksLabel.setText(handler.getCurrentBrokenLinks().toString());
+    }
+
 
     private Scene createScene(SceneConfig sceneConfig) {
         linkSelector = createLinkSelector(sceneConfig);
         Button menuBt = createMenuButton(sceneConfig);
         textViewer = createTextArea(sceneConfig);
         createPlayerStatus();
+        createFileNameLabel();
+        createPathLabel();
+        createBrokenLinksLabel();
 
         root = new AnchorPane();
 
@@ -284,6 +296,9 @@ public class GameScene extends PathsMenu {
         root.getChildren().add(healthLabel);
         root.getChildren().add(goldLabel);
         root.getChildren().add(scoreLabel);
+        root.getChildren().add(fileNameLabel);
+        root.getChildren().add(pathLabel);
+        root.getChildren().add(brokenLinksLabel);
         root.getChildren().add(linkSelector);
         root.getChildren().add(menuBt);
 
@@ -452,4 +467,27 @@ public class GameScene extends PathsMenu {
         openingInGameMenu = true;
         changeState(menu);
     }
+
+    private void createFileNameLabel(){
+        fileNameLabel = new Label();
+        fileNameLabel.setTranslateX(15);
+        fileNameLabel.setTranslateY(600);
+        fileNameLabel.setId("infoLabel");
+    }
+
+    private void createPathLabel(){
+        pathLabel = new Label();
+        pathLabel.setTranslateX(15);
+        pathLabel.setTranslateY(625);
+        pathLabel.setId("infoLabel");
+    }
+
+    private void createBrokenLinksLabel(){
+        brokenLinksLabel = new Label();
+        brokenLinksLabel.setTranslateX(15);
+        brokenLinksLabel.setTranslateY(650);
+        brokenLinksLabel.setId("infoLabel");
+    }
+
+
 }
