@@ -300,7 +300,16 @@ public class PathsParser {
     private static InventoryAction fromPathsFormatInventoryAction(String pathsString) {
         if (!pathsString.startsWith("\"") || !pathsString.endsWith("\""))
             return null;
-        return new InventoryAction(pathsString.substring(1, pathsString.length() - 1));
+
+        String item = pathsString.substring(1, pathsString.length() - 1);
+
+        boolean add = true;
+        if (item.startsWith("-")) {
+            add = false;
+            item = item.substring(1);
+        }
+
+        return new InventoryAction(item, add);
     }
 
     private static ScoreAction fromPathsFormatScoreAction(String pathsString) {
