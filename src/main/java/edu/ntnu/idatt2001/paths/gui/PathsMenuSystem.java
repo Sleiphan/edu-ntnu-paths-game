@@ -18,6 +18,7 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
      */
     public PathsMenuSystem(PathsMenu initialState, Stage applicationWindow) {
         this.applicationWindow = applicationWindow;
+        applicationWindow.setResizable(false);
         changeState(initialState);
     }
 
