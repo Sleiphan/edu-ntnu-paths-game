@@ -2,6 +2,9 @@ package edu.ntnu.idatt2001.paths.action;
 
 import edu.ntnu.idatt2001.paths.Player;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
+
 /**
  * A class for executing a change in a player objects gold field
  */
@@ -26,6 +29,22 @@ public class GoldAction implements Action{
     @Override
     public void execute(Player player) {
         player.changeGold(gold);
+    }
+
+    @Override
+    public void execute(ScriptEngine engine) {
+        final String key = "gold";
+
+        if (engine.getContext().getAttribute(key) == null)
+            engine.put(key, 0);
+
+        String operator = gold >= 0 ? "+" : "-";
+
+        try {
+            engine.eval(key + operator + "=" + gold);
+        } catch (ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

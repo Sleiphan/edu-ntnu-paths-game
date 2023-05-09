@@ -17,7 +17,12 @@ You are at the Windmill.
 
 ::Windmill dig 1
 While digging, you get pricked by a thorn bush. You reach something solid, possibly made of metal.
-(Continue digging)[Windmill dig 2]{HealthAction:-5}{InventoryAction:"Axe"}
+(Continue digging)[Windmill dig 1 no health]@health < 5@
+(Continue digging)[Windmill dig 2]{HealthAction:-5}{InventoryAction:"Axe"}@health > 5@
+(Back)[Windmill]
+
+::Windmill dig 1 no health
+Out of fear of being pricked to death, you turn away.
 (Back)[Windmill]
 
 ::Windmill dig 2

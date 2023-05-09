@@ -98,26 +98,10 @@ public class Game {
     public void performLinkActions(Link link) {
         for (Action a : link.getActions()) {
             a.execute(player);
-            if (a instanceof InventoryAction ia)
-                connectInventoryActionToScriptEngine(ia);
+            a.execute(scriptEngine);
         }
 
         link.runScript(scriptEngine);
-    }
-
-    private void connectInventoryActionToScriptEngine(InventoryAction a) {
-        if (scriptEngine.getContext().getAttribute(a.getItem()) == null)
-            scriptEngine.put(a.getItem(), 0);
-
-        String operator = "+";
-        if (!a.addsItem())
-            operator = "-";
-
-        try {
-            scriptEngine.eval(a.getItem() + operator + "=1");
-        } catch (ScriptException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public List<Link> getOpenLinks(Passage passage) {

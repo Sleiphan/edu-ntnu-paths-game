@@ -2,6 +2,9 @@ package edu.ntnu.idatt2001.paths.action;
 
 import edu.ntnu.idatt2001.paths.Player;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
+
 /**
  * A class for executing the addition of an item to the inventory array of a player object
  */
@@ -40,6 +43,22 @@ public class InventoryAction implements Action {
             player.addToInventory(item);
         else
             player.removeFromInventory(item);
+    }
+
+    @Override
+    public void execute(ScriptEngine engine) {
+        if (engine.getContext().getAttribute(item) == null)
+            engine.put(item, 0);
+
+        String operator = "+";
+        if (!addsItem())
+            operator = "-";
+
+        try {
+            engine.eval(item + operator + "=1");
+        } catch (ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
