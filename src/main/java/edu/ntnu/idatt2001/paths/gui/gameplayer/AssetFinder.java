@@ -2,6 +2,7 @@ package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import javafx.scene.image.Image;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * This class defines the syntax for connecting assets to different passages.
@@ -24,6 +25,8 @@ public class AssetFinder {
     public static final String ITEM_AREA   = "Item area";
 
     public static final String LINK_ICON = "Icon"; // "Passage:Link:Background":"C:/"
+
+    public static final String AUDIO = "Audio"; // "Passage:Link:Background":"C:/"
 
     // The data separator used for layering.
     private static final String SEP = ":";
@@ -81,6 +84,7 @@ public class AssetFinder {
         sb.append("\"").append(passageTitle).append(SEP).append(PASSAGE_LOOK_AT)   .append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"").append(passageTitle).append(SEP).append(PASSAGE_BACKGROUND).append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"").append(passageTitle).append(SEP).append(ITEM_AREA)         .append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"").append(passageTitle).append(SEP).append(AUDIO)             .append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
 
         for (String s : linkTitles)
             sb.append("\"").append(passageTitle).append(SEP).append(s).append(SEP).append(LINK_ICON).append("\"").append(SEP).append("\"put_URI_here\"").append("\n");
@@ -130,5 +134,9 @@ public class AssetFinder {
 
     public Image getTextArea() {
         return assetStore.images().getAsset(TEXT_AREA);
+    }
+
+    public MediaPlayer getAudio(String passageTitle){
+        return assetStore.audio().getAsset(passageTitle + SEP + AUDIO);
     }
 }

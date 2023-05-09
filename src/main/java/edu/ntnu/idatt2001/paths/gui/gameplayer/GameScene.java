@@ -14,11 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-
-import java.util.Optional;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class GameScene extends PathsMenu {
 
@@ -59,6 +58,8 @@ public class GameScene extends PathsMenu {
     private ItemViewer itemViewer;
     private ImageView playerStatusBackground;
     private boolean openingInGameMenu;
+
+    private MediaPlayer audioPlayer;
 
 
     public GameScene(Game game, StoryLoader s, SceneConfig sceneConfig) {
@@ -121,6 +122,7 @@ public class GameScene extends PathsMenu {
      * @param link The link that the user has chosen.
      */
     private void goLink(Link link) {
+
         Passage newPassage = game.go(link);
 
         if (newPassage == null) {
@@ -216,6 +218,43 @@ public class GameScene extends PathsMenu {
         updatePlayerAsset(newPassage);
         updateInteractionObject(newPassage);
         updateItemAreaBG(newPassage);
+        playAudio(newPassage);
+    }
+
+    private boolean checkNewAudio(Passage newPassage){
+        boolean continueAudio = false;
+        MediaPlayer audioAsset = assetFinder.getAudio(newPassage.getTitle());
+
+        if(audioAsset == null){
+            continueAudio = true;
+            System.out.println(continueAudio);
+            return continueAudio;
+        } else {
+            continueAudio = false;
+            System.out.println(continueAudio);
+            return continueAudio;
+        }
+
+    }
+
+    private void playAudio(Passage newPassage){
+
+        boolean continueAudio = checkNewAudio(newPassage);
+
+        if((!continueAudio) && !(audioPlayer == assetFinder.getAudio(newPassage.getTitle()))){
+            if(!(audioPlayer == null)){
+                audioPlayer.stop();
+            }
+            audioPlayer = assetFinder.getAudio(newPassage.getTitle());
+            audioPlayer.setVolume(0.10);
+            audioPlayer.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    audioPlayer.seek(Duration.ZERO);
+                }
+            });
+            audioPlayer.play();
+        }
     }
 
     private void updateBackground(Passage newPassage) {
@@ -306,6 +345,7 @@ public class GameScene extends PathsMenu {
             playerViewer = createPlayerViewer(sceneConfig);
             lookAtViewer = createLookAtViewer(sceneConfig);
             playerStatusBackground = createPlayerStatsBackground();
+            //audioPlayer = createAudioPlayer();
 
             ImageView interactionArea = createInteractionArea(sceneConfig);
             createPlayerStatsIcons();
@@ -331,6 +371,9 @@ public class GameScene extends PathsMenu {
         root.getChildren().add(brokenLinksLabel);
         root.getChildren().add(linkSelector);
         root.getChildren().add(menuBt);
+
+        //playAudio(audioPlayer);
+
 
         Scene scene = new Scene(root, sceneConfig.getWidth(), sceneConfig.getHeight());
         scene.getStylesheets().add("GameScene.css");
@@ -490,6 +533,14 @@ public class GameScene extends PathsMenu {
 
     private ImageView createLookAtViewer(SceneConfig sceneConfig) {
         return new ImageView();
+    }
+
+    private void playAudio(MediaPlayer mediaPlayer){
+        mediaPlayer.play();
+    }
+
+    private MediaPlayer createAudioPlayer(){
+        return new MediaPlayer(new Media(""));
     }
 
     private void openInGameMenu(Event e) {
