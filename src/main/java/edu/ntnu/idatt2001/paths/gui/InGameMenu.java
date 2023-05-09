@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.Game;
+import edu.ntnu.idatt2001.paths.Player;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -29,8 +30,10 @@ public class InGameMenu extends PathsMenu {
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get() == ButtonType.OK){
-            System.out.println(handler.getInitialPlayer().getHealth());
-            Game initialGame = new Game(handler.getInitialPlayer(), handler.getStoryLoader().getStory(),handler.getInitialGoals());
+            Player player = new Player.PlayerBuilder(handler.getInitialPlayer().getName(),
+                    handler.getInitialPlayer().getHealth()).setGold(handler.getInitialPlayer().getGold())
+                    .build();
+            Game initialGame = new Game(player, handler.getStoryLoader().getStory(),handler.getInitialGoals());
             changeState(new GameScene(initialGame,handler.getStoryLoader(),handler.getSceneConfig()));
         }
 
