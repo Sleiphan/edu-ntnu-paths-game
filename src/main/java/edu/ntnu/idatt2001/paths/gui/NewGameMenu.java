@@ -113,6 +113,9 @@ public class NewGameMenu extends PathsMenu {
 
                 GameScene gameScene = new GameScene(game, loader, sceneConfig);
 
+                handler.setCurrentAudio("");
+                handler.stopMenuMusic();
+
                 changeState(gameScene);
             }
         } else {

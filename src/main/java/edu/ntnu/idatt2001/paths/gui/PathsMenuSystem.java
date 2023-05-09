@@ -6,9 +6,13 @@ import edu.ntnu.idatt2001.paths.Player;
 import edu.ntnu.idatt2001.paths.Story;
 import edu.ntnu.idatt2001.paths.goal.Goal;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,8 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
     List<Goal> initialGoals = new ArrayList<>();
 
     SceneConfig sceneConfig = new SceneConfig(1270, 720);
+
+    MediaPlayer menuMusic;
 
     /**
      * Creates a new instance of FXHandler running an initial FXAppState.
@@ -134,5 +140,23 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
 
     public void setStoryLoader(StoryLoader storyLoader) {
         this.storyLoader = storyLoader;
+    }
+
+    public void playMenuMusic(){
+        String musicFile = "src/main/resources/TestAudio/Test.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        menuMusic = new MediaPlayer(sound);
+        menuMusic.setVolume(0.05);
+        menuMusic.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                menuMusic.seek(Duration.ZERO);
+            }
+        });
+        menuMusic.play();
+    }
+
+    public void stopMenuMusic(){
+        menuMusic.stop();
     }
 }

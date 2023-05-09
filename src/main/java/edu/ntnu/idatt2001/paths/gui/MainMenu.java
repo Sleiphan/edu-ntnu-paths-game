@@ -52,20 +52,7 @@ public class MainMenu extends PathsMenu {
 
         if(!handler.getCurrentAudio().equals("MainMenu")){
             handler.setCurrentAudio("MainMenu");
-            String musicFile = "src/main/resources/TestAudio/Test.mp3";
-
-            Media sound = new Media(new File(musicFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setVolume(0.05);
-            mediaPlayer.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    mediaPlayer.seek(Duration.ZERO);
-                }
-            });
-
-            mediaPlayer.play();
-
+            handler.playMenuMusic();
         }
 
 
