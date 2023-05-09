@@ -2,8 +2,7 @@ package edu.ntnu.idatt2001.paths;
 
 import com.oracle.truffle.js.runtime.JSContextOptions;
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
-import edu.ntnu.idatt2001.paths.action.Action;
-import edu.ntnu.idatt2001.paths.action.InventoryAction;
+import edu.ntnu.idatt2001.paths.action.*;
 import edu.ntnu.idatt2001.paths.goal.Goal;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
@@ -36,6 +35,10 @@ public class Game {
         this.story = story;
         this.goals = goals;
 
+        initialiseScriptingEngine(player);
+    }
+
+    private void initialiseScriptingEngine(Player player) {
         this.scriptEngine = GraalJSScriptEngine.create(
                 Engine.newBuilder()
                         .option("engine.WarnInterpreterOnly", "false")
@@ -44,6 +47,10 @@ public class Game {
                         .allowIO(false)
                         .option(JSContextOptions.ECMASCRIPT_VERSION_NAME, "2022")
         );
+
+        this.scriptEngine.put(HealthAction.SCRIPT_VARIABLE_KEY, player.getHealth());
+        this.scriptEngine.put(GoldAction.SCRIPT_VARIABLE_KEY, player.getGold());
+        this.scriptEngine.put(ScoreAction.SCRIPT_VARIABLE_KEY, player.getScore());
     }
 
     /**

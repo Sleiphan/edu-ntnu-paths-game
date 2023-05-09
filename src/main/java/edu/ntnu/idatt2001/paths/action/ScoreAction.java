@@ -9,6 +9,7 @@ import javax.script.ScriptException;
  * A class for executing a change in a player objects points field
  */
 public class ScoreAction implements Action{
+    public static final String SCRIPT_VARIABLE_KEY = "score";
     private final int points;
     private final int hashCode;
 
@@ -32,17 +33,10 @@ public class ScoreAction implements Action{
 
     @Override
     public void execute(ScriptEngine engine) {
-        final String key = "score";
-
-        if (engine.getContext().getAttribute(key) == null)
-            engine.put(key, 0);
-
-        String operator = "+";
-        if (points < 0)
-            operator = "-";
+        String operator = points >= 0 ? "+" : "-";
 
         try {
-            engine.eval(key + operator + "=" + points);
+            engine.eval(SCRIPT_VARIABLE_KEY + operator + "=" + Math.abs(points));
         } catch (ScriptException e) {
             throw new RuntimeException(e);
         }

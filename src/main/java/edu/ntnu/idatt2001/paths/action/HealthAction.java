@@ -9,6 +9,8 @@ import javax.script.ScriptException;
  * A class for executing a change in a player objects health field
  */
 public class HealthAction implements Action{
+    public static final String SCRIPT_VARIABLE_KEY = "health";
+
     private final int health;
     private final int hashCode;
 
@@ -32,15 +34,9 @@ public class HealthAction implements Action{
 
     @Override
     public void execute(ScriptEngine engine) {
-        final String key = "health";
-
-        if (engine.getContext().getAttribute(key) == null)
-            engine.put(key, 0);
-
         String operator = health >= 0 ? "+" : "-";
-
         try {
-            engine.eval(key + operator + "=" + health);
+            engine.eval(SCRIPT_VARIABLE_KEY + operator + "=" + Math.abs(health));
         } catch (ScriptException e) {
             throw new RuntimeException(e);
         }

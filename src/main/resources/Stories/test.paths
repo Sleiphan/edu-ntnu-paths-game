@@ -7,6 +7,17 @@ Welcome to this story
 ::Erdowin home
 You are in the village of Erdowin.
 (The windmill)[Windmill]
+(The Bazaar)[Bazaar]
+
+::Bazaar
+Welcome to my humble bazaar!
+(Buy health potion: -7 gold)[Bazaar]{GoldAction:-7}{HealthAction:+5}@gold >= 7@
+(Buy health potion: -7 gold)[Bazaar not enough gold]@gold < 7@
+(Exit)[Erdowin home]
+
+::Bazaar not enough gold
+You do not have enough gold to buy this item.
+(Continue)[Bazaar]
 
 ::Windmill
 You are at the Windmill.

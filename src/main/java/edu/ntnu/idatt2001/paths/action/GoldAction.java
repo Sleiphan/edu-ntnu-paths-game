@@ -9,6 +9,8 @@ import javax.script.ScriptException;
  * A class for executing a change in a player objects gold field
  */
 public class GoldAction implements Action{
+    public static final String SCRIPT_VARIABLE_KEY = "gold";
+
     private final int gold;
     private final int hashCode;
 
@@ -33,15 +35,10 @@ public class GoldAction implements Action{
 
     @Override
     public void execute(ScriptEngine engine) {
-        final String key = "gold";
-
-        if (engine.getContext().getAttribute(key) == null)
-            engine.put(key, 0);
-
         String operator = gold >= 0 ? "+" : "-";
 
         try {
-            engine.eval(key + operator + "=" + gold);
+            engine.eval(SCRIPT_VARIABLE_KEY + operator + "=" + Math.abs(gold));
         } catch (ScriptException e) {
             throw new RuntimeException(e);
         }
