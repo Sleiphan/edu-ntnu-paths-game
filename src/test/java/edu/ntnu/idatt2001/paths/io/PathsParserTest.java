@@ -225,4 +225,27 @@ public class PathsParserTest {
         assert results[1].getItem().equals(item2);
         assert results[2].getItem().equals(item3);
     }
+
+    @Test
+    public void link_with_script_and_condition() {
+        PathsParser parser = new PathsParser();
+        Link link1 = new Link("Unlock door", "Throne room");
+        link1.setCondition("has_throne_room_key == true");
+        Link link2 = new Link("Unlock door", "Throne room");
+        link2.setScript("throne_room_unlocked = true");
+        Link link3 = new Link("Unlock door", "Throne room");
+        link3.setScript("throne_room_unlocked = true");
+        link3.setCondition("has_throne_room_key == true");
+
+        String parsed1 = parser.toPathsFormat(link1);
+        String parsedCopy1 = parser.toPathsFormat(parser.fromPathsFormatLink(parsed1));
+        String parsed2 = parser.toPathsFormat(link2);
+        String parsedCopy2 = parser.toPathsFormat(parser.fromPathsFormatLink(parsed2));
+        String parsed3 = parser.toPathsFormat(link3);
+        String parsedCopy3 = parser.toPathsFormat(parser.fromPathsFormatLink(parsed3));
+
+        assert parsed1.equals(parsedCopy1);
+        assert parsed2.equals(parsedCopy2);
+        assert parsed3.equals(parsedCopy3);
+    }
 }

@@ -2,6 +2,8 @@ package edu.ntnu.idatt2001.paths;
 
 import edu.ntnu.idatt2001.paths.action.Action;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +15,16 @@ public class Link {
     private final String text;
     private final String reference;
     private final List<Action> actions;
+    private String script;
+    private String condition;
 
     private int hashCode;
     private boolean recalculateHash;
 
     /**
-     * Creates a new edu.ntnu.idatt2001.paths.Link-object. A edu.ntnu.idatt2001.paths.Link is a connection between two passages, and binds together parts of a story.
+     * Creates a new Link-object. A Link is a connection between two passages, and binds together parts of a story.
      * @param text A description indicating a choice or action in the story.
-     * @param reference A unique String identifying a edu.ntnu.idatt2001.paths.Passage object. Usually the title of the passage.
+     * @param reference A unique String identifying a Passage object. Usually the title of the passage.
      */
     public Link(String text, String reference) {
         if (text == null)
@@ -38,8 +42,8 @@ public class Link {
     }
 
     /**
-     * Returns this edu.ntnu.idatt2001.paths.Link-object's associated description, indicating a choice or action in the story.
-     * @return this edu.ntnu.idatt2001.paths.Link-object's associated description, indicating a choice or action in the story.
+     * Returns this Link-object's associated description, indicating a choice or action in the story.
+     * @return this Link-object's associated description, indicating a choice or action in the story.
      */
     public String getText() {
         return text;
@@ -80,9 +84,46 @@ public class Link {
         //return new ArrayList<>(actions);
     }
 
+    public void setScript(String script) {
+        this.script = script;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void runScript(ScriptEngine engine) {
+        if (script != null) {
+            try {
+                engine.eval(script);
+            } catch (ScriptException e) {
+                return; // For now, ignore these exceptions.
+            }
+        }
+    }
+
+    public boolean isLinkOpen(ScriptEngine engine) {
+        if (condition == null)
+            return true;
+
+        try {
+            return (Boolean) engine.eval(condition);
+        } catch (ScriptException e) {
+            return true; // For now, ignore these exceptions.
+        }
+    }
+
     /**
-     * Returns a String containing a comprehensive overview of this edu.ntnu.idatt2001.paths.Link-object.
-     * @return a String containing a comprehensive overview of this edu.ntnu.idatt2001.paths.Link-object.
+     * Returns a String containing a comprehensive overview of this Link-object.
+     * @return a String containing a comprehensive overview of this Link-object.
      */
     @Override
     public String toString() {
@@ -102,8 +143,8 @@ public class Link {
 
     /**
      * Compares the state of this object to that of the submitted parameter object.
-     * @param link The edu.ntnu.idatt2001.paths.Link-object to compare this object to.
-     * @return true if - and only if - the parameter 'link' is an instance of this edu.ntnu.idatt2001.paths.Link-class <i>AND</i> this object's state is equal to that of the parameter. Else, returns false.
+     * @param link The Link-object to compare this object to.
+     * @return true if - and only if - the parameter 'link' is an instance of this Link-class <i>AND</i> this object's state is equal to that of the parameter. Else, returns false.
      */
     @Override
     public boolean equals(Object link) {
@@ -125,6 +166,10 @@ public class Link {
     public int hashCode() {
         if (recalculateHash) {
             hashCode = text.hashCode() * reference.hashCode() * actions.hashCode();
+            if (script != null)
+                hashCode *= script.hashCode();
+            if (condition != null)
+                hashCode *= condition.hashCode();
             recalculateHash = false;
         }
         return hashCode;

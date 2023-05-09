@@ -19,6 +19,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.util.List;
+
 public class GameScene extends PathsMenu {
 
     private static final int LINK_ENTRY_HEIGHT = 20;
@@ -122,7 +124,6 @@ public class GameScene extends PathsMenu {
      * @param link The link that the user has chosen.
      */
     private void goLink(Link link) {
-
         Passage newPassage = game.go(link);
 
         if (newPassage == null) {
@@ -140,18 +141,19 @@ public class GameScene extends PathsMenu {
     private void reachedBrokenLink() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Broken link");
-        alert.setHeaderText("You reached a broken link");
+        alert.setHeaderText("You have reached a broken link");
         alert.setContentText("This option does not lead anywhere in this story.");
         alert.showAndWait();
     }
 
     private void performLinkActions(Link link) {
-        for (Action a : link.getActions()) {
-            a.execute(game.getPlayer());
+        game.performLinkActions(link);
 
-            if (hasAssets())
-                itemViewer.processAction(a);
-        }
+        if (!hasAssets())
+            return;
+
+        for (Action a : link.getActions())
+            itemViewer.processAction(a);
     }
 
 
@@ -164,9 +166,10 @@ public class GameScene extends PathsMenu {
 
     private void updateLinkSelector(Passage newPassage) {
         AnchorPane root = new AnchorPane();
+        List<Link> links = game.getOpenLinks(newPassage);
 
         int y = 0;
-        for (Link l : newPassage.getLinks()) {
+        for (Link l : links) {
             Label label = new Label(l.getText());
             label.setId("Link_entry_label");
             label.setTranslateX(LINK_ENTRY_LABEL_X);
@@ -196,8 +199,8 @@ public class GameScene extends PathsMenu {
                 return;
             }
 
-            if (key >= 0 && key < newPassage.getLinks().size())
-                goLink(newPassage.getLinks().get(key));
+            if (key >= 0 && key < links.size())
+                goLink(links.get(key));
         });
 
         linkSelector.setContent(root);

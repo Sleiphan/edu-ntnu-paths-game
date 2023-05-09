@@ -232,6 +232,10 @@ public class PathsParser {
         sb.append("[").append(l.getReference()).append("]");
         for (Action a : l.getActions())
             sb.append(toPathsFormat(a));
+        if (l.getScript() != null)
+            sb.append("$").append(l.getScript()).append("$");
+        if (l.getCondition() != null)
+            sb.append("@").append(l.getCondition()).append("@");
         return sb.toString();
     }
 
@@ -265,25 +269,36 @@ public class PathsParser {
                 return null; // Every Link must have a reference
             }
             String ref = pathsString.substring(index_1, index_2);
-
             Link l = new Link(text, ref);
 
-            index_1 = index_2 + 2;
+            boolean errorOccurred = false;
+
+            index_1 = pathsString.indexOf('{', index_2) + 1;
             index_2 = pathsString.lastIndexOf('}');
-            if (index_2 <= index_1) { // Does this link have any actions?
-                layer--;
-                return l; // If not, return the link without any actions.
+            if (index_2 > index_1) { // Does this link have any actions?
+                String[] linksS = pathsString.substring(index_1, index_2).split(ACTON_SEPARATOR);
+
+                for (String s : linksS) {
+                    Action a = fromPathsFormatAction("{" + s + "}");
+                    if (a != null)
+                        l.addAction(fromPathsFormatAction("{" + s + "}"));
+                    else
+                        errorOccurred = true; // If one action fails to be parsed, this Link could not be parsed.
+                }
             }
 
-            String[] linksS = pathsString.substring(index_1, index_2).split(ACTON_SEPARATOR);
+            index_1 = pathsString.indexOf('$', index_2) + 1;
+            index_2 = pathsString.indexOf('$', index_1 + 1);
+            if (index_2 > index_1) { // Does this link have a script?
+                String script = pathsString.substring(index_1, index_2);
+                l.setScript(script);
+            }
 
-            boolean errorOccurred = false;
-            for (String s : linksS) {
-                Action a = fromPathsFormatAction("{" + s + "}");
-                if (a != null)
-                    l.addAction(fromPathsFormatAction("{" + s + "}"));
-                else
-                    errorOccurred = true; // If one action fails to be parsed, this Link could not be parsed.
+            index_1 = pathsString.indexOf('@', index_2) + 1;
+            index_2 = pathsString.indexOf('@', index_1 + 1);
+            if (index_2 > index_1) { // Does this link have a condition?
+                String condition = pathsString.substring(index_1, index_2);
+                l.setCondition(condition);
             }
 
             layer--;
