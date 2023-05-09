@@ -7,6 +7,8 @@ import edu.ntnu.idatt2001.paths.action.InventoryAction;
 import edu.ntnu.idatt2001.paths.goal.*;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -18,11 +20,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class NewGameMenu extends PathsMenu {
 
@@ -49,6 +53,9 @@ public class NewGameMenu extends PathsMenu {
     }
 
     private void start(ActionEvent e){
+
+
+
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("src/main/resources/Stories"));
@@ -82,32 +89,68 @@ public class NewGameMenu extends PathsMenu {
 
         Player player;
         String goldText = txGold.getText();
-        if(goldText.trim().isEmpty()){
-            player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
-                    .build();
-            handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth()).build());
+        String nameText = txName.getText();
+        String healthText = txHealth.getText();
+
+
+        if(!nameText.trim().isEmpty() && !healthText.trim().isEmpty() && getGoals().size() > 0){
+            if(goldText.trim().isEmpty()){
+                player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
+                        .build();
+                handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth()).build());
+            } else {
+                player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
+                        .setGold(Integer.parseInt(goldText)).build();
+                handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth())
+                        .setGold(player.getGold()).build());
+
+                handler.setInitialGoals(getGoals());
+
+                Game game = new Game(player, loader.getStory(), getGoals());
+
+
+                SceneConfig sceneConfig = handler.getSceneConfig();
+
+                GameScene gameScene = new GameScene(game, loader, sceneConfig);
+
+                changeState(gameScene);
+            }
         } else {
-            player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
-                    .setGold(Integer.parseInt(goldText)).build();
-            handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth())
-                            .setGold(player.getGold()).build());
-
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Missing input");
+            alert.setHeaderText("Missing input");
+            String missingContent = "";
+            if(nameText.trim().isEmpty()){
+                missingContent += "You have to fill the name field" + '\n';
+            }
+            if(nameText.trim().isEmpty()){
+                missingContent += "You have to fill the health field" + '\n';
+            }
+            if(getGoals().size() == 0){
+                missingContent += "You have to have a minimum of one goal";
+            }
+            alert.setContentText(missingContent);
+            alert.showAndWait();
         }
-
-        handler.setInitialGoals(getGoals());
-
-        Game game = new Game(player, loader.getStory(), getGoals());
-
-
-        SceneConfig sceneConfig = handler.getSceneConfig();
-
-        GameScene gameScene = new GameScene(game, loader, sceneConfig);
-
-        changeState(gameScene);
     }
 
     private void showErrorsToUser(String[] errors) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error");
+        StringBuilder allErrors = new StringBuilder();
+        for(int i = 0; i < errors.length; i++){
+            allErrors.append(errors[i]).append('\n').append('\n');
+        }
 
+        TextArea area = new TextArea(allErrors.toString());
+        area.setWrapText(true);
+        area.setEditable(false);
+
+        alert.getDialogPane().setContent(area);
+        alert.setResizable(true);
+
+        alert.showAndWait();
     }
 
     private List<Goal> getGoals() {
@@ -335,7 +378,29 @@ public class NewGameMenu extends PathsMenu {
 
     @Override
     public void setup() {
+        txHealth.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txHealth.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
 
+        txGold.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txGold.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        txName.setText("Roy");
+        txHealth.setText("100");
+        txGold.setText("50");
     }
 
     @Override
