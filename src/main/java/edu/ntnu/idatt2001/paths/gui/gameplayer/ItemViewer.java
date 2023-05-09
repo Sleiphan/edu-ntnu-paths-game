@@ -74,8 +74,13 @@ public class ItemViewer {
     }
 
     public void processAction(Action a) {
-        if (a instanceof InventoryAction inventoryAction)
-            addItem(inventoryAction.getItem());
+        if (a instanceof InventoryAction inventoryAction) {
+            if (inventoryAction.addsItem())
+                addItem(inventoryAction.getItem());
+            else
+                removeItem(inventoryAction.getItem());
+        }
+
     }
 
     public void addItem(String item) {
