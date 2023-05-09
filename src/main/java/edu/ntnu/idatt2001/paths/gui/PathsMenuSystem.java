@@ -98,7 +98,7 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
         }
     }
 
-    public String getCurrentPath(){return currentPath;}
+    public String getCurrentPath() { return currentPath; }
 
     public void setCurrentBrokenLinks(List<Link> currentBrokenLinks) {
         this.currentBrokenLinks = currentBrokenLinks;

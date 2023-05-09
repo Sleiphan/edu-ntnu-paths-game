@@ -18,10 +18,11 @@ public class AssetFinderTest {
         String storyPath = "C:\\Users\\hfred\\source\\repos\\paths\\src\\main\\resources\\Stories\\test.paths";
         String resultPath = "C:\\Users\\hfred\\source\\repos\\paths\\src\\main\\resources\\Stories\\test.pathsassets";
 
+        PathsParser parser = new PathsParser();
         StringBuilder sb = new StringBuilder();
         sb.append(AssetFinder.generateGlobalTemplate());
 
-        Story s = PathsParser.fromPathsFormatStory(Files.readString(Path.of(storyPath), StandardCharsets.UTF_8));
+        Story s = parser.fromPathsFormatStory(Files.readString(Path.of(storyPath), StandardCharsets.UTF_8));
 
         for (Passage p : s.getPassages()) {
             String[] links = p.getLinks().stream().map(Link::getText).toArray(String[]::new);

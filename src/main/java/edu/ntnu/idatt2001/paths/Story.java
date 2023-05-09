@@ -1,6 +1,8 @@
 package edu.ntnu.idatt2001.paths;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A Story is an interactive, nonlinear narrative consisting of a collection of passages.
@@ -143,21 +145,11 @@ public class Story {
      * @return a list of all links in the passages map that do not have an associated passage value
      */
     public List<Link> getBrokenLinks(){
-        List<Link> brokenLinks = new ArrayList<>();
-        for(Map.Entry<Link,Passage> entry : passages.entrySet()){
-            if(entry.getValue() == null){
-                brokenLinks.add(entry.getKey());
-            }
-        }
-        return brokenLinks;
-    }
+        Set<Passage> allPass  = new HashSet<>(passages.values());
+        Set<Link>    allLinks = allPass.stream().flatMap(p -> p.getLinks().stream()).collect(Collectors.toSet());
 
-    /**
-     * Adds a broken link to passages for testing purposes
-     */
-    public void addBrokenLink(){
-        passages.put(new Link("Test","Test"),null);
-        recalculateHash = true;
+        List<Link> brokenLinks = allLinks.stream().filter(l -> allPass.stream().noneMatch(p -> p != null && l.getReference().equals(p.getTitle()))).toList();
+        return brokenLinks;
     }
 
     @Override

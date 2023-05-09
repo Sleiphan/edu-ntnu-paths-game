@@ -159,15 +159,28 @@ class StoryTest {
 
     @Test
     void getBrokenLinks(){
-        List<Link> links = new ArrayList<>();
-        Link link = new Link("Test","Test");
-        links.add(link);
-        Passage passage = new Passage("Test","Test",links);
-        Story story = new Story("Test",passage);
-        assertEquals(0,story.getBrokenLinks().size());
-        assertNotEquals(1,story.getBrokenLinks().size());
-        story.addBrokenLink();
-        assertEquals(1,story.getBrokenLinks().size());
-        assertNotEquals(0,story.getBrokenLinks().size());
+        List<Link> passage1Links = new ArrayList<>();
+        passage1Links.add(new Link("To passage 1","Passage 1"));
+        passage1Links.add(new Link("To passage 2","Passage 2"));
+        Passage passage1 = new Passage("Passage 1","Self ref passage",passage1Links);
+
+        List<Link> passage2Links = new ArrayList<>();
+        passage2Links.add(new Link("To passage 1","Passage 1"));
+        passage2Links.add(new Link("To passage 2","Passage 2"));
+        passage2Links.add(new Link("Broken link","Passage that does not exist"));
+        Passage passage2 = new Passage("Passage 2","Passage with a broken link", passage2Links);
+
+        Story story = new Story("Test", passage1);
+
+
+
+        int numBeforeBrokenLink = story.getBrokenLinks().size();
+        story.addPassage(passage2);
+        int afterBrokenLink = story.getBrokenLinks().size();
+
+
+
+        assert numBeforeBrokenLink == 1;
+        assert afterBrokenLink == 1;
     }
 }

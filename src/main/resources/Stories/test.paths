@@ -3,6 +3,8 @@ Themia
 ::Erdowin home
 You are in the village of Erdowin.
 (The windmill)[Windmill]
+(Broken link 1)[Nowhere 1]
+(Broken link 2)[Nowhere 2]
 
 ::Windmill
 You are at the Windmill.
@@ -13,6 +15,7 @@ You are at the Windmill.
 ::Windmill dig 1
 While digging, you get pricked by a thorn bush. You reach something solid, possibly made of metal.
 (Continue digging)[Windmill dig 2]{HealthAction:-5}{InventoryAction:"Axe"}
+(Back)[Windmill]
 
 ::Windmill dig 2
 You found an axe! You start bleeding from being scratched by the bush.

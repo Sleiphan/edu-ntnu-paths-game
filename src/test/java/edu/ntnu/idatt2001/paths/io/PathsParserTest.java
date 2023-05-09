@@ -56,20 +56,22 @@ public class PathsParserTest {
 
     @Test
     void does_not_throw_exception_and_returns_null_at_failed_parsing() {
-        Story   o1 = PathsParser.fromPathsFormatStory(null);
-        Passage o2 = PathsParser.fromPathsFormatPassage(null);
-        Link    o3 = PathsParser.fromPathsFormatLink(null);
-        Action  o4 = PathsParser.fromPathsFormatAction(null);
-        Story   o5 = PathsParser.fromPathsFormatStory("");
-        Story   o6 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\n\n");
-        Story   o7 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n([]");
-        Story   o8 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()]");
-        Story   o9 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[]");
-        Story   o10 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(]");
-        Story   o11 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n)[");
-        Story   o12 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(Link Text)[]");
-        Story   o13 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[Link ref]");
-        Story   o14 = PathsParser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\nPassage 2\nText\n(Link Text)[Link ref]{}");
+        PathsParser parser = new PathsParser();
+
+        Story   o1 = parser.fromPathsFormatStory(null);
+        Passage o2 = parser.fromPathsFormatPassage(null);
+        Link    o3 = parser.fromPathsFormatLink(null);
+        Action  o4 = parser.fromPathsFormatAction(null);
+        Story   o5 = parser.fromPathsFormatStory("");
+        Story   o6 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\n\n::Passage 3\nSome Text\n\n::Passage 4\n\n");
+        Story   o7 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n([]");
+        Story   o8 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()]");
+        Story   o9 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[]");
+        Story   o10 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(]");
+        Story   o11 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n)[");
+        Story   o12 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n(Link Text)[]");
+        Story   o13 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\n::Passage 2\nText\n()[Link ref]");
+        Story   o14 = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\nPassage 2\nText\n(Link Text)[Link ref]{}");
 
         assert o1 == null;
         assert o2 == null;
@@ -90,14 +92,15 @@ public class PathsParserTest {
     @Test
     void parsing_a_complete_story_CRLF() {
         Story s = getTestStory();
+        PathsParser parser = new PathsParser();
 
         final String CRLF = "\r\n";
         final String LF = "\n";
 
-        String parsed = PathsParser.toPathsFormat(s);
+        String parsed = parser.toPathsFormat(s);
         String parsedCRLF = parsed.replaceAll(LF+"(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", CRLF);
-        Story copy = PathsParser.fromPathsFormatStory(parsedCRLF);
-        String copyParsed = PathsParser.toPathsFormat(copy);
+        Story copy = parser.fromPathsFormatStory(parsedCRLF);
+        String copyParsed = parser.toPathsFormat(copy);
 
         boolean equal = parsed.equals(copyParsed);
         assert equal;
@@ -106,10 +109,11 @@ public class PathsParserTest {
     @Test
     void parsing_a_complete_story() {
         Story s = getTestStory();
+        PathsParser parser = new PathsParser();
 
-        String parsed = PathsParser.toPathsFormat(s);
-        Story copy = PathsParser.fromPathsFormatStory(parsed);
-        String copyParsed = PathsParser.toPathsFormat(copy);
+        String parsed = parser.toPathsFormat(s);
+        Story copy = parser.fromPathsFormatStory(parsed);
+        String copyParsed = parser.toPathsFormat(copy);
 
         boolean equal = parsed.equals(copyParsed);
         assert equal;
@@ -121,8 +125,9 @@ public class PathsParserTest {
         Link link = new Link("test","test");
         linkList.add(link);
         Passage passage = new Passage("test","test",linkList);
+        PathsParser parser = new PathsParser();
 
-        String passageString = PathsParser.toPathsFormat(passage);
+        String passageString = parser.toPathsFormat(passage);
         String expected = "::test\ntest\n(test)[test]";
 
         assert passageString.equals(expected);
@@ -131,8 +136,9 @@ public class PathsParserTest {
     @Test
     void parse_from_string_object_to_passage_object(){
         String passageString = "::test\ntest\n(test)[test]";
+        PathsParser parser = new PathsParser();
 
-        Passage passage = PathsParser.fromPathsFormatPassage(passageString);
+        Passage passage = parser.fromPathsFormatPassage(passageString);
 
         assert "test".equals(passage.getTitle());
         assert "test".equals(passage.getContent());
@@ -147,19 +153,22 @@ public class PathsParserTest {
         link.addAction(new HealthAction(-3));
         link.addAction(new InventoryAction("Sack of gold"));
         link.addAction(new ScoreAction(0));
+        PathsParser parser = new PathsParser();
 
-        String linkString = PathsParser.toPathsFormat(link);
-        Link linkCopy = PathsParser.fromPathsFormatLink(linkString);
+        String linkString = parser.toPathsFormat(link);
+        Link linkCopy = parser.fromPathsFormatLink(linkString);
 
         assert link.equals(linkCopy);
     }
 
     @Test
     public void casting_to_correct_Action_type() {
-        Action a = PathsParser.fromPathsFormatAction("{GoldAction:10}");
-        Action b = PathsParser.fromPathsFormatAction("{HealthAction:8}");
-        Action c = PathsParser.fromPathsFormatAction("{InventoryAction:\"Wicker's Blade\"}");
-        Action d = PathsParser.fromPathsFormatAction("{ScoreAction:12}");
+        PathsParser parser = new PathsParser();
+
+        Action a = parser.fromPathsFormatAction("{GoldAction:10}");
+        Action b = parser.fromPathsFormatAction("{HealthAction:8}");
+        Action c = parser.fromPathsFormatAction("{InventoryAction:\"Wicker's Blade\"}");
+        Action d = parser.fromPathsFormatAction("{ScoreAction:12}");
 
         assert(a instanceof GoldAction);
         assert(b instanceof HealthAction);
@@ -170,18 +179,18 @@ public class PathsParserTest {
     @Test
     public void action_parsing_deals_with_invalid_input() {
         Action[] results = new Action[10];
+        PathsParser parser = new PathsParser();
 
-
-        Assertions.assertDoesNotThrow(() -> results[0] = PathsParser.fromPathsFormatAction(""));
-        Assertions.assertDoesNotThrow(() -> results[1] = PathsParser.fromPathsFormatAction(null));
-        Assertions.assertDoesNotThrow(() -> results[2] = PathsParser.fromPathsFormatAction("{InventoryAction:tqer}"));
-        Assertions.assertDoesNotThrow(() -> results[3] = PathsParser.fromPathsFormatAction("{:15}"));
-        Assertions.assertDoesNotThrow(() -> results[4] = PathsParser.fromPathsFormatAction("{:}"));
-        Assertions.assertDoesNotThrow(() -> results[5] = PathsParser.fromPathsFormatAction("{}"));
-        Assertions.assertDoesNotThrow(() -> results[6] = PathsParser.fromPathsFormatAction("{GoldAction:\"abc\"}"));
-        Assertions.assertDoesNotThrow(() -> results[7] = PathsParser.fromPathsFormatAction("{HealthAction:\"abc\"}"));
-        Assertions.assertDoesNotThrow(() -> results[8] = PathsParser.fromPathsFormatAction("{ScoreAction:\"abc\"}"));
-        Assertions.assertDoesNotThrow(() -> results[9] = PathsParser.fromPathsFormatAction("{ScoreAction:\"abc\"}"));
+        Assertions.assertDoesNotThrow(() -> results[0] = parser.fromPathsFormatAction(""));
+        Assertions.assertDoesNotThrow(() -> results[1] = parser.fromPathsFormatAction(null));
+        Assertions.assertDoesNotThrow(() -> results[2] = parser.fromPathsFormatAction("{InventoryAction:tqer}"));
+        Assertions.assertDoesNotThrow(() -> results[3] = parser.fromPathsFormatAction("{:15}"));
+        Assertions.assertDoesNotThrow(() -> results[4] = parser.fromPathsFormatAction("{:}"));
+        Assertions.assertDoesNotThrow(() -> results[5] = parser.fromPathsFormatAction("{}"));
+        Assertions.assertDoesNotThrow(() -> results[6] = parser.fromPathsFormatAction("{GoldAction:\"abc\"}"));
+        Assertions.assertDoesNotThrow(() -> results[7] = parser.fromPathsFormatAction("{HealthAction:\"abc\"}"));
+        Assertions.assertDoesNotThrow(() -> results[8] = parser.fromPathsFormatAction("{ScoreAction:\"abc\"}"));
+        Assertions.assertDoesNotThrow(() -> results[9] = parser.fromPathsFormatAction("{ScoreAction:\"abc\"}"));
 
 
         assert results[0] == null;
@@ -198,14 +207,15 @@ public class PathsParserTest {
 
     @Test
     public void parsing_inventory_action_does_not_change_content() {
+        PathsParser parser = new PathsParser();
         InventoryAction[] results = new InventoryAction[3];
         String item1 = "Crossbow";
         String item2 = "Enraged rattlesnake";
         String item3 = "Bolts: use with crossbow";
 
-        Assertions.assertDoesNotThrow(() -> results[0] = (InventoryAction) PathsParser.fromPathsFormatAction("{InventoryAction:\""+item1+"\"}"));
-        Assertions.assertDoesNotThrow(() -> results[1] = (InventoryAction) PathsParser.fromPathsFormatAction("{InventoryAction:\""+item2+"\"}"));
-        Assertions.assertDoesNotThrow(() -> results[2] = (InventoryAction) PathsParser.fromPathsFormatAction("{InventoryAction:\""+item3+"\"}"));
+        Assertions.assertDoesNotThrow(() -> results[0] = (InventoryAction) parser.fromPathsFormatAction("{InventoryAction:\""+item1+"\"}"));
+        Assertions.assertDoesNotThrow(() -> results[1] = (InventoryAction) parser.fromPathsFormatAction("{InventoryAction:\""+item2+"\"}"));
+        Assertions.assertDoesNotThrow(() -> results[2] = (InventoryAction) parser.fromPathsFormatAction("{InventoryAction:\""+item3+"\"}"));
 
         assert results[0] != null;
         assert results[1] != null;

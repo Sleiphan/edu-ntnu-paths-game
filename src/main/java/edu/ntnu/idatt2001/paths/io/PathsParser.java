@@ -15,12 +15,42 @@ public class PathsParser {
     private static final String PATHS_FILE_SPLITTER = LF + LF;
     private static final String ACTON_SEPARATOR = "}\\{";
 
+    private List<String> errors;
+    private int layer = 0;
+    private long line = 1;
+
+    public PathsParser() {
+        errors = new ArrayList<>();
+    }
+
+
+
+    public List<String> readAllErrors() {
+        List<String> errors = this.errors;
+        clearErrors();
+        return errors;
+    }
+
+    public void clearErrors() {
+        errors.clear();
+    }
+
+    private void errorBeforeReturn(String msg) {
+        errors.add("Line " + line + ": " + msg);
+        if (layer > 0)
+            layer--;
+    }
+
+    private void error(String msg) {
+        errors.add("Line " + line + ": " + msg);
+    }
+
     /**
      * Converts a Story-object into a String, using the format of .paths.
      * @param s The Story-object to be converted to a String.
      * @return The submitted Story-object as a .paths-formatted String.
      */
-    public static String toPathsFormat(Story s) {
+    public String toPathsFormat(Story s) {
         if (s == null)
             throw new IllegalArgumentException("Argument cannot be null");
 
@@ -49,9 +79,14 @@ public class PathsParser {
      * @param pathsString A string containing the valid format for a Story object.
      * @return A Story object as configured by the submitted string, or null if the parsing fails.
      */
-    public static Story fromPathsFormatStory(String pathsString) {
+    public Story fromPathsFormatStory(String pathsString) {
         if (pathsString == null)
             return null;
+
+        if (layer == 0)
+            line = 1;
+
+        layer++;
 
         try {
             String dataSeparator = PATHS_FILE_SPLITTER;
@@ -59,24 +94,40 @@ public class PathsParser {
                 dataSeparator = CRLF + CRLF;
 
             String[] parts = pathsString.split(dataSeparator + "");
-            if (parts.length < 2)
+            if (parts.length < 2) {
+                errorBeforeReturn("Failed to find the title and the opening passage, separated by an empty line (double line shift). A story must have both a title and at least one passage.");
                 return null; // A story must have both a title and an opening passage.
+            }
 
             String title = parts[0];
+            line += 2; // Successfully parsed the title.
+
             Passage opening = fromPathsFormatPassage(parts[1]);
-            if (opening == null)
+            if (opening == null) {
+                layer--;
                 return null; // If the opening passage failed to parse, then this Story could not be parsed.
+            }
+
             Story story = new Story(title, opening);
 
+            boolean errorOccurred = false;
             for (int i = 2; i < parts.length; i++) {
+                line += 2; // There are two line shifts between each passage
                 Passage p = fromPathsFormatPassage(parts[i]);
-                if (p == null)
-                    return null; // If one of the passages fails to be parsed, this Story could not be parsed.
-                story.addPassage(p);
+                if (p != null)
+                    story.addPassage(p);
+                else
+                    errorOccurred = true; // If one of the passages fails to be parsed, this Story could not be parsed.
             }
+
+            layer--;
+
+            if (errorOccurred)
+                return null;
 
             return story;
         } catch (Exception e) {
+            errorBeforeReturn("Unknown exception occurred while parsing a story: \"" + pathsString + "\"\n" + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -86,7 +137,7 @@ public class PathsParser {
      * @param p The Passage-object to be converted to a String.
      * @return The submitted Passage-object as a .paths-formatted String.
      */
-    public static String toPathsFormat(Passage p) {
+    public String toPathsFormat(Passage p) {
         if (p == null)
             throw new IllegalArgumentException("Argument cannot be null");
 
@@ -105,9 +156,13 @@ public class PathsParser {
      * @param pathsString A string containing the valid format for a Passage object.
      * @return A Passage object as configured by the submitted string, or null if the parsing fails.
      */
-    public static Passage fromPathsFormatPassage(String pathsString) {
+    public Passage fromPathsFormatPassage(String pathsString) {
         if (pathsString == null)
             return null;
+
+        if (layer == 0)
+            line = 1;
+        layer++;
 
         try {
             String dataSeparator = LF;
@@ -115,26 +170,50 @@ public class PathsParser {
                 dataSeparator = CRLF;
 
             String[] pathsStringSplit = pathsString.split(dataSeparator);
-            if (pathsStringSplit.length < 2)
+            if (pathsStringSplit.length < 2) {
+                errorBeforeReturn("Failed to find separation between passage title and content: \"" + pathsString + "\"");
                 return null; // Every passage must have a title and content.
+            }
+
+            boolean errorOccurred = false;
 
             String title = pathsStringSplit[0];
-            if (title.length() <= 2 || !title.contains("::"))
-                return null; // The title cannot be empty.
+            if (!title.contains("::")) {
+                error("Could not find passage-symbol \"::\" in this passage: \"" + pathsString + "\"");
+                errorOccurred = true; // The title cannot be empty.
+            }
+            else if (title.length() <= 2) {
+                error("The title of this passage is empty: \"" + pathsString + "\"");
+                errorOccurred = true; // The title cannot be empty.
+            }
+
+            line++;
+
             title = title.substring(2);
             String content = pathsStringSplit[1];
-            if (content.length() == 0)
-                return null; // The content cannot be empty.
+            if (content.length() == 0) {
+                error("The content of this passage is empty: \"" + pathsString + "\"");
+                errorOccurred = true; // The content cannot be empty.
+            }
 
             List<Link> linkList = new ArrayList<>();
             for (int i = 2; i < pathsStringSplit.length; i++) {
+                line++; // Every link is separated by one line.
                 Link l = fromPathsFormatLink(pathsStringSplit[i]);
-                if (l == null)
-                    return null; // If one link fails to parse, this Passage could not be parsed.
-                linkList.add(l);
+                if (l != null)
+                    linkList.add(l);
+                else
+                    errorOccurred = true; // If one link fails to parse, this Passage could not be parsed.
             }
+
+            layer--;
+
+            if (errorOccurred)
+                return null;
+
             return new Passage(title, content, linkList);
         } catch (Exception e) { // Should any exception occur during parsing, this Passage could not be parsed.
+            errorBeforeReturn("Unknown exception occurred while parsing a passage: \"" + pathsString + "\"\n" + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -144,7 +223,7 @@ public class PathsParser {
      * @param l The Link-object to be converted to a String.
      * @return The submitted Link-object as a .paths-formatted String.
      */
-    public static String toPathsFormat(Link l) {
+    public String toPathsFormat(Link l) {
         if (l == null)
             throw new IllegalArgumentException("Argument cannot be null");
 
@@ -162,43 +241,58 @@ public class PathsParser {
      * @param pathsString A string containing the valid format for a Link object.
      * @return A Link object as configured by the submitted string, or null if the parsing fails.
      */
-    public static Link fromPathsFormatLink(String pathsString) {
+    public Link fromPathsFormatLink(String pathsString) {
         if (pathsString == null)
             return null;
+
+        if (layer == 0)
+            line = 1;
+        layer++;
 
         try {
             int index_1 = 1;
             int index_2 = pathsString.indexOf(")[", index_1);
-            if (index_2 <= index_1)
-                return null; // Every link must have a text.
+            if (index_2 <= index_1) {
+                errorBeforeReturn("Failed to find the description text of this link: \"" + pathsString + "\"");
+                return null; // Every Link must have a text
+            }
             String text = pathsString.substring(index_1, index_2);
 
             index_1 = index_2 + 2;
             index_2 = pathsString.indexOf("]", index_1);
-            if (index_2 <= index_1)
-                return null; // Every link must have a reference.
+            if (index_2 <= index_1) {
+                errorBeforeReturn("Failed to find the passage reference in this link: \"" + pathsString + "\"");
+                return null; // Every Link must have a reference
+            }
             String ref = pathsString.substring(index_1, index_2);
 
             Link l = new Link(text, ref);
 
             index_1 = index_2 + 2;
             index_2 = pathsString.lastIndexOf('}');
-            if (index_2 <= index_1) // Does this link have any actions?
+            if (index_2 <= index_1) { // Does this link have any actions?
+                layer--;
                 return l; // If not, return the link without any actions.
+            }
 
             String[] linksS = pathsString.substring(index_1, index_2).split(ACTON_SEPARATOR);
 
-            Action a;
+            boolean errorOccurred = false;
             for (String s : linksS) {
-                a = fromPathsFormatAction("{" + s + "}");
-                if (a == null)
-                    return null; // If one action fails to be parsed, this Link could not be parsed.
-
-                l.addAction(fromPathsFormatAction("{" + s + "}"));
+                Action a = fromPathsFormatAction("{" + s + "}");
+                if (a != null)
+                    l.addAction(fromPathsFormatAction("{" + s + "}"));
+                else
+                    errorOccurred = true; // If one action fails to be parsed, this Link could not be parsed.
             }
+
+            layer--;
+            if (errorOccurred)
+                return null;
 
             return l;
         } catch (Exception e) { // Should any exception occur during parsing, this Link could not be parsed.
+            errorBeforeReturn("Unknown exception occurred while parsing a link: \"" + pathsString + "\"\n" + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -214,7 +308,7 @@ public class PathsParser {
      * @return The submitted Link-object as a .paths-formatted String,
      * or <code>null</code> if an instance of an unknown Action-type is submitted.
      */
-    public static String toPathsFormat(Action a) {
+    public String toPathsFormat(Action a) {
         if (a instanceof GoldAction)      return "{" +      GoldAction.class.getSimpleName() + ":" + toPathsFormat((GoldAction)      a) + "}";
         if (a instanceof HealthAction)    return "{" +    HealthAction.class.getSimpleName() + ":" + toPathsFormat((HealthAction)    a) + "}";
         if (a instanceof InventoryAction) return "{" + InventoryAction.class.getSimpleName() + ":" + toPathsFormat((InventoryAction) a) + "}";
@@ -223,34 +317,40 @@ public class PathsParser {
         return null;
     }
 
-    private static String toPathsFormat(GoldAction a) {
+    private String toPathsFormat(GoldAction a) {
         return a.getGold() + "";
     }
 
-    private static String toPathsFormat(HealthAction a) {
+    private String toPathsFormat(HealthAction a) {
         return a.getHealth() + "";
     }
 
-    private static String toPathsFormat(InventoryAction a) {
-        return "\"" + a.getItem() + "\"";
+    private String toPathsFormat(InventoryAction a) {
+        return "\"" + (a.addsItem() ? "" : "-") + a.getItem() + "\"";
     }
 
-    private static String toPathsFormat(ScoreAction a) {
+    private String toPathsFormat(ScoreAction a) {
         return a.getPoints() + "";
     }
 
 
-    public static Action fromPathsFormatAction(String pathsString) {
+    public Action fromPathsFormatAction(String pathsString) {
         if (pathsString == null)
             return null;
 
-        if (!pathsString.startsWith("{") || !pathsString.endsWith("}"))
+        if (layer == 0)
+            line = 1;
+        layer++;
+
+        if (!pathsString.startsWith("{") || !pathsString.endsWith("}")) {
+            errorBeforeReturn("This action seems to not be encased in {}-parenthesis: " + pathsString);
             return null;
+        }
 
         pathsString = pathsString.substring(1, pathsString.length() - 1); // Remove the appending and prepending curly brackets.
         pathsString = pathsString.replaceAll("(?!\\s)", ""); // Remove any unnecessary white-space in the data, ignoring content within string literals.
 
-        final String[] actionClassNames = new String[]{
+        final String[] actionClassNames = new String[] {
                      GoldAction.class.getSimpleName(),
                    HealthAction.class.getSimpleName(),
                 InventoryAction.class.getSimpleName(),
@@ -258,9 +358,10 @@ public class PathsParser {
         };
 
         int delimiterIndex = pathsString.indexOf(':');
-        if (delimiterIndex == -1 || delimiterIndex >= pathsString.length() - 1) // If we could not find the delimiter, or if the delimiter is the last character in the input data...
-            return null; // ... signal that the data is invalid.
-
+        if (delimiterIndex == -1 || delimiterIndex >= pathsString.length() - 1)  { // If we could not find the delimiter, or if the delimiter is the last character in the input data...
+            errorBeforeReturn("Could not find delimiter for this action: " + pathsString); // ... signal that the data is invalid.
+            return null;
+        }
 
         // Split only once. No guarantee that the delimiter shows up in the value-part of the data.
         String[] parts = new String[] {
@@ -272,34 +373,55 @@ public class PathsParser {
         String val = parts[1];
 
         boolean keyValid = Arrays.asList(actionClassNames).contains(key);
-        if (!keyValid)
+        if (!keyValid) {
+            errorBeforeReturn("Unknown action type: " + key);
             return null;
+        }
 
-        if (key.equals(     GoldAction.class.getSimpleName())) return fromPathsFormatGoldAction     (val);
-        if (key.equals(   HealthAction.class.getSimpleName())) return fromPathsFormatHealthAction   (val);
-        if (key.equals(InventoryAction.class.getSimpleName())) return fromPathsFormatInventoryAction(val);
-        if (key.equals(    ScoreAction.class.getSimpleName())) return fromPathsFormatScoreAction    (val);
+        Action a = null;
 
-        return null;
+        if (key.equals(     GoldAction.class.getSimpleName())) a = fromPathsFormatGoldAction     (val);
+        if (key.equals(   HealthAction.class.getSimpleName())) a = fromPathsFormatHealthAction   (val);
+        if (key.equals(InventoryAction.class.getSimpleName())) a = fromPathsFormatInventoryAction(val);
+        if (key.equals(    ScoreAction.class.getSimpleName())) a = fromPathsFormatScoreAction    (val);
+
+        layer--;
+        return a;
     }
 
-    private static GoldAction fromPathsFormatGoldAction(String pathsString) {
+    private GoldAction fromPathsFormatGoldAction(String pathsString) {
+        layer++;
+
         Integer val = tryParseInt(pathsString);
-        if (val == null)
+        if (val == null) {
+            errorBeforeReturn("Failed to parse value of GoldAction. Found value: " + pathsString);
             return null;
+        }
+
+        layer--;
         return new GoldAction(val);
     }
 
-    private static HealthAction fromPathsFormatHealthAction(String pathsString) {
+    private HealthAction fromPathsFormatHealthAction(String pathsString) {
+        layer++;
+
         Integer val = tryParseInt(pathsString);
-        if (val == null)
+        if (val == null) {
+            errorBeforeReturn("Failed to parse value of HealthAction. Found value: " + pathsString);
             return null;
+        }
+
+        layer--;
         return new HealthAction(val);
     }
 
-    private static InventoryAction fromPathsFormatInventoryAction(String pathsString) {
-        if (!pathsString.startsWith("\"") || !pathsString.endsWith("\""))
+    private InventoryAction fromPathsFormatInventoryAction(String pathsString) {
+        layer++;
+
+        if (!pathsString.startsWith("\"") || !pathsString.endsWith("\"")) {
+            errorBeforeReturn("Item name must be encased in \"-characters. Found value: " + pathsString);
             return null;
+        }
 
         String item = pathsString.substring(1, pathsString.length() - 1);
 
@@ -309,17 +431,24 @@ public class PathsParser {
             item = item.substring(1);
         }
 
+        layer--;
         return new InventoryAction(item, add);
     }
 
-    private static ScoreAction fromPathsFormatScoreAction(String pathsString) {
+    private ScoreAction fromPathsFormatScoreAction(String pathsString) {
+        layer++;
+
         Integer val = tryParseInt(pathsString);
-        if (val == null)
+        if (val == null) {
+            errorBeforeReturn("Failed to parse value of ScoreAction. Found value: " + pathsString);
             return null;
+        }
+
+        layer--;
         return new ScoreAction(val);
     }
 
-    private static Integer tryParseInt(String s) {
+    private Integer tryParseInt(String s) {
         try {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {
