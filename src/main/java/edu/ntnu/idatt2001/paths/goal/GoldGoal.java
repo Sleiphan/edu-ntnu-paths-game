@@ -5,7 +5,7 @@ import edu.ntnu.idatt2001.paths.Player;
 /**
  * Used to check if a player-object fulfills a minimum gold requirement
  */
-public class GoldGoal implements Goal, GoalInfo{
+public class GoldGoal implements GoalInfo {
     private final int minimumGold;
 
     /**

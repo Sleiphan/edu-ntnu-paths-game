@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Used to check if a player-object has certain items in their inventory
  */
-public class InventoryGoal implements Goal, GoalInfo{
+public class InventoryGoal implements GoalInfo {
     private final List<String> mandatoryItems;
 
     /**

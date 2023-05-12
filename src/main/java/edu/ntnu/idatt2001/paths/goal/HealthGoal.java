@@ -5,7 +5,7 @@ import edu.ntnu.idatt2001.paths.Player;
 /**
  * Used to check if a player-object fulfills a minimum health requirement
  */
-public class HealthGoal implements Goal, GoalInfo {
+public class HealthGoal implements GoalInfo {
     private final int minimumHealth;
     private final String type = "Health";
 

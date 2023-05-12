@@ -5,7 +5,7 @@ import edu.ntnu.idatt2001.paths.Player;
 /**
  * Used to check if a player-object fulfills a minimum score requirement
  */
-public class ScoreGoal implements Goal, GoalInfo {
+public class ScoreGoal implements GoalInfo {
     private final int minimumPoints;
 
     /**
