@@ -77,6 +77,10 @@ public class InventoryAction implements Action {
         return add;
     }
 
+    /**
+     * Creates a hashCode for the inventoryAction
+     * @return hashCode for the InventoryAction
+     */
     @Override
     public int hashCode() {
         return hashCode;

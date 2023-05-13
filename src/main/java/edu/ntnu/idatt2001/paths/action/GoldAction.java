@@ -52,6 +52,10 @@ public class GoldAction implements Action{
         return gold;
     }
 
+    /**
+     * Creates a hashCode for the GoldAction
+     * @return hashCode for the GoldAction
+     */
     @Override
     public int hashCode() {
         return hashCode;

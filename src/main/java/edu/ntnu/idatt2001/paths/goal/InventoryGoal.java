@@ -36,11 +36,19 @@ public class InventoryGoal implements GoalInfo {
         return true;
     }
 
+    /**
+     * Gets the type of the action represented as a string
+     * @return the type of the action represented as a string
+     */
     public String getType() {
         String type = this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().length() - 4);
         return type;
     }
 
+    /**
+     * Gets the value associated with the action
+     * @return the value associated with the action
+     */
     @Override
     public Object getValue() {
         Object value = mandatoryItems;

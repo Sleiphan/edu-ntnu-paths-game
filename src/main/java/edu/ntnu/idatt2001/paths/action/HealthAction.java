@@ -50,6 +50,10 @@ public class HealthAction implements Action{
         return health;
     }
 
+    /**
+     * Creates a hashCode for the HealthAction
+     * @return hashCode for the Health Action
+     */
     @Override
     public int hashCode() {
         return hashCode;

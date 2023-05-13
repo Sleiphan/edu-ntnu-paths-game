@@ -50,6 +50,10 @@ public class ScoreAction implements Action{
         return points;
     }
 
+    /**
+     * Creates a hashCode for the ScoreAction
+     * @return hashCode for the ScoreAction
+     */
     @Override
     public int hashCode() {
         return hashCode;
