@@ -13,7 +13,7 @@ package edu.ntnu.idatt2001.paths.gui;
  * system of menus with on of its submenus. That submenu (a type extending ApplicationState) would then hold
  * an instance of a class implementing this interface, running its own set of application states.<br>
  */
-public interface ApplicationStateHandler<STATE_TYPE extends ApplicationState> {
+public interface ApplicationStateHandler {
 
     /**
      * Call this method to switch application state. This method calls the current application state's cleanup-method,
@@ -27,9 +27,5 @@ public interface ApplicationStateHandler<STATE_TYPE extends ApplicationState> {
      *
      * @param newState The new application state to be the new current state.
      */
-    void changeState(STATE_TYPE newState);
-
-    void setCurrentAudio(String currentAudio);
-
-    String getCurrentAudio();
+    void changeState(ApplicationState newState);
 }

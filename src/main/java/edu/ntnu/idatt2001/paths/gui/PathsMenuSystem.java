@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
+public class PathsMenuSystem implements ApplicationStateHandler {
 
     private PathsMenu currentState;
     private final Stage applicationWindow;
@@ -61,16 +61,21 @@ public class PathsMenuSystem implements ApplicationStateHandler<PathsMenu> {
     }
 
     @Override
-    public void changeState(PathsMenu newState) {
+    public void changeState(ApplicationState newState) {
+        if (newState == null)
+            throw new IllegalArgumentException("newState cannot be null");
+
+        if (!(newState instanceof PathsMenu newMenu))
+            throw new IllegalArgumentException("This ApplicationStateHandler can only handle ApplicationStates of type PathsMenu");
+
         if (currentState != null)
             currentState.cleanup();
 
-        assert newState != null;
-        currentState = newState;
+        currentState = newMenu;
 
         currentState.setHandlerRef(this);
         currentState.setup();
-        applicationWindow.setScene(newState.getScene());
+        applicationWindow.setScene(newMenu.getScene());
     }
 
     public void setCurrentAudio(String currentAudio){
