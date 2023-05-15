@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2001.paths.io;
 
-import edu.ntnu.idatt2001.paths.Story;
+import edu.ntnu.idatt2001.paths.model.Story;
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import org.junit.jupiter.api.Test;
 

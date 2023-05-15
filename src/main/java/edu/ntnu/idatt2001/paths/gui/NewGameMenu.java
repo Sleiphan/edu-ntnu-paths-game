@@ -1,16 +1,13 @@
 package edu.ntnu.idatt2001.paths.gui;
 
-import edu.ntnu.idatt2001.paths.Game;
-import edu.ntnu.idatt2001.paths.Link;
-import edu.ntnu.idatt2001.paths.Player;
-import edu.ntnu.idatt2001.paths.action.InventoryAction;
-import edu.ntnu.idatt2001.paths.goal.*;
+import edu.ntnu.idatt2001.paths.model.Game;
+import edu.ntnu.idatt2001.paths.model.Player;
+import edu.ntnu.idatt2001.paths.model.goal.*;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -20,13 +17,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.converter.IntegerStringConverter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 public class NewGameMenu extends PathsMenu {
 

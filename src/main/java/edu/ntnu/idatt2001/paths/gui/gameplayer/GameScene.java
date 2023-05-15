@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
-import edu.ntnu.idatt2001.paths.Game;
-import edu.ntnu.idatt2001.paths.Link;
-import edu.ntnu.idatt2001.paths.Passage;
-import edu.ntnu.idatt2001.paths.action.Action;
+import edu.ntnu.idatt2001.paths.model.Game;
+import edu.ntnu.idatt2001.paths.model.Link;
+import edu.ntnu.idatt2001.paths.model.Passage;
+import edu.ntnu.idatt2001.paths.model.action.Action;
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import edu.ntnu.idatt2001.paths.gui.InGameMenu;
 import edu.ntnu.idatt2001.paths.gui.PathsMenu;

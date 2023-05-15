@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
-import edu.ntnu.idatt2001.paths.Link;
-import edu.ntnu.idatt2001.paths.Passage;
-import edu.ntnu.idatt2001.paths.Story;
+import edu.ntnu.idatt2001.paths.model.Link;
+import edu.ntnu.idatt2001.paths.model.Passage;
+import edu.ntnu.idatt2001.paths.model.Story;
 import edu.ntnu.idatt2001.paths.io.PathsParser;
 
 import java.io.IOException;

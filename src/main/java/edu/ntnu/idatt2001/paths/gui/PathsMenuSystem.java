@@ -1,10 +1,8 @@
 package edu.ntnu.idatt2001.paths.gui;
 
-import edu.ntnu.idatt2001.paths.Game;
-import edu.ntnu.idatt2001.paths.Link;
-import edu.ntnu.idatt2001.paths.Player;
-import edu.ntnu.idatt2001.paths.Story;
-import edu.ntnu.idatt2001.paths.goal.Goal;
+import edu.ntnu.idatt2001.paths.model.Link;
+import edu.ntnu.idatt2001.paths.model.Player;
+import edu.ntnu.idatt2001.paths.model.goal.Goal;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

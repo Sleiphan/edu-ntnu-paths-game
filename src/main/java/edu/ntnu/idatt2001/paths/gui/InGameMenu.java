@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2001.paths.gui;
 
-import edu.ntnu.idatt2001.paths.Game;
-import edu.ntnu.idatt2001.paths.Player;
+import edu.ntnu.idatt2001.paths.model.Game;
+import edu.ntnu.idatt2001.paths.model.Player;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

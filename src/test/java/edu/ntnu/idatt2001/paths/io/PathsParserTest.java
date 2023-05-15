@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2001.paths.io;
 
-import edu.ntnu.idatt2001.paths.Link;
-import edu.ntnu.idatt2001.paths.Passage;
-import edu.ntnu.idatt2001.paths.Story;
-import edu.ntnu.idatt2001.paths.action.*;
+import edu.ntnu.idatt2001.paths.model.Link;
+import edu.ntnu.idatt2001.paths.model.Passage;
+import edu.ntnu.idatt2001.paths.model.Story;
+import edu.ntnu.idatt2001.paths.model.action.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

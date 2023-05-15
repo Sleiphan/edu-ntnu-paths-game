@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
-import edu.ntnu.idatt2001.paths.action.Action;
-import edu.ntnu.idatt2001.paths.action.InventoryAction;
+import edu.ntnu.idatt2001.paths.model.action.Action;
+import edu.ntnu.idatt2001.paths.model.action.InventoryAction;
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import edu.ntnu.idatt2001.paths.gui.SceneConfig;
 import javafx.scene.image.Image;
