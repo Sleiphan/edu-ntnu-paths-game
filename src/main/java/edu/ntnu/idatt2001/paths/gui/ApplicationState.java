@@ -10,7 +10,7 @@ public interface ApplicationState<HANDLER_TYPE extends ApplicationStateHandler> 
     /**
      * Gives this ApplicationState a handle to the ApplicationStateHandler currently handling it. <br>
      * <br>
-     * The ApplicationStateHandler running this ApplicationState is obligated to call this method
+     * The ApplicationStateHandler running this ApplicationState is required to call this method
      * as soon as possible - with itself as the argument - whenever it switches to a new ApplicationState.
      * @param handlerRef The ApplicationStateHandler currently handling this ApplicationState
      */
