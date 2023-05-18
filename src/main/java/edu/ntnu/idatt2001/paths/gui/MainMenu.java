@@ -39,14 +39,29 @@ public class MainMenu extends PathsMenu {
 
     }
 
+    /**
+     * Takes the user to the new game menu scene, where the user can initialize a new game
+     * @param e
+     */
     private void newGame(ActionEvent e){
         changeState(new NewGameMenu());
     }
 
+    /**
+     * Allows the user to quit the application
+     * @param e
+     */
     private void quit(ActionEvent e) {
         Platform.exit();
     }
 
+    /**
+     * Initializes the main menu scene. Sets the current audio the main menu music unless the music is already
+     * the main menu music.
+     * Loads the font that gets used throughout the entirety of the user interface.
+     * Uses the mainMenu css stylesheet to style the page.
+     * @return the main menu scene
+     */
     @Override
     public Scene getScene() {
 
@@ -54,8 +69,6 @@ public class MainMenu extends PathsMenu {
             handler.setCurrentAudio("MainMenu");
             handler.playMenuMusic();
         }
-
-
 
         Button btContinue = new Button("Continue");
         Button btNewGame  = new Button("New Game");
