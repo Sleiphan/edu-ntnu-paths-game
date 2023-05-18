@@ -26,7 +26,6 @@ import java.util.List;
 public class NewGameMenu extends PathsMenu {
 
     TableView <Goal> tableView = new TableView<>();
-
     TextField txName = new TextField();
     TextField txHealth = new TextField();
     TextField txGold = new TextField();
@@ -47,10 +46,17 @@ public class NewGameMenu extends PathsMenu {
         changeState(new MainMenu());
     }
 
+    /**
+     * Starts a new game. First has the user chose which .paths file to play through a file chooser.
+     * Then presents any errors that may have occurred with the loading og the story.
+     * Next the method tries to make the player object for the game from the data in the
+     * text fields. If the data is not inputted the new game operation will fail, and an error
+     * message telling the user what went wrong will be presented.
+     * If alle the inputs are correct a Game object will be initialized, and the user will be
+     * transported to the opening passage gameScene.
+     * @param e
+     */
     private void start(ActionEvent e){
-
-
-
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("src/main/resources/Stories"));
@@ -132,6 +138,11 @@ public class NewGameMenu extends PathsMenu {
         }
     }
 
+    /**
+     * Presents errors to the user. Takes inn a list of errors and builds a string from the list.
+     * Then presents the list of errors to the user.
+     * @param errors errors to show to the user
+     */
     private void showErrorsToUser(String[] errors) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -155,6 +166,11 @@ public class NewGameMenu extends PathsMenu {
         return tableView.getItems();
     }
 
+    /**
+     * Allows the user to define a new goal to add to the list of goals for the new story.
+     * Opens an overlay where the user can define the type of goal, and how much.
+     * @param e
+     */
     private void add(ActionEvent e){
 
         stage.setWidth(400);
@@ -196,6 +212,10 @@ public class NewGameMenu extends PathsMenu {
 
     }
 
+    /**
+     * Updates the list of goals with a new user defined goal.
+     * @param e
+     */
     private void addGoal(ActionEvent e){
         ObservableList<Goal> goals = tableView.getItems();
         if(type.getValue().equals("Health")){
@@ -221,6 +241,12 @@ public class NewGameMenu extends PathsMenu {
         stage.close();
     }
 
+    /**
+     * Allows the user to remove a goal from the list of goals for the game.
+     * To remove the user selects the goal in the list they want to remove
+     * Then they press the remove button.
+     * @param e
+     */
     private void remove(ActionEvent e){
         Goal selected = tableView.getSelectionModel().getSelectedItem();
         ObservableList<Goal> goals =tableView.getItems();
@@ -228,6 +254,10 @@ public class NewGameMenu extends PathsMenu {
         tableView.setItems(goals);
     }
 
+    /**
+     * Creates the new game menu scene. Styled through the NewGame.css file
+     * @return the new game scene.
+     */
     @Override
     public Scene getScene() {
         ImageView menuBackground = new ImageView();
@@ -373,10 +403,14 @@ public class NewGameMenu extends PathsMenu {
     }
 
 
-
+    /**
+     * Sets up restrictions and default values for the new game menu
+     */
     @Override
     public void setup() {
         txHealth.textProperty().addListener(new ChangeListener<String>() {
+
+            // Makes it so that the user can only add numbers to the health field
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
@@ -387,6 +421,7 @@ public class NewGameMenu extends PathsMenu {
         });
 
         txGold.textProperty().addListener(new ChangeListener<String>() {
+            // Makes it so that the user can only add numbers to the gold field
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
@@ -396,6 +431,7 @@ public class NewGameMenu extends PathsMenu {
             }
         });
 
+        // Sets some initial values
         txName.setText("Roy");
         txHealth.setText("100");
         txGold.setText("50");
