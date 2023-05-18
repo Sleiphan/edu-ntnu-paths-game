@@ -88,6 +88,7 @@ public class GameScene extends PathsMenu {
     @Override
     public void setup() {
         if (openingInGameMenu) {
+            audioPlayer.play();
             openingInGameMenu = false;
             return;
         }
@@ -230,11 +231,9 @@ public class GameScene extends PathsMenu {
 
         if(audioAsset == null){
             continueAudio = true;
-            System.out.println(continueAudio);
             return continueAudio;
         } else {
             continueAudio = false;
-            System.out.println(continueAudio);
             return continueAudio;
         }
 
@@ -348,7 +347,6 @@ public class GameScene extends PathsMenu {
             playerViewer = createPlayerViewer(sceneConfig);
             lookAtViewer = createLookAtViewer(sceneConfig);
             playerStatusBackground = createPlayerStatsBackground();
-            //audioPlayer = createAudioPlayer();
 
             ImageView interactionArea = createInteractionArea(sceneConfig);
             createPlayerStatsIcons();
@@ -374,8 +372,6 @@ public class GameScene extends PathsMenu {
         root.getChildren().add(brokenLinksLabel);
         root.getChildren().add(linkSelector);
         root.getChildren().add(menuBt);
-
-        //playAudio(audioPlayer);
 
 
         Scene scene = new Scene(root, sceneConfig.getWidth(), sceneConfig.getHeight());
@@ -549,6 +545,7 @@ public class GameScene extends PathsMenu {
     private void openInGameMenu(Event e) {
         InGameMenu menu = new InGameMenu(this);
         openingInGameMenu = true;
+        audioPlayer.stop();
         changeState(menu);
     }
 
