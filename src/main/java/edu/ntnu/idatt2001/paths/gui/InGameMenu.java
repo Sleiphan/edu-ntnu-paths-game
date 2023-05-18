@@ -22,6 +22,12 @@ public class InGameMenu extends PathsMenu {
         this.associatedGameScene = currentGameScene;
     }
 
+    /**
+     * Calling this method allows the user to restart the game, taking them back
+     * to the opening passage whilst also resetting the player parameters back
+     * to their original state. Asks the user for confirmation before resetting.
+     * @param e
+     */
     private void restartGame(ActionEvent e){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Reset");
@@ -41,14 +47,28 @@ public class InGameMenu extends PathsMenu {
 
     private void options(ActionEvent e){}
 
+    /**
+     * Calling this method returns the user back to the main menu of the application.
+     * All progress in current story will be lost.
+     * @param e
+     */
     private void mainMenu(ActionEvent e){
         changeState(new MainMenu());
     }
 
+    /**
+     * Calling this method allows the user to quit the application
+     * All progress in current story will be lost
+     * @param e
+     */
     private void quitGame(ActionEvent e){
         Platform.exit();
     }
 
+    /**
+     * Calling this method closes the in game menu and returns the user to the current gameScene passage
+     * @param e
+     */
     private void closeMenu(ActionEvent e) {
         changeState(associatedGameScene);
     }
@@ -63,14 +83,12 @@ public class InGameMenu extends PathsMenu {
 
     }
 
+    /**
+     * Calling this method initializes the in game menu scene.
+     * @return the in game menu scene
+     */
     @Override
     public Scene getScene() {
-
-        ImageView overlay = new ImageView();
-        overlay.setId("overlay");
-
-        overlay.setFitWidth(10000);
-        overlay.setFitWidth(10000);
 
         Button btRestart = new Button("Restart");
         Button btOptions = new Button("Options");
@@ -115,7 +133,6 @@ public class InGameMenu extends PathsMenu {
 
         AnchorPane root = new AnchorPane();
 
-        //root.getChildren().add(overlay);
         root.getChildren().add(btRestart);
         root.getChildren().add(btOptions);
         root.getChildren().add(btMainMenu);
