@@ -54,4 +54,8 @@ public class InventoryGoal implements GoalInfo {
         Object value = mandatoryItems;
         return value;
     }
+
+    public List<String> getItems(){
+        return mandatoryItems;
+    }
 }

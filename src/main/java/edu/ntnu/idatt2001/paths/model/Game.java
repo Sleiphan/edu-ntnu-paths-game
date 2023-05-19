@@ -3,7 +3,7 @@ package edu.ntnu.idatt2001.paths.model;
 import com.oracle.truffle.js.runtime.JSContextOptions;
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
 import edu.ntnu.idatt2001.paths.model.action.*;
-import edu.ntnu.idatt2001.paths.model.goal.Goal;
+import edu.ntnu.idatt2001.paths.model.goal.*;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 
@@ -115,5 +115,64 @@ public class Game {
             if (l.isLinkOpen(scriptEngine))
                 links.add(l);
         return links;
+    }
+
+    public boolean checkGameOver(){
+        return player.getHealth() <= 0;
+    }
+
+    public boolean checkGameWon(){
+        boolean healthGoalAchieved = false;
+        boolean goldGoalAchieved = false;
+        boolean scoreGoalAchieved = false;
+        boolean inventoryGoalAchieved = false;
+        boolean instanceOfHealthGoal = false;
+        boolean instanceOfGoldGoal = false;
+        boolean instanceOfScoreGoal = false;
+        boolean instanceOfInventoryGoal = false;
+
+        for (Goal g : goals){
+                //Checks if goal is a health goal, and then if it has been achieved
+            if (g.getClass() == HealthGoal.class){
+                instanceOfHealthGoal = true;
+                healthGoalAchieved = (Integer) ((HealthGoal) g).getValue() <= player.getHealth();
+
+                //Checks if goal is a gold goal, and then if it has been achieved
+            } else if (g.getClass() == GoldGoal.class){
+                instanceOfGoldGoal = true;
+                goldGoalAchieved = (Integer) ((GoldGoal) g).getValue() <= player.getGold();
+
+                //Checks if goal is a score goal, and then if it has been achieved
+            } else if (g.getClass() == ScoreGoal.class){
+                instanceOfScoreGoal = true;
+                scoreGoalAchieved = (Integer) ((ScoreGoal) g).getValue() <= player.getScore();
+
+                //Checks if goal is an inventory goal, and then if it has been achieved
+            } else if (g.getClass() == InventoryGoal.class){
+                instanceOfInventoryGoal = true;
+                List<String> inv = List.of(player.getInventory().toArray(new String[0]));
+                inventoryGoalAchieved = true;
+                for (int i = 0; i < ((InventoryGoal) g).getItems().size(); i++){
+                    if (!inv.contains(((InventoryGoal) g).getItems().get(i))){
+                        inventoryGoalAchieved = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!instanceOfHealthGoal)
+            healthGoalAchieved = true;
+
+        if (!instanceOfGoldGoal)
+            goldGoalAchieved = true;
+
+        if (!instanceOfScoreGoal)
+            scoreGoalAchieved = true;
+
+        if (!instanceOfInventoryGoal)
+            inventoryGoalAchieved = true;
+
+        return healthGoalAchieved && goldGoalAchieved && scoreGoalAchieved && inventoryGoalAchieved;
     }
 }
