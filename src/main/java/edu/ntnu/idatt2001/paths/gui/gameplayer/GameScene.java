@@ -88,7 +88,8 @@ public class GameScene extends PathsMenu {
     @Override
     public void setup() {
         if (openingInGameMenu) {
-            audioPlayer.play();
+            if (audioPlayer != null)
+                audioPlayer.play();
             openingInGameMenu = false;
             return;
         }
@@ -225,38 +226,26 @@ public class GameScene extends PathsMenu {
         playAudio(newPassage);
     }
 
-    private boolean checkNewAudio(Passage newPassage){
-        boolean continueAudio = false;
-        MediaPlayer audioAsset = assetFinder.getAudio(newPassage.getTitle());
-
-        if(audioAsset == null){
-            continueAudio = true;
-            return continueAudio;
-        } else {
-            continueAudio = false;
-            return continueAudio;
-        }
-
-    }
-
     private void playAudio(Passage newPassage){
+        MediaPlayer newAudio = assetFinder.getAudio(newPassage.getTitle());
+        if (newAudio == null)
+            return;
 
-        boolean continueAudio = checkNewAudio(newPassage);
+        if (audioPlayer == null)
+            audioPlayer = newAudio;
 
-        if((!continueAudio) && !(audioPlayer == assetFinder.getAudio(newPassage.getTitle()))){
-            if(!(audioPlayer == null)){
-                audioPlayer.stop();
-            }
-            audioPlayer = assetFinder.getAudio(newPassage.getTitle());
-            audioPlayer.setVolume(0.10);
-            audioPlayer.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    audioPlayer.seek(Duration.ZERO);
-                }
-            });
-            audioPlayer.play();
+        else {
+            String currURI = audioPlayer.getMedia().getSource();
+            String newURI = newAudio.getMedia().getSource();
+            if (currURI.equals(newURI))
+                return;
         }
+
+        audioPlayer.stop();
+        audioPlayer = newAudio;
+        audioPlayer.setVolume(0.10);
+        audioPlayer.setOnEndOfMedia(() -> audioPlayer.seek(Duration.ZERO));
+        audioPlayer.play();
     }
 
     private void updateBackground(Passage newPassage) {
@@ -545,7 +534,8 @@ public class GameScene extends PathsMenu {
     private void openInGameMenu(Event e) {
         InGameMenu menu = new InGameMenu(this);
         openingInGameMenu = true;
-        audioPlayer.stop();
+        if (audioPlayer != null)
+            audioPlayer.stop();
         changeState(menu);
     }
 
