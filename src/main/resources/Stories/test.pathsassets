@@ -1,6 +1,6 @@
 "UI: Health icon":"img/Health.png"
-"UI: Gold icon":"img/rock_2.png"
-"UI: Score icon":"img/rock_3.png"
+"UI: Gold icon":"img/GoldIcon.png"
+"UI: Score icon":"img/ScoreIcon.png"
 "UI: Item slot":"/img/InventorySlot.png"
 "UI: Interaction area":"img/Interaction.png"
 "UI: Text area":"img/TextBackground.png"

@@ -31,9 +31,9 @@
 }
 
 #Gold{
-    -fx-image: url(Stories/img/rock_2.png);
+    -fx-image: url(Stories/img/GoldIcon.png);
 }
 
 #Score{
-    -fx-image: url(Stories/img/rock_3.png);
+    -fx-image: url(Stories/img/ScoreIcon.png);
 }
