@@ -1,0 +1,39 @@
+#Overlay{
+    -fx-image: url(TestImages/Transparant.png)
+}
+
+#GameEndBG{
+    -fx-image: url(TestImages/GameEnd.png);
+}
+
+#finalValue{
+    -fx-font-size: 30;
+}
+
+#finalValueIdentifier{
+    -fx-font-size: 25;
+}
+
+#Result{
+    -fx-font-size: 50;
+}
+
+#BG{
+    -fx-image: url(TestImages/Button.png);
+}
+
+.button{
+    -fx-background-size: 300 53;
+}
+
+#Health{
+    -fx-image: url(Stories/img/Health.png);
+}
+
+#Gold{
+    -fx-image: url(Stories/img/rock_2.png);
+}
+
+#Score{
+    -fx-image: url(Stories/img/rock_3.png);
+}

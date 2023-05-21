@@ -44,7 +44,7 @@
 }
 
 .root {
-    -fx-background-image: url(TestImages/TestBackground.png);
+    -fx-background-image: url(TestImages/Transparant.png);
     -fx-background-repeat: no-repeat;
     -fx-background-size: 1500 1500;
     -fx-background-position: center center;
@@ -92,5 +92,9 @@ text-area .content {
 
 #infoLabel{
     -fx-text-fill: white;
+}
+
+#overlay{
+    -fx-image: url(TestImages/Transparant.png);
 }
 

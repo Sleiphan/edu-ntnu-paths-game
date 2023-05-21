@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
+import edu.ntnu.idatt2001.paths.gui.MainMenu;
 import edu.ntnu.idatt2001.paths.model.Game;
 import edu.ntnu.idatt2001.paths.model.Link;
 import edu.ntnu.idatt2001.paths.model.Passage;
@@ -9,6 +10,8 @@ import edu.ntnu.idatt2001.paths.gui.InGameMenu;
 import edu.ntnu.idatt2001.paths.gui.PathsMenu;
 import edu.ntnu.idatt2001.paths.gui.SceneConfig;
 import edu.ntnu.idatt2001.paths.io.StoryLoader;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 
 import java.util.List;
@@ -126,6 +130,7 @@ public class GameScene extends PathsMenu {
      * @param link The link that the user has chosen.
      */
     private void goLink(Link link) {
+
         Passage newPassage = game.go(link);
 
         if (newPassage == null) {
@@ -136,8 +141,140 @@ public class GameScene extends PathsMenu {
         performLinkActions(link);
         updateContent(newPassage);
 
+        if(game.checkGameOver()){
+            gameEnd("Game Over");
+            return;
+        }
+
+        if(game.checkGameWon()){
+            gameEnd("Game Won");
+            return;
+        }
+
         if (hasAssets())
             updateAssets(newPassage);
+
+    }
+
+    /**
+     * Creates an overlay over the current game scene. To be used when the user wins or loses the game
+     * @param type the game result. For example "Game Over" if game lost or "Game won" if game won
+     */
+    private void gameEnd(String type){
+        getScene().getStylesheets().add("GameEnd.css");
+        ImageView imageView = new ImageView();
+        imageView.setId("Overlay");
+        imageView.setFitWidth(handler.getSceneWidth());
+        imageView.setFitHeight(handler.getSceneHeight());
+        root.getChildren().add(imageView);
+
+        ImageView gameEndBackground = new ImageView();
+        gameEndBackground.setId("GameEndBG");
+        gameEndBackground.setFitWidth(500);
+        gameEndBackground.setFitHeight(handler.getSceneHeight());
+        gameEndBackground.setX(handler.getSceneWidth() / 2 - gameEndBackground.getFitWidth() / 2);
+        root.getChildren().add(gameEndBackground);
+
+        ImageView healthBG = new ImageView();
+        healthBG.setId("BG");
+        healthBG.setX(485);
+        healthBG.setY(150);
+        healthBG.setFitWidth(300);
+        ImageView goldBG = new ImageView();
+        goldBG.setId("BG");
+        goldBG.setX(485);
+        goldBG.setY(250);
+        goldBG.setFitWidth(300);
+        ImageView scoreBG = new ImageView();
+        scoreBG.setId("BG");
+        scoreBG.setX(485);
+        scoreBG.setY(350);
+        scoreBG.setFitWidth(300);
+        root.getChildren().add(healthBG);
+        root.getChildren().add(goldBG);
+        root.getChildren().add(scoreBG);
+
+        ImageView healthIcon = new ImageView();
+        healthIcon.setId("Health");
+        healthIcon.setX(500);
+        healthIcon.setY(160);
+        healthIcon.setFitWidth(50);
+        healthIcon.setFitHeight(50);
+        root.getChildren().add(healthIcon);
+        ImageView goldIcon = new ImageView();
+        goldIcon.setId("Gold");
+        goldIcon.setX(500);
+        goldIcon.setY(260);
+        goldIcon.setFitHeight(50);
+        goldIcon.setFitWidth(50);
+        root.getChildren().add(goldIcon);
+        ImageView scoreIcon = new ImageView();
+        scoreIcon.setId("Score");
+        scoreIcon.setX(500);
+        scoreIcon.setY(360);
+        scoreIcon.setFitWidth(50);
+        scoreIcon.setFitHeight(50);
+        root.getChildren().add(scoreIcon);
+
+        Label healthLabel = new Label(Integer.toString(game.getPlayer().getHealth()));
+        healthLabel.setTranslateX(575);
+        healthLabel.setTranslateY(167);
+        healthLabel.setId("finalValue");
+        root.getChildren().add(healthLabel);
+        Label goldLabel = new Label(Integer.toString(game.getPlayer().getGold()));
+        goldLabel.setTranslateX(575);
+        goldLabel.setTranslateY(267);
+        goldLabel.setId("finalValue");
+        root.getChildren().add(goldLabel);
+        Label scoreLabel = new Label(Integer.toString(game.getPlayer().getScore()));
+        scoreLabel.setTranslateX(575);
+        scoreLabel.setTranslateY(367);
+        scoreLabel.setId("finalValue");
+        root.getChildren().add(scoreLabel);
+
+        Label finalHealth = new Label("Final Health");
+        finalHealth.setId("finalValueIdentifier");
+        finalHealth.setTranslateX(460);
+        finalHealth.setTranslateY(120);
+        root.getChildren().add(finalHealth);
+        Label finalGold = new Label("Final Gold");
+        finalGold.setId("finalValueIdentifier");
+        finalGold.setTranslateX(460);
+        finalGold.setTranslateY(220);
+        root.getChildren().add(finalGold);
+        Label finalScore = new Label("Final Score");
+        finalScore.setId("finalValueIdentifier");
+        finalScore.setTranslateX(460);
+        finalScore.setTranslateY(320);
+        root.getChildren().add(finalScore);
+
+        Button quitBt = new Button("Quit");
+        quitBt.setPrefWidth(300);
+        quitBt.setTranslateX(485);
+        quitBt.setTranslateY(575);
+        quitBt.setOnAction(this::quit);
+        Button mainMenuBt = new Button("Main Menu");
+        mainMenuBt.setPrefWidth(300);
+        mainMenuBt.setTranslateX(485);
+        mainMenuBt.setTranslateY(475);
+        mainMenuBt.setOnAction(this::mainMenu);
+        root.getChildren().add(quitBt);
+        root.getChildren().add(mainMenuBt);
+
+        Label label = new Label(type);
+        label.setId("Result");
+        label.setTranslateX(520);
+        label.setTranslateY(50);
+        root.getChildren().add(label);
+    }
+
+    private void mainMenu(ActionEvent e){
+        audioPlayer.stop();
+        changeState(new MainMenu());
+    }
+
+    private void quit(ActionEvent e){
+        Platform.exit();
     }
 
     private void reachedBrokenLink() {
