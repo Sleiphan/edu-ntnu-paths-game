@@ -1,5 +1,5 @@
 #AddGoal{
-    -fx-background-image: url(TestImages/AddGoalBackground.png);
+    -fx-background-image: url(Img/AddGoalBackground.png);
     -fx-background-size: 386 163;
     -fx-background-repeat: no-repeat;
 }
@@ -7,7 +7,7 @@
 .button{
     -fx-font-family: alagard;
     -fx-font-size: 30;
-    -fx-background-image: url(TestImages/Button.png);
+    -fx-background-image: url(Img/Button.png);
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
 }
@@ -29,7 +29,7 @@
 .combo-box{
     -fx-font-family: alagard;
     -fx-font-size: 20;
-    -fx-background-image: url(TestImages/Button.png);
+    -fx-background-image: url(Img/Button.png);
     -fx-background-size: 147 35;
     -fx-background-repeat: no-repeat;
 }

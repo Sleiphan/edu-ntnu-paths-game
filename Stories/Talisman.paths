@@ -1,0 +1,160 @@
+Talisman
+
+::Initial passage
+Welcome to Talisman
+(Begin)[Talisman temple]$Wand = 0; Cloak = 0; Forest_talisman = 0; Cave_talisman = 0; Mountain_talisman = 0; Torch = 0; temple_door_open=false; cave_enemy_defeated=false; fairy_used=false; dragon_dead=false$
+
+::Talisman temple
+You are at a strange temple.
+(Investigate)[Temple investigate]
+(Use forest talisman)[Temple inside]$temple_door_open=true$@Forest_talisman > 0@
+(Use cave talisman)[Temple inside]$temple_door_open=true$@Cave_talisman > 0@
+(Use mountain talisman)[Temple inside]$temple_door_open=true$@Mountain_talisman > 0@
+(Go to forest entrance)[Forest entrance]
+(Go to cave entrance)[Cave entrance]
+(Go to the mountains)[Mountain entrance]
+
+::Temple investigate
+On inspection of the temple you find an ancient tablet with instructions of how to open the temple.
+(Continue)[Talisman tablet]
+
+::Talisman tablet
+The tablet states the need for a Talisman to open the temple. It also mentions where three of them can be found. One in the mountains. One in the caves. One in the forest.
+(Continue)[Talisman temple]
+
+::Temple inside
+Inside the temple you se the legendary artifact the orb of life
+(take)[Temple inside]{InventoryAction:"The_orb_of_life"}@The_orb_of_life <= 0@
+(Back)[Talisman temple]
+
+::Cave entrance
+You stand at the entrance to the cave system
+(Enter)[Cave Dark]@Torch <= 0@
+(Enter)[Cave Light]@Torch > 0@
+(Go to temple)[Talisman temple]
+
+::Cave Dark
+The cave is dark, and you struggle to see anything. Maybe if you had a torch.
+(Leave)[Cave entrance]
+
+::Cave Light
+Your torch lights up the cave allowing you to proceed. You see 3 distinct paths in the cave.
+(Take the left path)[Cave left cloak]@Cloak <= 0@
+(Take the left path)[Cave left]@Cloak > 0@
+(Take the middle path)[Cave center]
+(Take the right path)[Cave right enemy]@cave_enemy_defeated == false@
+(Take the right path)[Cave right]@cave_enemy_defeated == true@
+(Leave)[Cave entrance]
+
+::Cave left
+There is nothing here.
+(Go back)[Cave Light]
+
+::Cave left cloak
+You se an old cloak laying at the end of the path
+(Take cloak)[Cave left]{InventoryAction:"Cloak"}
+
+::Cave center
+There seams to be nothing here, yet something feels of
+(Dispel)[Cave Talisman]@Wand > 0@
+(Leave)[Cave Light]
+
+::Cave Talisman
+Using the wand reveals the cave talisman before you
+(Take)[Cave center]{InventoryAction:"Cave_talisman"}{ScoreAction:100}
+
+::Cave right enemy
+You see a shadowy bat before you
+(Fight)[Cave right enemy defeated]{HealthAction:-20}$cave_enemy_defeated=true$
+(Leave)[Cave Light]
+
+::Cave right enemy defeated
+You fight of the shadowy bat but are dealt 20 points of damage
+(Continue)[Cave right]
+
+::Cave right
+With the bat cleared out you notice an inner chamber
+(Enter the inner chamber)[Cave inner chamber]
+(Go back)[Cave Light]
+
+::Cave inner chamber
+You se a small chest before you
+(Open)[Cave chest open]{InventoryAction:"Wand"}@Wand <= 0@
+(Leave)[Cave right]
+
+::Cave chest open
+You find a wand of dispelling in the chest
+(Continue)[Cave inner chamber]
+
+::Forest entrance
+You stand at the entrance to the forest
+(Enter)[Forest]
+(Leave)[Talisman temple]
+
+::Forest
+As you enter the forest you see a cabin further into the woods. You also hear faint noises coming from the left. And to you right you see an ethereal glow.
+(Go to the cabin)[Cabin]
+(Go to the sound)[Goblin shop]
+(Go to the glow)[Fairy spring]@fairy_used == false@
+(Go to the glow)[Fairy spring used]@fairy_used == true@
+(Leave)[Forest entrance]
+
+::Goblin shop
+A goblin welcomes you to his shop and asks if you want to buy
+(Buy Torch 20 gold)[Goblin shop]{InventoryAction:"Torch"}{GoldAction:-20}@Torch <= 0@
+(Buy health 10 gold 10 health)[Goblin shop]{HealthAction:10}{GoldAction:-10}@gold >= 10@
+(Leave)[Forest]
+
+::Fairy spring
+You arrive at a fairy spring. It almost seems to invite you to rest.
+(rest +20 Health)[Fairy spring used]{HealthAction:20}$fairy_used=true$
+(Leave)[Forest]
+
+::Fairy spring used
+The fairy springs power has been tapped
+(Leave)[Forest]
+
+::Cabin
+You arrive at a cabin, but there does not seam to be any door
+(Use wand)[Cabin revealed]@Wand > 0@
+(Leave)[Forest]
+
+::Cabin revealed
+Using your wand dispels the cabin and reveals a door
+(Enter)[Forest talisman]@Forest_talisman <= 0@
+(Enter)[Cabin inside]@Forest_talisman > 0@
+(Leave)[Forest]
+
+::Cabin inside
+There is nothing in the cabin
+(Leave)[Cabin]
+
+::Forest talisman
+Inside the cabin you find the forrest talisman
+(Take)[Cabin inside]{InventoryAction:"Forest_talisman"}{ScoreAction:100}
+
+::Mountain entrance
+You stand at the entrance to the mountain. You see a sign warning you of cold temperatures. Lack of equipment will lead to damage.
+(Enter)[Mountain slope]
+(Leave)[Talisman temple]
+
+::Mountain slope
+You stand at the bottom of the mountain
+(Climb)[Mountain top]@Cloak > 0@
+(Climb)[Mountain top]{HealthAction:-25}@Cloak <= 0@
+(Leave)[Mountain entrance]
+
+::Mountain top
+There seams to be nothing here, but something feels off
+(Use wand)[Mountain dragon]@Wand > 0@
+(Leave)[Mountain slope]@Cloak > 0@
+(Leave)[Mountain slope]{HealthAction:-25}@Cloak <= 0@
+
+::Mountain dragon
+A mystical dragon suddenly attacks.
+(Fight)[Mountain talisman]{HealthAction:-90}$dragon_dead=true$
+(Flee)[Mountain slope]{HealthAction:-30}
+
+::Mountain talisman
+As the dragon falls it deals you 90 damage, then it drops the mountain talisman
+(Take)[Mountain top]{InventoryAction:"Mountain_talisman"}

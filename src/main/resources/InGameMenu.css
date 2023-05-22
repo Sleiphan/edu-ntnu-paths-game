@@ -3,10 +3,10 @@
 }
 
 .root{
-    -fx-background-image: url(TestImages/AddGoalBackground.png);
+    -fx-background-image: url(Img/AddGoalBackground.png);
     -fx-background-size: 1270 720;
 }
 
 #overlay{
-    -fx-image: url(TestImages/Transparant.png);
+    -fx-image: url(Img/Transparant.png);
 }

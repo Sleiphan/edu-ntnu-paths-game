@@ -146,7 +146,7 @@ public class PathsMenuSystem implements ApplicationStateHandler {
     }
 
     public void playMenuMusic(){
-        String musicFile = "src/main/resources/TestAudio/Test.mp3";
+        String musicFile = "src/main/resources/Img/MainMenu.mp3";
         Media sound = new Media(new File(musicFile).toURI().toString());
         menuMusic = new MediaPlayer(sound);
         menuMusic.setVolume(0.05);

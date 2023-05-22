@@ -59,7 +59,7 @@ public class NewGameMenu extends PathsMenu {
     private void start(ActionEvent e){
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("src/main/resources/Stories"));
+        fileChooser.setInitialDirectory(new File("Stories"));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Paths Files", "*.paths")
         );

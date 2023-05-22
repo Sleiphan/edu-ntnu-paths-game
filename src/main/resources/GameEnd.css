@@ -1,9 +1,9 @@
 #Overlay{
-    -fx-image: url(TestImages/Transparant.png)
+    -fx-image: url(Img/Transparant.png)
 }
 
 #GameEndBG{
-    -fx-image: url(TestImages/GameEnd.png);
+    -fx-image: url(Img/GameEnd.png);
 }
 
 #finalValue{
@@ -19,7 +19,7 @@
 }
 
 #BG{
-    -fx-image: url(TestImages/Button.png);
+    -fx-image: url(Img/Button.png);
 }
 
 .button{
@@ -27,13 +27,13 @@
 }
 
 #Health{
-    -fx-image: url(Stories/img/Health.png);
+    -fx-image: url(../../../Stories/TalismanAssets/Health.png);
 }
 
 #Gold{
-    -fx-image: url(Stories/img/GoldIcon.png);
+    -fx-image: url(../../../Stories/TalismanAssets/GoldIcon.png);
 }
 
 #Score{
-    -fx-image: url(Stories/img/ScoreIcon.png);
+    -fx-image: url(../../../Stories/TalismanAssets/ScoreIcon.png);
 }
