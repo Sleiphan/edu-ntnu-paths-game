@@ -117,10 +117,21 @@ public class Game {
         return links;
     }
 
+    /**
+     * Checks if the game is lost. The game is lost if the health of the player falls to 0 or below
+     * @return true if game over, false if game not over
+     */
     public boolean checkGameOver(){
         return player.getHealth() <= 0;
     }
 
+    /**
+     * Checks if the game has been won. Check is if all goals of the different goal types have been achieved.
+     * Sets boolean values for each goal type achieved. Also checks if there are instances of all goals in the
+     * list of goals. If there is a goal type with no instances it updates the instance of boolean. This allows
+     * a game to be completed even if there aren't goals of all the types present in the list
+     * @return true if game won, false if game not won
+     */
     public boolean checkGameWon(){
         boolean healthGoalAchieved = false;
         boolean goldGoalAchieved = false;
