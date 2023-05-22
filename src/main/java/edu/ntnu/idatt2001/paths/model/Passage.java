@@ -19,6 +19,14 @@ public class Passage {
      * @param links     Connects the passage together with other passages
      */
     public Passage(String title, String content, List<Link> links){
+        if (title == null)
+            throw new IllegalArgumentException("The title cannot be null");
+        if (content == null)
+            throw new IllegalArgumentException("The content cannot be null");
+        if (links == null)
+            throw new IllegalArgumentException("Parameter links cannot be null");
+
+
         this.title = title;
         this.content = content;
         this.links = links;
