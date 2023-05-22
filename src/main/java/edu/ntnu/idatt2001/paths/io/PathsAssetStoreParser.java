@@ -96,7 +96,7 @@ public class PathsAssetStoreParser {
             }
 
             else
-                loadErrors.add("Unsupported file type of asset named " + key + " at line " + i + ": \"" + path + "\". Supported types are: " + SUPPORTED_FILE_ENDINGS);
+                loadErrors.add("Unsupported file type of asset named " + key + " at line " + (i+1) + ": \"" + path + "\". Supported types are: " + SUPPORTED_FILE_ENDINGS);
         }
 
         return new PathsAssetStore(imageAssets, audioAssets);
