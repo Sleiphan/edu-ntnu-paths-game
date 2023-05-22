@@ -24,6 +24,7 @@
 "Cave inner chamber:LookAt":"TalismanAssets/Chest.png"
 "Cave left cloak:LookAt":"TalismanAssets/cloth.png"
 "Cave left:LookAt":"TalismanAssets/Nothing.png"
+"Cave center nothing:LookAt":"TalismanAssets/Nothing.png"
 "Forest entrance:Background":"TalismanAssets/TempleSurroundingBackground.png"
 "Forest:Background":"TalismanAssets/ForestBackground.png"
 "Forest:Audio":"TalismanAssets/ForestMusic.mp3"

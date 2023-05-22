@@ -106,7 +106,7 @@ As you enter the forest you see a cabin further into the woods. You also hear fa
 
 ::Goblin shop
 A goblin welcomes you to his shop and asks if you want to buy
-[Buy Torch 20 gold](Goblin shop){InventoryAction:"Torch"}{GoldAction:-20}@Torch <= 0@
+[Buy Torch 20 gold](Goblin shop){InventoryAction:"Torch"}{GoldAction:-20}@Torch <= 0 && gold >= 20@
 [Buy health 10 gold 10 health](Goblin shop){HealthAction:10}{GoldAction:-10}@gold >= 10@
 [Leave](Forest)
 
@@ -151,7 +151,7 @@ You stand at the bottom of the mountain
 
 ::Mountain top
 There seams to be nothing here, but something feels off
-[Use wand](Mountain dragon)@Wand > 0@
+[Use wand](Mountain dragon)@Wand > 0 && dragon_dead == false@
 [Leave](Mountain slope)@Cloak > 0@
 [Leave](Mountain slope){HealthAction:-25}@Cloak <= 0@
 
