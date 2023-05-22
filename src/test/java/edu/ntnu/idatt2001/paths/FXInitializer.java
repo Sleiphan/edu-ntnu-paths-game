@@ -53,6 +53,5 @@ public class FXInitializer {
 
     private static void unloadFX() {
         Platform.exit();
-        System.out.println("Unloaded FX");
     }
 }
