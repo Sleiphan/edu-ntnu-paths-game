@@ -6,10 +6,11 @@ import javafx.scene.media.MediaPlayer;
 
 /**
  * This class defines the syntax for connecting assets to different passages.
- * The syntax is based on creating a format for the keys used in an asset store, which in our case is PathsAssetStore.
- * And the assets are defined in a .pathsassets-file in the same directory as the .paths-file. <br>
+ * The syntax is based on creating a format for the keys used in an asset store,
+ * which in our case is PathsAssetStore.
+ * And the assets are defined in a .pathsassets-file in the same directory as
+ * the .paths-file. <br>
  * <br>
- *
  */
 public class AssetFinder {
     public static final String HEALTH_ICON = "UI: Health icon";
@@ -34,7 +35,7 @@ public class AssetFinder {
     // The data separator in a .pathsassets-file.
     private static final String PATHSASSETS_SEP = ":";
 
-    private PathsAssetStore assetStore;
+    private final PathsAssetStore assetStore;
 
     public AssetFinder(PathsAssetStore assetStore) {
         this.assetStore = assetStore;
@@ -57,25 +58,28 @@ public class AssetFinder {
     }
 
     /**
-     * Generates a template for specifying the global assets of a story. These are the assets that are constant
-     * throughout the story.
-     * @return A string containing the template for specifying the global assets of a story.
+     * Generates a template for specifying the global assets of a story. These
+     * are the assets that are constant throughout the story.
+     * @return A string containing the template for specifying the global assets
+     * of a story.
      */
     public static String generateGlobalTemplate() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\"" + HEALTH_ICON + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + GOLD_ICON   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + SCORE_ICON  + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + ITEM_SLOT   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + HEALTH_ICON      + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + GOLD_ICON        + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + SCORE_ICON       + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + ITEM_SLOT        + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + INTERACTION_AREA + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
 
         return sb.toString();
     }
 
     /**
-     * Generates a template for specifying the assets of a single passage in a story.
+     * Generates a template for specifying the assets of a single passage in a
+     * story.
      * @param passageTitle The title of the passage.
-     * @param linkTitles An array of Strings containing the titles of the passage's links.
+     * @param linkTitles An array of Strings containing the titles of the
+     *                   passage's links.
      * @return
      */
     public static String generatePassageTemplate(String passageTitle, String[] linkTitles) {

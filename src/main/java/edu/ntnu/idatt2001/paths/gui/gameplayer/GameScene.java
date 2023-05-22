@@ -18,9 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Popup;
 import javafx.util.Duration;
 
 import java.util.List;
@@ -38,7 +36,6 @@ public class GameScene extends PathsMenu {
     private static final int STATS_ICON_PADDING = 10;
     private static final int STATS_ICON_SIZE =  STATS_YPOS_INTERVAL - STATS_ICON_PADDING;
     private static final int STATS_LABEL_XPOS = STATS_XPOS + STATS_YPOS_INTERVAL;
-    private static final int PLAYER_MIN_SIZE = 256;
 
     private final Game game;
     private ScrollPane linkSelector;
@@ -62,7 +59,6 @@ public class GameScene extends PathsMenu {
     private ImageView goldIcon;
     private ImageView scoreIcon;
     private ItemViewer itemViewer;
-    private ImageView playerStatusBackground;
     private boolean openingInGameMenu;
 
     private MediaPlayer audioPlayer;
@@ -97,6 +93,10 @@ public class GameScene extends PathsMenu {
             openingInGameMenu = false;
             return;
         }
+
+        if (hasAssets())
+            assetFinder.loadAllGlobalAssets();
+
         updateInfoLabels();
     }
 
@@ -115,17 +115,10 @@ public class GameScene extends PathsMenu {
     }
 
     /**
-     * Returns the root pane of this scene.
-     * @return the root pane of this scene.
-     */
-    public AnchorPane getRootPane() {
-        return root;
-    }
-
-    /**
      * The method called when the user selects a link.
      * It updates the GUI-components with the contents of the next passage.
-     * If the submitted link is a broken link (a link that does not point to a Passage),
+     * If the submitted link is a broken link (a link that does not point
+     * to a Passage),
      * then the transition does not happen.
      * @param link The link that the user has chosen.
      */
@@ -157,8 +150,10 @@ public class GameScene extends PathsMenu {
     }
 
     /**
-     * Creates an overlay over the current game scene. To be used when the user wins or loses the game
-     * @param type the game result. For example "Game Over" if game lost or "Game won" if game won
+     * Creates an overlay over the current game scene. To be used when the user
+     * wins or loses the game
+     * @param type the game result. For example "Game Over" if game lost or
+     *             "Game won" if game won
      */
     private void gameEnd(String type){
         getScene().getStylesheets().add("GameEnd.css");
@@ -257,7 +252,7 @@ public class GameScene extends PathsMenu {
         mainMenuBt.setPrefWidth(300);
         mainMenuBt.setTranslateX(485);
         mainMenuBt.setTranslateY(475);
-        mainMenuBt.setOnAction(this::mainMenu);
+        mainMenuBt.setOnAction(this::goToMainMenu);
         root.getChildren().add(quitBt);
         root.getChildren().add(mainMenuBt);
 
@@ -268,7 +263,7 @@ public class GameScene extends PathsMenu {
         root.getChildren().add(label);
     }
 
-    private void mainMenu(ActionEvent e){
+    private void goToMainMenu(ActionEvent e){
         audioPlayer.stop();
         changeState(new MainMenu());
     }
@@ -396,16 +391,6 @@ public class GameScene extends PathsMenu {
         if (playerImg == null)
             return;
 
-        /*if (playerImg.getWidth() < PLAYER_MIN_SIZE)
-            playerViewer.setFitWidth(PLAYER_MIN_SIZE);
-        else
-            playerViewer.setFitWidth(0);
-        if (playerImg.getHeight() < PLAYER_MIN_SIZE)
-            playerViewer.setFitHeight(PLAYER_MIN_SIZE);
-        else
-            playerViewer.setFitHeight(0);
-         */
-
         final int playerX = (int) (sceneConfig.getWidth() / 5 - playerImg.getWidth() / 2);
         final int playerY = (int) (sceneConfig.getHeight() * 2 / 3 - playerImg.getHeight());
 
@@ -419,18 +404,7 @@ public class GameScene extends PathsMenu {
         if (lookAtImg == null)
             return;
 
-        /*if (lookAtImg.getWidth() < PLAYER_MIN_SIZE)
-            lookAtViewer.setFitWidth(PLAYER_MIN_SIZE);
-        else
-            lookAtViewer.setFitWidth(0);
-        if (lookAtImg.getHeight() < PLAYER_MIN_SIZE)
-            lookAtViewer.setFitHeight(PLAYER_MIN_SIZE);
-        else
-            lookAtViewer.setFitHeight(0);
-
-         */
-
-        final int playerX = (int) ((sceneConfig.getWidth() * 4) / 5 - lookAtImg.getWidth() / 2);
+        final int playerX = (int) ((sceneConfig.getWidth()  * 4) / 5 - lookAtImg.getWidth() / 2);
         final int playerY = (int) ((sceneConfig.getHeight() * 2) / 3 - lookAtImg.getHeight());
 
         lookAtViewer.setImage(lookAtImg);
@@ -472,7 +446,7 @@ public class GameScene extends PathsMenu {
             passageViewer = createPassageViewer(sceneConfig);
             playerViewer = createPlayerViewer(sceneConfig);
             lookAtViewer = createLookAtViewer(sceneConfig);
-            playerStatusBackground = createPlayerStatsBackground();
+            ImageView playerStatusBackground = createPlayerStatsBackground();
 
             ImageView interactionArea = createInteractionArea(sceneConfig);
             createPlayerStatsIcons();
@@ -548,15 +522,11 @@ public class GameScene extends PathsMenu {
     private Button createMenuButton(SceneConfig sceneConfig) {
         int xPos = sceneConfig.getWidth() - 150;
         int yPos = sceneConfig.getHeight() - 150;
-        final int width = 70;
-        final int height = 70;
 
         Button menuButton = new Button("Menu");
         menuButton.setOnAction(this::openInGameMenu);
         menuButton.setTranslateX(xPos);
         menuButton.setTranslateY(yPos);
-        //menuButton.setPrefWidth(width);
-        //menuButton.setPrefHeight(height);
         return menuButton;
     }
 
@@ -660,14 +630,6 @@ public class GameScene extends PathsMenu {
         return new ImageView();
     }
 
-    private void playAudio(MediaPlayer mediaPlayer){
-        mediaPlayer.play();
-    }
-
-    private MediaPlayer createAudioPlayer(){
-        return new MediaPlayer(new Media(""));
-    }
-
     private void openInGameMenu(Event e) {
         InGameMenu menu = new InGameMenu(this);
         openingInGameMenu = true;
@@ -696,6 +658,4 @@ public class GameScene extends PathsMenu {
         brokenLinksLabel.setTranslateY(650);
         brokenLinksLabel.setId("infoLabel");
     }
-
-
 }
