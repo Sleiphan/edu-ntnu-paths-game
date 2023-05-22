@@ -26,17 +26,19 @@ public class StoryLoader {
 
     public static final String PATHS_FILE_ENDING = ".paths";
     public static final String PATHS_ASSET_FILE_ENDING = ".pathsassets";
+    public static final Path DEFAULT_ASSET_STORE = Path.of(ClassLoader.getSystemResource("defaultAssets/default.pathsassets").getPath().substring(1));
+    public static final String DEFAULT_ASSET_STORE_PASSAGE_TITLE = "Passage";
 
     private final Path storyFilePath;
-    private final String workingDirectory;
     private final Path assetsFilePath;
     private final List<String> errors = new ArrayList<>();
 
     private Story story;
     private PathsAssetStore assetStore;
-    private PathsParser parser = new PathsParser();
+    private final PathsParser parser = new PathsParser();
 
-    private boolean foundAssetStore;
+    private final boolean foundAssetStore;
+    private boolean usingDefaultAssets;
 
     /**
      * Creates a new StoryLoader for use on a single Story-file.
@@ -54,12 +56,18 @@ public class StoryLoader {
         if (!Files.exists(this.storyFilePath))
             throw new FileNotFoundException("Failed to find file: " + storyFilePath);
 
-        workingDirectory = storyFilePath.substring(0, storyFilePath.lastIndexOf('/') + 1);
 
         String assetsPathString = storyFilePath.substring(0, storyFilePath.lastIndexOf('.')) + PATHS_ASSET_FILE_ENDING;
-        this.assetsFilePath = Path.of(assetsPathString);
-        if (Files.exists(this.assetsFilePath))
-            foundAssetStore = true;
+        Path customAssets = Path.of(assetsPathString);
+
+        if (Files.exists(customAssets))
+            assetsFilePath = customAssets;
+        else {
+            assetsFilePath = DEFAULT_ASSET_STORE;
+            usingDefaultAssets = true;
+        }
+
+        foundAssetStore = Files.exists(assetsFilePath);
     }
 
     /**
@@ -90,12 +98,13 @@ public class StoryLoader {
      * <code>false</code>.
      */
     public boolean load(Charset charset) {
-        boolean success = loadStory(storyFilePath, charset);
+        boolean storySuccess = loadStory(storyFilePath, charset);
 
+        boolean assetStoreSuccess = false;
         if (foundAssetStore)
-            success = loadAssetStore(assetsFilePath, charset);
+            assetStoreSuccess = loadAssetStore(assetsFilePath, charset);
 
-        return success;
+        return storySuccess && assetStoreSuccess;
     }
 
     /**
@@ -135,6 +144,8 @@ public class StoryLoader {
             return false;
         }
 
+        String workingDirectory = assetRegisterPath.subpath(0, assetRegisterPath.getNameCount() - 1).toString();
+
         this.assetStore = parser.parsePathsAssetStore(data, workingDirectory);
 
         String[] errors = parser.getErrorsFromLastParse();
@@ -152,6 +163,10 @@ public class StoryLoader {
      */
     public boolean foundAssetStore() {
         return foundAssetStore;
+    }
+
+    public boolean isUsingDefaultAssets() {
+        return usingDefaultAssets;
     }
 
     /**

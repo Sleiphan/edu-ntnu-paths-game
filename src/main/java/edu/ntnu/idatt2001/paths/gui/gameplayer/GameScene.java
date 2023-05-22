@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameScene extends PathsMenu {
@@ -77,8 +78,12 @@ public class GameScene extends PathsMenu {
         this.scene = createScene(sceneConfig);
 
         updateContent(game.begin());
-        if (hasAssets())
-            updateAssets(game.begin());
+        if (hasAssets()) {
+            if (!s.isUsingDefaultAssets())
+                updateAssets(game.begin());
+            else
+                updateAssets(new Passage(StoryLoader.DEFAULT_ASSET_STORE_PASSAGE_TITLE, "", new ArrayList<>()));
+        }
     }
 
     public boolean hasAssets() {
