@@ -54,7 +54,6 @@ public class NewGameMenu extends PathsMenu {
      * message telling the user what went wrong will be presented.
      * If alle the inputs are correct a Game object will be initialized, and the user will be
      * transported to the opening passage gameScene.
-     * @param e
      */
     private void start(ActionEvent e){
         Stage stage = new Stage();
@@ -194,7 +193,6 @@ public class NewGameMenu extends PathsMenu {
     /**
      * Allows the user to define a new goal to add to the list of goals for the new story.
      * Opens an overlay where the user can define the type of goal, and how much.
-     * @param e
      */
     private void add(ActionEvent e) {
 
@@ -239,7 +237,6 @@ public class NewGameMenu extends PathsMenu {
 
     /**
      * Updates the list of goals with a new user defined goal.
-     * @param e
      */
     private void addGoal(ActionEvent e){
         ObservableList<Goal> goals = tableView.getItems();
@@ -270,7 +267,6 @@ public class NewGameMenu extends PathsMenu {
      * Allows the user to remove a goal from the list of goals for the game.
      * To remove the user selects the goal in the list they want to remove
      * Then they press the remove button.
-     * @param e
      */
     private void remove(ActionEvent e){
         Goal selected = tableView.getSelectionModel().getSelectedItem();
@@ -321,9 +317,6 @@ public class NewGameMenu extends PathsMenu {
         Button btRemoveGoal = new Button("Remove goal");
         btRemoveGoal.setId("btRemoveGoal");
 
-
-
-
         tableView.maxWidth(245);
         TableColumn<Goal, String> TypeColumn = new TableColumn<>("Type");
         TypeColumn.setPrefWidth(122.5);
@@ -342,8 +335,6 @@ public class NewGameMenu extends PathsMenu {
 
         int buttonWidth = 200;
         int sceneWidth = handler.getSceneWidth();
-        int sceneHeight = handler.getSceneHeight();
-        int buttonX = sceneWidth / 2 - buttonWidth / 2;
 
         menuBackground.setTranslateX(270);
         menuBackground.setTranslateY(50);
