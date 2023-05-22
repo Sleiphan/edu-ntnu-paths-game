@@ -101,10 +101,15 @@ public class StoryLoader {
         this.story = parser.fromPathsFormatStory(data);
 
         if (this.story == null) {
+            // Add this error first to quickly inform the user that we are unable to play
+            // the story.
             errors.add("Failed to parse a story from the submitted file.");
             errors.addAll(parser.readAllErrors());
             return false;
         }
+
+        // From this point onwards, we can load all extras content associated
+        // with the successfully loaded story.
 
         boolean success = true;
 
