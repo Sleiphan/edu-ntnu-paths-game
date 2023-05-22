@@ -181,6 +181,11 @@ public class AssetFinder {
         return assetStore.audio().getAsset(passageTitle + SEP + AUDIO);
     }
 
+    /**
+     * Generates an asset template file (pathsassets) for the file given as a parameter. The file is added into
+     * the same directory as the given file.
+     * @param file file to create a related asset file fore.
+     */
     public static void generateAssetTemplate(File file) {
         String storyPath = file.getAbsolutePath();
         String fileName = file.getName();
