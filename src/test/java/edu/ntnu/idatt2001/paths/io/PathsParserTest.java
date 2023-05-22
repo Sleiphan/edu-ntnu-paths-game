@@ -227,6 +227,16 @@ public class PathsParserTest {
     }
 
     @Test
+    public void parser_returns_errors() {
+        PathsParser parser = new PathsParser();
+        Story s = parser.fromPathsFormatStory("Story\n\n::Passage 1\nSome Text\n\nPassage 2\nText\n(Link Text)[Link ref]{}");
+
+        List<String> result = parser.readAllErrors();
+
+        assert result.size() > 0;
+    }
+
+    @Test
     public void link_with_script_and_condition() {
         PathsParser parser = new PathsParser();
         Link link1 = new Link("Unlock door", "Throne room");
