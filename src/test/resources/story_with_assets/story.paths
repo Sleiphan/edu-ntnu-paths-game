@@ -2,13 +2,13 @@ Test story
 
 ::Title screen
 Welcome to the game!
-(Go to Tutorial Island)[Tutorial Island]
-(Go to this title screen)[Title screen]
+[Go to Tutorial Island](Tutorial Island)
+[Go to this title screen](Title screen)
 
 ::Tutorial 1
 This is tutorial 1
-(Go back to Tutorial Island)[Tutorial Island]
+[Go back to Tutorial Island](Tutorial Island)
 
 ::Tutorial Island
 You are at Tutorial Island
-(Go to tutorial 1)[Tutorial 1]{ScoreAction:40}{GoldAction:60}
+[Go to tutorial 1](Tutorial 1){ScoreAction:40}{GoldAction:60}

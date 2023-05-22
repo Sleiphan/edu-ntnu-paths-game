@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths.io;
 
+import edu.ntnu.idatt2001.paths.FXInitializer;
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -62,11 +63,11 @@ public class PathsAssetStoreParserTest {
 
     @BeforeAll
     public void setup() {
-        Platform.startup(() -> {});
+        FXInitializer.addRef();
     }
 
     @AfterAll
     public void exitFX() {
-        Platform.exit();
+        FXInitializer.release();
     }
 }
