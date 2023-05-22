@@ -1,37 +1,19 @@
 package edu.ntnu.idatt2001.paths.gui;
 
-import edu.ntnu.idatt2001.paths.asset.AudioAsset;
 import edu.ntnu.idatt2001.paths.gui.gameplayer.AssetFinder;
-import edu.ntnu.idatt2001.paths.io.PathsParser;
-import edu.ntnu.idatt2001.paths.model.Link;
-import edu.ntnu.idatt2001.paths.model.Passage;
-import edu.ntnu.idatt2001.paths.model.Story;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import javax.imageio.ImageIO;
-import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -52,7 +34,6 @@ public class MainMenu extends PathsMenu {
 
     /**
      * Takes the user to the new game menu scene, where the user can initialize a new game
-     * @param e
      */
     private void newGame(ActionEvent e){
         changeState(new NewGameMenu());
@@ -60,12 +41,16 @@ public class MainMenu extends PathsMenu {
 
     /**
      * Allows the user to quit the application
-     * @param e
      */
     private void quit(ActionEvent e) {
         Platform.exit();
     }
 
+    /**
+     * Checks if a pathsassets file exists for chosen file. Calls generate template asset if a pathassets file
+     * is not found. If file already exist the program will ask the user if they want override the file with a new
+     * template
+     */
     private void generateAssetTemplate(ActionEvent e) {
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
