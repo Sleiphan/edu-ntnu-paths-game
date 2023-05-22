@@ -27,13 +27,13 @@
 }
 
 #Health{
-    -fx-image: url(../../../Stories/TalismanAssets/Health.png);
+    -fx-image: url(img/Health.png);
 }
 
 #Gold{
-    -fx-image: url(../../../Stories/TalismanAssets/GoldIcon.png);
+    -fx-image: url(img/GoldIcon.png);
 }
 
 #Score{
-    -fx-image: url(../../../Stories/TalismanAssets/ScoreIcon.png);
+    -fx-image: url(img/ScoreIcon.png);
 }

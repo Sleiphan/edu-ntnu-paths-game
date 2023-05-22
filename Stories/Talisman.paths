@@ -157,4 +157,4 @@ A mystical dragon suddenly attacks.
 
 ::Mountain talisman
 As the dragon falls it deals you 90 damage, then it drops the mountain talisman
-(Take)[Mountain top]{InventoryAction:"Mountain_talisman"}
+(Take)[Mountain top]{InventoryAction:"Mountain_talisman"}{ScoreAction:100}

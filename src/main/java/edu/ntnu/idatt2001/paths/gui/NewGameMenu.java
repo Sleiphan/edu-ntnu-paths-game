@@ -368,12 +368,9 @@ public class NewGameMenu extends PathsMenu {
         tableView.setTranslateY(80);
 
         ArrayList<String> mand = new ArrayList<>();
-        mand.add("a");
+        mand.add("The_orb_of_life");
         ObservableList<Goal> test = FXCollections.observableArrayList(
-                new GoldGoal(4),
-                new HealthGoal(10),
-                new InventoryGoal(mand),
-                new ScoreGoal(10)
+                new InventoryGoal(mand)
         );
 
         tableView.setItems(test);
