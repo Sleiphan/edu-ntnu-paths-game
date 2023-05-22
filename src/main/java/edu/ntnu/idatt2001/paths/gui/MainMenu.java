@@ -75,6 +75,9 @@ public class MainMenu extends PathsMenu {
         );
 
         File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile == null)
+            return;
+
         File targetFile = new File(selectedFile.getAbsolutePath() + "assets");
         boolean exists = Files.exists(Path.of(targetFile.getAbsolutePath()));
         if(!exists){
