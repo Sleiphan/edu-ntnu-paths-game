@@ -26,9 +26,12 @@ public class PathsParser {
 
 
     public List<String> readAllErrors() {
-        List<String> errors = this.errors;
+        List<String> result = new ArrayList<>();
+        for (String error : errors)
+            result.add(error);
+
         clearErrors();
-        return errors;
+        return result;
     }
 
     public void clearErrors() {
