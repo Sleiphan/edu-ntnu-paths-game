@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
+import edu.ntnu.idatt2001.paths.asset.AssetFinder;
 import edu.ntnu.idatt2001.paths.gui.MainMenu;
 import edu.ntnu.idatt2001.paths.model.Game;
 import edu.ntnu.idatt2001.paths.model.Link;

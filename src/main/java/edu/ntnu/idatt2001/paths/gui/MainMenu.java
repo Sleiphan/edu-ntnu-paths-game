@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2001.paths.gui;
 
-import edu.ntnu.idatt2001.paths.gui.gameplayer.AssetFinder;
+import edu.ntnu.idatt2001.paths.asset.AssetFinder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
