@@ -1,6 +1,5 @@
-package edu.ntnu.idatt2001.paths.gui.gameplayer;
+package edu.ntnu.idatt2001.paths.asset;
 
-import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import edu.ntnu.idatt2001.paths.io.PathsParser;
 import edu.ntnu.idatt2001.paths.model.Link;
 import edu.ntnu.idatt2001.paths.model.Passage;
@@ -9,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
