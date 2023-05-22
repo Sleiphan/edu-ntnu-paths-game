@@ -79,9 +79,15 @@ public class NewGameMenu extends PathsMenu {
             throw new RuntimeException(ex);
         }
 
+        if (!loader.load()) {
+            boolean storyLoadSuccess = loader.getStory() != null;
+            boolean abort = !showErrorsToUser(loader.readAllErrors(), storyLoadSuccess);
 
-        if (!loader.load())
-            showErrorsToUser(loader.readAllErrors());
+            if (!storyLoadSuccess)
+                return;
+            if (abort)
+                return;
+        }
 
         if (loader.getStory() == null)
             return;
@@ -139,18 +145,32 @@ public class NewGameMenu extends PathsMenu {
     }
 
     /**
-     * Presents errors to the user. Takes inn a list of errors and builds a string from the list.
-     * Then presents the list of errors to the user.
-     * @param errors errors to show to the user
+     * Presents errors to the user. Takes inn a list of errors and builds a
+     * string from the list. Then presents the list of errors to the user.
+     * If the story-file was loaded successfully, but some assets could not be
+     * loaded the user is asked whether they want to play the story without
+     * some assets.
+     * @param errors The errors to show to the user
+     * @param storyLoadSuccess Indicates whether the story-file was loaded
+     *                         successfully.
+     * @return True if the user wants to continue despite some assets not being
+     * loaded successfully.
      */
-    private void showErrorsToUser(String[] errors) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
+    private boolean showErrorsToUser(String[] errors, boolean storyLoadSuccess) {
+        Alert alert;
+        if (storyLoadSuccess)
+            alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.CANCEL);
+        else
+            alert = new Alert(Alert.AlertType.INFORMATION);
+
+        alert.setTitle("Syntax error");
+        alert.setHeaderText("Failed to load the selected story.");
+        if (storyLoadSuccess)
+            alert.setHeaderText("Some assets could not be loaded. Continue?");
+
         StringBuilder allErrors = new StringBuilder();
-        for(int i = 0; i < errors.length; i++){
-            allErrors.append(errors[i]).append('\n').append('\n');
-        }
+        for (String error : errors)
+            allErrors.append(error).append('\n').append('\n');
 
         TextArea area = new TextArea(allErrors.toString());
         area.setWrapText(true);
@@ -160,6 +180,11 @@ public class NewGameMenu extends PathsMenu {
         alert.setResizable(true);
 
         alert.showAndWait();
+
+        if (storyLoadSuccess)
+            return alert.getResult() == ButtonType.YES;
+        else
+            return false;
     }
 
     private List<Goal> getGoals() {
@@ -171,7 +196,7 @@ public class NewGameMenu extends PathsMenu {
      * Opens an overlay where the user can define the type of goal, and how much.
      * @param e
      */
-    private void add(ActionEvent e){
+    private void add(ActionEvent e) {
 
         stage.setWidth(400);
         stage.setHeight(200);

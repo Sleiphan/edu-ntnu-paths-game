@@ -90,6 +90,21 @@ public class StoryLoader {
      * <code>false</code>.
      */
     public boolean load(Charset charset) {
+        boolean success = loadStory(storyFilePath, charset);
+
+        if (foundAssetStore)
+            success = loadAssetStore(assetsFilePath, charset);
+
+        return success;
+    }
+
+    /**
+     * Loads a story.
+     * @param charset The character encoding of the file, e.g. UTF-8. Although not recommended, use
+     *                'Charset.defaultCharset()' if you have no way of knowing the file's encoding.
+     * @return <code>true</code> if the story was successfully loaded.
+     */
+    private boolean loadStory(Path storyFilePath, Charset charset) {
         String data;
         try {
             data = Files.readString(storyFilePath, charset);
@@ -98,25 +113,10 @@ public class StoryLoader {
             return false;
         }
 
-        this.story = parser.fromPathsFormatStory(data);
+        story = parser.fromPathsFormatStory(data);
+        errors.addAll(parser.readAllErrors());
 
-        if (this.story == null) {
-            // Add this error first to quickly inform the user that we are unable to play
-            // the story.
-            errors.add("Failed to parse a story from the submitted file.");
-            errors.addAll(parser.readAllErrors());
-            return false;
-        }
-
-        // From this point onwards, we can load all extras content associated
-        // with the successfully loaded story.
-
-        boolean success = true;
-
-        if (foundAssetStore)
-            success = loadAssetStore(assetsFilePath, charset);
-
-        return success;
+        return story != null;
     }
 
     /**
