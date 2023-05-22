@@ -60,6 +60,7 @@ public class AssetFinder {
         assetStore.images().loadAsset(SCORE_ICON);
         assetStore.images().loadAsset(ITEM_SLOT);
         assetStore.images().loadAsset(INTERACTION_AREA);
+        assetStore.images().loadAsset(TEXT_AREA);
     }
 
     /**
@@ -71,6 +72,7 @@ public class AssetFinder {
         assetStore.images().unloadAsset(SCORE_ICON);
         assetStore.images().unloadAsset(ITEM_SLOT);
         assetStore.images().unloadAsset(INTERACTION_AREA);
+        assetStore.images().unloadAsset(TEXT_AREA);
     }
 
     /**
@@ -86,6 +88,7 @@ public class AssetFinder {
         sb.append("\"" + SCORE_ICON       + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + ITEM_SLOT        + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + INTERACTION_AREA + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + TEXT_AREA + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
 
         return sb.toString();
     }
