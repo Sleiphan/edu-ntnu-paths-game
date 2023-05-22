@@ -41,6 +41,9 @@ public class AssetFinder {
         this.assetStore = assetStore;
     }
 
+    /**
+     * Loads into memory all assets that are always on display.
+     */
     public void loadAllGlobalAssets() {
         assetStore.images().loadAsset(HEALTH_ICON);
         assetStore.images().loadAsset(GOLD_ICON);
@@ -49,6 +52,9 @@ public class AssetFinder {
         assetStore.images().loadAsset(INTERACTION_AREA);
     }
 
+    /**
+     * Unloads all assets that are always on display from memory.
+     */
     public void unloadAllGlobalAssets() {
         assetStore.images().unloadAsset(HEALTH_ICON);
         assetStore.images().unloadAsset(GOLD_ICON);
@@ -128,18 +134,38 @@ public class AssetFinder {
         return assetStore.images().getAsset(passageTitle + SEP + PASSAGE_LOOK_AT);
     }
 
+    /**
+     * Returns the background image of a passage.
+     * @param passageTitle The title of the passage from which to retrieve the asset.
+     * @return the background image of a passage.
+     */
     public Image getBackground(String passageTitle) {
         return assetStore.images().getAsset(passageTitle + SEP + PASSAGE_BACKGROUND);
     }
 
+    /**
+     * Returns the icon associated with the specified link.
+     * @param passageTitle The title of the passage from which to retrieve the asset.
+     * @param linkTitle The title of the link from which to retrieve the asset.
+     * @return the icon associated with the specified link.
+     */
     public Image getLinkIcon(String passageTitle, String linkTitle) {
         return assetStore.images().getAsset(passageTitle + SEP + linkTitle + SEP + LINK_ICON);
     }
 
+    /**
+     * Returns the asset to be used as the background of the text area.
+     * @return the asset to be used as the background of the text area.
+     */
     public Image getTextArea() {
         return assetStore.images().getAsset(TEXT_AREA);
     }
 
+    /**
+     * Returns the audio to be played at a specific passage.
+     * @param passageTitle The title of the passage from which to retrieve the asset.
+     * @return the audio to be played at a specific passage.
+     */
     public MediaPlayer getAudio(String passageTitle){
         return assetStore.audio().getAsset(passageTitle + SEP + AUDIO);
     }
