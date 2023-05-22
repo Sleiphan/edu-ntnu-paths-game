@@ -41,7 +41,8 @@ The cave is dark, and you struggle to see anything. Maybe if you had a torch.
 Your torch lights up the cave allowing you to proceed. You see 3 distinct paths in the cave.
 [Take the left path](Cave left cloak)@Cloak <= 0@
 [Take the left path](Cave left)@Cloak > 0@
-[Take the middle path](Cave center)
+[Take the middle path](Cave center)@Cave_talisman <= 0@
+[Take the middle path](Cave center nothing)@Cave_talisman > 0@
 [Take the right path](Cave right enemy)@cave_enemy_defeated == false@
 [Take the right path](Cave right)@cave_enemy_defeated == true@
 [Leave](Cave entrance)
@@ -55,13 +56,17 @@ You se an old cloak laying at the end of the path
 [Take cloak](Cave left){InventoryAction:"Cloak"}
 
 ::Cave center
-There seams to be nothing here, yet something feels of
+There seems to be nothing here, yet something feels of
 [Dispel](Cave Talisman)@Wand > 0@
+[Leave](Cave Light)
+
+::Cave center nothing
+There seems to be nothing here
 [Leave](Cave Light)
 
 ::Cave Talisman
 Using the wand reveals the cave talisman before you
-[Take](Cave center){InventoryAction:"Cave_talisman"}{ScoreAction:100}
+[Take](Cave center nothing){InventoryAction:"Cave_talisman"}{ScoreAction:100}
 
 ::Cave right enemy
 You see a shadowy bat before you
