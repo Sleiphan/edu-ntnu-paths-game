@@ -35,8 +35,8 @@ public class MainMenu extends PathsMenu {
 
     }
 
-    private void continueLastGame(ActionEvent e) {
-
+    private void Tutorial(ActionEvent e) {
+        changeState(new Tutorial());
     }
 
     /**
@@ -70,7 +70,7 @@ public class MainMenu extends PathsMenu {
             handler.playMenuMusic();
         }
 
-        Button btContinue = new Button("Continue");
+        Button btContinue = new Button("Tutorial");
         Button btNewGame  = new Button("New Game");
         Button btQuit     = new Button("Quit");
         ImageView logo = new ImageView();
@@ -78,7 +78,7 @@ public class MainMenu extends PathsMenu {
 
         Font.loadFont("file:src/main/resources/alagard/alagard.ttf",20);
 
-        btContinue.setOnAction(this::continueLastGame);
+        btContinue.setOnAction(this::Tutorial);
         btNewGame .setOnAction(this::newGame);
         btQuit    .setOnAction(this::quit);
 
@@ -96,8 +96,8 @@ public class MainMenu extends PathsMenu {
         btNewGame .setPrefWidth(buttonWidth);
         btQuit    .setPrefWidth(buttonWidth);
 
-        btContinue.setTranslateY(270);
-        btNewGame .setTranslateY(370);
+        btContinue.setTranslateY(370);
+        btNewGame .setTranslateY(270);
         btQuit    .setTranslateY(470);
         logo.setTranslateY(40);
 
