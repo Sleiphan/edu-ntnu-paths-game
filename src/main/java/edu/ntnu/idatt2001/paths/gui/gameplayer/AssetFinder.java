@@ -16,10 +16,11 @@ import java.nio.file.Path;
 
 /**
  * This class defines the syntax for connecting assets to different passages.
- * The syntax is based on creating a format for the keys used in an asset store, which in our case is PathsAssetStore.
- * And the assets are defined in a .pathsassets-file in the same directory as the .paths-file. <br>
+ * The syntax is based on creating a format for the keys used in an asset store,
+ * which in our case is PathsAssetStore.
+ * And the assets are defined in a .pathsassets-file in the same directory as
+ * the .paths-file. <br>
  * <br>
- *
  */
 public class AssetFinder {
     public static final String HEALTH_ICON = "UI: Health icon";
@@ -44,12 +45,15 @@ public class AssetFinder {
     // The data separator in a .pathsassets-file.
     private static final String PATHSASSETS_SEP = ":";
 
-    private PathsAssetStore assetStore;
+    private final PathsAssetStore assetStore;
 
     public AssetFinder(PathsAssetStore assetStore) {
         this.assetStore = assetStore;
     }
 
+    /**
+     * Loads into memory all assets that are always on display.
+     */
     public void loadAllGlobalAssets() {
         assetStore.images().loadAsset(HEALTH_ICON);
         assetStore.images().loadAsset(GOLD_ICON);
@@ -58,6 +62,9 @@ public class AssetFinder {
         assetStore.images().loadAsset(INTERACTION_AREA);
     }
 
+    /**
+     * Unloads all assets that are always on display from memory.
+     */
     public void unloadAllGlobalAssets() {
         assetStore.images().unloadAsset(HEALTH_ICON);
         assetStore.images().unloadAsset(GOLD_ICON);
@@ -67,25 +74,28 @@ public class AssetFinder {
     }
 
     /**
-     * Generates a template for specifying the global assets of a story. These are the assets that are constant
-     * throughout the story.
-     * @return A string containing the template for specifying the global assets of a story.
+     * Generates a template for specifying the global assets of a story. These
+     * are the assets that are constant throughout the story.
+     * @return A string containing the template for specifying the global assets
+     * of a story.
      */
     public static String generateGlobalTemplate() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\"" + HEALTH_ICON + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + GOLD_ICON   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + SCORE_ICON  + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
-        sb.append("\"" + ITEM_SLOT   + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + HEALTH_ICON      + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + GOLD_ICON        + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + SCORE_ICON       + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
+        sb.append("\"" + ITEM_SLOT        + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
         sb.append("\"" + INTERACTION_AREA + "\"").append(PATHSASSETS_SEP).append("\"put_URI_here\"").append("\n");
 
         return sb.toString();
     }
 
     /**
-     * Generates a template for specifying the assets of a single passage in a story.
+     * Generates a template for specifying the assets of a single passage in a
+     * story.
      * @param passageTitle The title of the passage.
-     * @param linkTitles An array of Strings containing the titles of the passage's links.
+     * @param linkTitles An array of Strings containing the titles of the
+     *                   passage's links.
      * @return
      */
     public static String generatePassageTemplate(String passageTitle, String[] linkTitles) {
@@ -134,18 +144,38 @@ public class AssetFinder {
         return assetStore.images().getAsset(passageTitle + SEP + PASSAGE_LOOK_AT);
     }
 
+    /**
+     * Returns the background image of a passage.
+     * @param passageTitle The title of the passage from which to retrieve the asset.
+     * @return the background image of a passage.
+     */
     public Image getBackground(String passageTitle) {
         return assetStore.images().getAsset(passageTitle + SEP + PASSAGE_BACKGROUND);
     }
 
+    /**
+     * Returns the icon associated with the specified link.
+     * @param passageTitle The title of the passage from which to retrieve the asset.
+     * @param linkTitle The title of the link from which to retrieve the asset.
+     * @return the icon associated with the specified link.
+     */
     public Image getLinkIcon(String passageTitle, String linkTitle) {
         return assetStore.images().getAsset(passageTitle + SEP + linkTitle + SEP + LINK_ICON);
     }
 
+    /**
+     * Returns the asset to be used as the background of the text area.
+     * @return the asset to be used as the background of the text area.
+     */
     public Image getTextArea() {
         return assetStore.images().getAsset(TEXT_AREA);
     }
 
+    /**
+     * Returns the audio to be played at a specific passage.
+     * @param passageTitle The title of the passage from which to retrieve the asset.
+     * @return the audio to be played at a specific passage.
+     */
     public MediaPlayer getAudio(String passageTitle){
         return assetStore.audio().getAsset(passageTitle + SEP + AUDIO);
     }

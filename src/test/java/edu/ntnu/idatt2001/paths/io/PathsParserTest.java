@@ -128,14 +128,14 @@ public class PathsParserTest {
         PathsParser parser = new PathsParser();
 
         String passageString = parser.toPathsFormat(passage);
-        String expected = "::test\ntest\n(test)[test]";
+        String expected = "::test\ntest\n[test](test)";
 
         assert passageString.equals(expected);
     }
 
     @Test
     void parse_from_string_object_to_passage_object(){
-        String passageString = "::test\ntest\n(test)[test]";
+        String passageString = "::test\ntest\n[test](test)";
         PathsParser parser = new PathsParser();
 
         Passage passage = parser.fromPathsFormatPassage(passageString);

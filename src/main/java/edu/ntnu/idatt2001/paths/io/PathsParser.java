@@ -228,8 +228,8 @@ public class PathsParser {
             throw new IllegalArgumentException("Argument cannot be null");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("(").append(l.getText()).append(")");
-        sb.append("[").append(l.getReference()).append("]");
+        sb.append("[").append(l.getText()).append("]");
+        sb.append("(").append(l.getReference()).append(")");
         for (Action a : l.getActions())
             sb.append(toPathsFormat(a));
         if (l.getScript() != null)
@@ -255,7 +255,7 @@ public class PathsParser {
 
         try {
             int index_1 = 1;
-            int index_2 = pathsString.indexOf(")[", index_1);
+            int index_2 = pathsString.indexOf("](", index_1);
             if (index_2 <= index_1) {
                 errorBeforeReturn("Failed to find the description text of this link: \"" + pathsString + "\"");
                 return null; // Every Link must have a text
@@ -263,7 +263,7 @@ public class PathsParser {
             String text = pathsString.substring(index_1, index_2);
 
             index_1 = index_2 + 2;
-            index_2 = pathsString.indexOf("]", index_1);
+            index_2 = pathsString.indexOf(")", index_1);
             if (index_2 <= index_1) {
                 errorBeforeReturn("Failed to find the passage reference in this link: \"" + pathsString + "\"");
                 return null; // Every Link must have a reference
