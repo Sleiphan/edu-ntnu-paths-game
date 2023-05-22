@@ -1,8 +1,18 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
+import edu.ntnu.idatt2001.paths.io.PathsParser;
+import edu.ntnu.idatt2001.paths.model.Link;
+import edu.ntnu.idatt2001.paths.model.Passage;
+import edu.ntnu.idatt2001.paths.model.Story;
 import javafx.scene.image.Image;
 import javafx.scene.media.MediaPlayer;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * This class defines the syntax for connecting assets to different passages.
@@ -138,5 +148,31 @@ public class AssetFinder {
 
     public MediaPlayer getAudio(String passageTitle){
         return assetStore.audio().getAsset(passageTitle + SEP + AUDIO);
+    }
+
+    public static void generateAssetTemplate(File file) {
+        String storyPath = file.getAbsolutePath();
+        String fileName = file.getName();
+        String targetFile = fileName.replace(".paths",".pathsassets");
+        String targetLocation = file.getAbsolutePath().replace(fileName,targetFile);
+
+        PathsParser parser = new PathsParser();
+        StringBuilder sb = new StringBuilder();
+        sb.append(AssetFinder.generateGlobalTemplate());
+
+        try {
+            Story s = parser.fromPathsFormatStory(Files.readString(Path.of(storyPath), StandardCharsets.UTF_8));
+
+            for (Passage p : s.getPassages()) {
+                String[] links = p.getLinks().stream().map(Link::getText).toArray(String[]::new);
+                sb.append(AssetFinder.generatePassageTemplate(p.getTitle(), links));
+            }
+
+            Files.writeString(Path.of(targetLocation), sb.toString(), StandardCharsets.UTF_8);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+
     }
 }

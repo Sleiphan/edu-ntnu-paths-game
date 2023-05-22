@@ -1,6 +1,11 @@
 package edu.ntnu.idatt2001.paths.gui;
 
 import edu.ntnu.idatt2001.paths.asset.AudioAsset;
+import edu.ntnu.idatt2001.paths.gui.gameplayer.AssetFinder;
+import edu.ntnu.idatt2001.paths.io.PathsParser;
+import edu.ntnu.idatt2001.paths.model.Link;
+import edu.ntnu.idatt2001.paths.model.Passage;
+import edu.ntnu.idatt2001.paths.model.Story;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -15,6 +20,8 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.imageio.ImageIO;
@@ -22,8 +29,9 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 public class MainMenu extends PathsMenu {
@@ -55,6 +63,20 @@ public class MainMenu extends PathsMenu {
         Platform.exit();
     }
 
+    private void generateAssetTemplate(ActionEvent e) {
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("Stories"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Paths Files", "*.paths")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        AssetFinder.generateAssetTemplate(selectedFile);
+
+
+    }
+
     /**
      * Initializes the main menu scene. Sets the current audio the main menu music unless the music is already
      * the main menu music.
@@ -70,35 +92,41 @@ public class MainMenu extends PathsMenu {
             handler.playMenuMusic();
         }
 
-        Button btContinue = new Button("Tutorial");
-        Button btNewGame  = new Button("New Game");
-        Button btQuit     = new Button("Quit");
+        Button btNewGame                = new Button("New Game");
+        Button btTutorial               = new Button("Tutorial");
+        Button btQuit                   = new Button("Quit");
+        Button btGenerateAssetTemplate  = new Button("Make Asset\nTemplate");
         ImageView logo = new ImageView();
-        logo.setId("Test");
+        logo.setId("Logo");
 
         Font.loadFont("file:src/main/resources/alagard/alagard.ttf",20);
 
-        btContinue.setOnAction(this::Tutorial);
-        btNewGame .setOnAction(this::newGame);
-        btQuit    .setOnAction(this::quit);
+        btTutorial             .setOnAction(this::Tutorial);
+        btNewGame              .setOnAction(this::newGame);
+        btQuit                 .setOnAction(this::quit);
+        btGenerateAssetTemplate.setOnAction(this::generateAssetTemplate);
+        btGenerateAssetTemplate.setId("AssetTemplate");
 
         int buttonWidth = 200;
         int sceneWidth = handler.getSceneWidth();
 
         int buttonX = sceneWidth / 2 - buttonWidth / 2;
 
-        btContinue.setTranslateX(buttonX);
+        btTutorial.setTranslateX(buttonX);
         btNewGame .setTranslateX(buttonX);
         btQuit    .setTranslateX(buttonX);
+        btGenerateAssetTemplate.setTranslateX(buttonX);
         logo.setTranslateX(buttonX);
 
-        btContinue.setPrefWidth(buttonWidth);
+        btTutorial.setPrefWidth(buttonWidth);
         btNewGame .setPrefWidth(buttonWidth);
         btQuit    .setPrefWidth(buttonWidth);
+        btGenerateAssetTemplate.setPrefWidth(buttonWidth);
 
-        btContinue.setTranslateY(370);
+        btTutorial.setTranslateY(350);
         btNewGame .setTranslateY(270);
-        btQuit    .setTranslateY(470);
+        btQuit    .setTranslateY(550);
+        btGenerateAssetTemplate.setTranslateY(430);
         logo.setTranslateY(40);
 
         logo.setFitHeight(200);
@@ -106,9 +134,10 @@ public class MainMenu extends PathsMenu {
 
 
 
-        root.getChildren().add(btContinue);
+        root.getChildren().add(btTutorial);
         root.getChildren().add(btNewGame);
         root.getChildren().add(btQuit);
+        root.getChildren().add(btGenerateAssetTemplate);
         root.getChildren().add(logo);
 
 
