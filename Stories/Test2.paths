@@ -1,0 +1,13 @@
+Haunted House
+
+::Initial passage
+Welcome
+[Start](Beginnings)
+
+::Beginnings
+You are in a small, dimly lit room. There is a door in front of you.
+[Try to open the door](Another room)
+
+::Another room
+The door opens to another room. You see a desk with a large, dusty book.
+[Go back](Beginnings)

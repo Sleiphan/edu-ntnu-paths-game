@@ -11,7 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 
 public class MainMenu extends PathsMenu {
@@ -72,8 +75,34 @@ public class MainMenu extends PathsMenu {
         );
 
         File selectedFile = fileChooser.showOpenDialog(stage);
-        AssetFinder.generateAssetTemplate(selectedFile);
+        File targetFile = new File(selectedFile.getAbsolutePath() + "assets");
+        boolean exists = Files.exists(Path.of(targetFile.getAbsolutePath()));
+        if(!exists){
+            AssetFinder.generateAssetTemplate(selectedFile);
+            return;
+        }
 
+        boolean delete = false;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Asset file already exists");
+        alert.setHeaderText("Asset file already exists");
+        alert.setContentText("The asset file for your chosen file already exists." +
+                " Generating a asset template will delete the old asset template for the chosen file." +
+                " Proceed?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            delete = true;
+        }
+
+        if(delete){
+            try {
+                Files.delete(Path.of(targetFile.getAbsolutePath()));
+            } catch (Exception ex){
+                throw new IllegalArgumentException("File doesn't exist");
+            }
+
+            AssetFinder.generateAssetTemplate(selectedFile);
+        }
 
     }
 
