@@ -28,6 +28,10 @@
     -fx-image: url(Img/background2.png);
 }
 
-#Test{
+#Logo{
     -fx-image: url(Img/PathsLogo.png);
+}
+
+#AssetTemplate{
+    -fx-background-size: 200 90;
 }
