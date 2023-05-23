@@ -8,17 +8,18 @@ import java.util.List;
 public class Passage {
     private final String title;
     private final String content;
-    private  final List<Link> links;
+    private final List<Link> links;
     private int hashCode;
     private boolean recalculateHash;
 
     /**
-     * Creates a new edu.ntnu.idatt2001.paths.model.Passage-object. A edu.ntnu.idatt2001.paths.model.Passage is a smaller part of a story
-     * @param title     A description that works as an identifier for the passage
-     * @param content   A representation of paragraph or a part of dialog
-     * @param links     Connects the passage together with other passages
+     * Creates a new Passage-object. A Passage is a smaller part of a story
+     *
+     * @param title   A description that works as an identifier for the passage
+     * @param content A representation of paragraph or a part of dialog
+     * @param links   Connects the passage together with other passages
      */
-    public Passage(String title, String content, List<Link> links){
+    public Passage(String title, String content, List<Link> links) {
         if (title == null)
             throw new IllegalArgumentException("The title cannot be null");
         if (content == null)
@@ -36,7 +37,8 @@ public class Passage {
     }
 
     /**
-     * Returns this passage objects title
+     * Returns this passage objects title.
+     *
      * @return this passage objects title
      */
     public String getTitle() {
@@ -44,15 +46,19 @@ public class Passage {
     }
 
     /**
-     * Returns this passage objects content, which is the same as the story that unfolds in the passage
-     * @return this passage objects content, which is the same as the story that unfolds in the passage
+     * Returns this passage objects content, which is the same as the story that
+     * unfolds in the passage.
+     *
+     * @return this passage objects content, which is the same as the story that
+     *      unfolds in the passage
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * Returns this passage objects list of possible links
+     * Returns this passage objects list of possible links.
+     *
      * @return this passage objects list of possible links
      */
     public List<Link> getLinks() {
@@ -60,13 +66,14 @@ public class Passage {
     }
 
     /**
-     * Adds a link to this passage-objects list of possible links
-     * @param link  edu.ntnu.idatt2001.paths.model.Link to add to list of possible links
+     * Adds a link to this passage-objects list of possible links.
+     *
+     * @param link Link to add to list of possible links
      * @return true if link was added successfully, false if not
      */
-    public boolean addLink(Link link){
-        for(Link i : links){
-            if(i.equals(link)){
+    public boolean addLink(Link link) {
+        for (Link i : links) {
+            if (i.equals(link)) {
                 return false;
             }
         }
@@ -76,39 +83,43 @@ public class Passage {
     }
 
     /**
-     * Checks if this passage objects list of links contains any links
+     * Checks if this passage objects list of links contains any links.
+     *
      * @return true if list contains links, false if not
      */
-    public boolean hasLinks(){
+    public boolean hasLinks() {
         return links.size() >= 1;
 
-    };
+    }
+
+    ;
 
     /**
-     * Returns a string containing a comprehensive overview of this passage object
+     * Returns a string containing a comprehensive overview of this passage object.
+     *
      * @return a string containing a comprehensive overview of this passage object
      */
     @Override
     public String toString() {
-        return "edu.ntnu.idatt2001.paths.model.Passage{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", links=" + links.toString() +
-                '}';
+        return "Passage{"
+                + "title='" + title + '\''
+                + ", content='" + content + '\''
+                + ", links=" + links.toString()
+                + '}';
     }
 
     /**
-     * Checks if this passage object is equal to the submitted parameter object
+     * Checks if this passage object is equal to the submitted parameter object.
+     *
      * @param passage The passage-object to compare to
-     * @return  true if - and only if - the parameter 'passage' is an instance of this passage-class
-     *          and this object's state is equal to that of the parameter. Else, returns false
+     * @return true if - and only if - the parameter 'passage' is an instance of this passage-class
+     *      and this object's state is equal to that of the parameter. Else, returns false
      */
     @Override
     public boolean equals(Object passage) {
-        if(passage instanceof  Passage){
+        if (passage instanceof Passage) {
             return hashCode() == ((Passage) passage).hashCode;
-        }
-        else return false;
+        } else return false;
     }
 
     /**
@@ -117,11 +128,12 @@ public class Passage {
      * Calculation of the hashcode happens in this method, but only if changes to this object's
      * state has been made.
      * This allows for faster successive access to this attribute.
+     *
      * @return the hashcode of this object.
      */
     @Override
     public int hashCode() {
-        if (recalculateHash){
+        if (recalculateHash) {
             hashCode = title.hashCode() * content.hashCode() * links.hashCode();
             recalculateHash = false;
         }
