@@ -126,64 +126,40 @@ public class Game {
     }
 
     /**
-     * Checks if the game has been won. Check is if all goals of the different goal types have been achieved.
-     * Sets boolean values for each goal type achieved. Also checks if there are instances of all goals in the
-     * list of goals. If there is a goal type with no instances it updates the instance of boolean. This allows
-     * a game to be completed even if there aren't goals of all the types present in the list
-     * @return true if game won, false if game not won
+     * Checks if the game has been won. Returns false if any goal has not been achieved. If all goals have been
+     * achieved it returns true.
      */
     public boolean checkGameWon(){
-        boolean healthGoalAchieved = false;
-        boolean goldGoalAchieved = false;
-        boolean scoreGoalAchieved = false;
-        boolean inventoryGoalAchieved = false;
-        boolean instanceOfHealthGoal = false;
-        boolean instanceOfGoldGoal = false;
-        boolean instanceOfScoreGoal = false;
-        boolean instanceOfInventoryGoal = false;
 
         for (Goal g : goals){
                 //Checks if goal is a health goal, and then if it has been achieved
             if (g.getClass() == HealthGoal.class){
-                instanceOfHealthGoal = true;
-                healthGoalAchieved = (Integer) ((HealthGoal) g).getValue() <= player.getHealth();
+                if (!((Integer) ((HealthGoal) g).getValue() <= player.getHealth())){
+                    return false;
+                }
 
                 //Checks if goal is a gold goal, and then if it has been achieved
             } else if (g.getClass() == GoldGoal.class){
-                instanceOfGoldGoal = true;
-                goldGoalAchieved = (Integer) ((GoldGoal) g).getValue() <= player.getGold();
+                if (!((Integer) ((GoldGoal) g).getValue() <= player.getGold())){
+                    return false;
+                }
 
                 //Checks if goal is a score goal, and then if it has been achieved
             } else if (g.getClass() == ScoreGoal.class){
-                instanceOfScoreGoal = true;
-                scoreGoalAchieved = (Integer) ((ScoreGoal) g).getValue() <= player.getScore();
+                if (!((Integer) ((ScoreGoal) g).getValue() <= player.getScore())){
+                    return false;
+                }
 
                 //Checks if goal is an inventory goal, and then if it has been achieved
             } else if (g.getClass() == InventoryGoal.class){
-                instanceOfInventoryGoal = true;
                 List<String> inv = List.of(player.getInventory().toArray(new String[0]));
-                inventoryGoalAchieved = true;
                 for (int i = 0; i < ((InventoryGoal) g).getItems().size(); i++){
                     if (!inv.contains(((InventoryGoal) g).getItems().get(i))){
-                        inventoryGoalAchieved = false;
-                        break;
+                        return false;
                     }
                 }
             }
         }
-
-        if (!instanceOfHealthGoal)
-            healthGoalAchieved = true;
-
-        if (!instanceOfGoldGoal)
-            goldGoalAchieved = true;
-
-        if (!instanceOfScoreGoal)
-            scoreGoalAchieved = true;
-
-        if (!instanceOfInventoryGoal)
-            inventoryGoalAchieved = true;
-
-        return healthGoalAchieved && goldGoalAchieved && scoreGoalAchieved && inventoryGoalAchieved;
+        return true;
     }
 }
