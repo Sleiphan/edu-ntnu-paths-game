@@ -1,0 +1,35 @@
+#AddGoal{
+    -fx-background-image: url(Img/AddGoalBackground.png);
+    -fx-background-size: 386 163;
+    -fx-background-repeat: no-repeat;
+}
+
+.button{
+    -fx-font-family: alagard;
+    -fx-font-size: 30;
+    -fx-background-image: url(Img/Button.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.text-field{
+    -fx-font-family: alagard;
+    -fx-font-size: 20;
+    -fx-border-color: e8b796;
+}
+
+#cancel{
+    -fx-background-size: 130 55;
+}
+
+#add{
+    -fx-background-size: 90 55;
+}
+
+.combo-box{
+    -fx-font-family: alagard;
+    -fx-font-size: 20;
+    -fx-background-image: url(Img/Button.png);
+    -fx-background-size: 147 35;
+    -fx-background-repeat: no-repeat;
+}

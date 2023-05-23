@@ -1,0 +1,12 @@
+.button{
+    -fx-background-size: 200 50;
+}
+
+.root{
+    -fx-background-image: url(Img/AddGoalBackground.png);
+    -fx-background-size: 1270 720;
+}
+
+#overlay{
+    -fx-image: url(Img/Transparant.png);
+}

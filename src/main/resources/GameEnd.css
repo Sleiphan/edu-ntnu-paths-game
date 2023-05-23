@@ -1,0 +1,39 @@
+#Overlay{
+    -fx-image: url(Img/Transparant.png)
+}
+
+#GameEndBG{
+    -fx-image: url(Img/GameEnd.png);
+}
+
+#finalValue{
+    -fx-font-size: 30;
+}
+
+#finalValueIdentifier{
+    -fx-font-size: 25;
+}
+
+#Result{
+    -fx-font-size: 50;
+}
+
+#BG{
+    -fx-image: url(Img/Button.png);
+}
+
+.button{
+    -fx-background-size: 300 53;
+}
+
+#Health{
+    -fx-image: url(img/Health.png);
+}
+
+#Gold{
+    -fx-image: url(img/GoldIcon.png);
+}
+
+#Score{
+    -fx-image: url(img/ScoreIcon.png);
+}
