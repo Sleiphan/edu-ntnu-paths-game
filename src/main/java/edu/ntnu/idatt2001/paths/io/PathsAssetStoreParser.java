@@ -113,8 +113,7 @@ public class PathsAssetStoreParser {
                     imageAssets.put(key, asset);
             } else if (isAudioAsset(path)) {
                 AudioAsset asset = parseAudioAsset(path, i);
-                if (asset != null)
-                    audioAssets.put(key, asset);
+                audioAssets.put(key, asset);
             } else
                 loadErrors.add("Unsupported file type of asset named " + key + " at line " + (i + 1) + ": \"" + path + "\". Supported types are: " + SUPPORTED_FILE_ENDINGS);
         }
@@ -140,13 +139,6 @@ public class PathsAssetStoreParser {
     }
 
     private AudioAsset parseAudioAsset(String URI, int line) {
-        AudioAsset asset = null;
-        try {
-            asset = new AudioAsset(URI);
-        } catch (IOException e) {
-            loadErrors.add("Could not load asset defined at line " + line + ". URI: " + URI + ". Error: " + e.getMessage());
-        }
-
-        return asset;
+        return new AudioAsset(URI);
     }
 }
