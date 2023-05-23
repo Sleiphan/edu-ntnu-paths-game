@@ -47,7 +47,7 @@ public class AudioAsset implements Asset<MediaPlayer> {
      * currently loaded into memory.
      *
      * @return this audio asset as a MediaPlayer, or <code>null</code> if this asset is not
-     * currently loaded into memory.
+     *         currently loaded into memory.
      */
     @Override
     public MediaPlayer get() {
