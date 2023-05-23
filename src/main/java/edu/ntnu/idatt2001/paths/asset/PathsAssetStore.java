@@ -1,11 +1,8 @@
 package edu.ntnu.idatt2001.paths.asset;
 
+import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.media.MediaPlayer;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 /**
@@ -14,26 +11,42 @@ import java.util.List;
  */
 public class PathsAssetStore {
 
-    private AssetManager<Image, ImageAsset> imageAssets;
-    private AssetManager<MediaPlayer, AudioAsset> audioAssets;
+    private final AssetManager<Image, ImageAsset> imageAssets;
+    private final AssetManager<MediaPlayer, AudioAsset> audioAssets;
 
-
-
-    public PathsAssetStore(HashMap<String, ImageAsset> imageAssets, HashMap<String, AudioAsset> audioAssets) {
+    /**
+     * Creates a new instance of PathsAssetStore with the specified image and audio assets.
+     *
+     * @param imageAssets A hashmap containing the images for this asset store.
+     * @param audioAssets A hashmap containing the audio assets for this asset store.
+     */
+    public PathsAssetStore(HashMap<String, ImageAsset> imageAssets,
+                           HashMap<String, AudioAsset> audioAssets) {
         this.imageAssets = new AssetManager<>(imageAssets);
         this.audioAssets = new AssetManager<>(audioAssets);
     }
 
-
-
+    /**
+     * Returns the AssetManager for the images in this asset store.
+     *
+     * @return the AssetManager for the images in this asset store.
+     */
     public AssetManager<Image, ImageAsset> images() {
         return imageAssets;
     }
 
+    /**
+     * Returns the AssetManager for the audio assets in this asset store.
+     *
+     * @return the AssetManager for the audio assets in this asset store.
+     */
     public AssetManager<MediaPlayer, AudioAsset> audio() {
         return audioAssets;
     }
 
+    /**
+     * Unloads all assets of this asset store.
+     */
     public void unloadAll() {
         imageAssets.unloadAll();
         audioAssets.unloadAll();
