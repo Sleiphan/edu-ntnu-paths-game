@@ -6,7 +6,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 /**
- * A class for executing the addition of an item to the inventory array of a player object
+ * A class for executing the addition of an item to the inventory array of a player object.
  */
 public class InventoryAction implements Action {
 
@@ -15,7 +15,8 @@ public class InventoryAction implements Action {
     private final boolean add;
 
     /**
-     * Initializes the item that will be added to the inventory array of a player object
+     * Initializes the item that will be added to the inventory array of a player object.
+     *
      * @param item item that will be added to the inventory array of a player object
      */
     public InventoryAction(String item) {
@@ -23,9 +24,11 @@ public class InventoryAction implements Action {
     }
 
     /**
-     * Sets the item to either add or consume with this action
+     * Sets the item to either add or consume with this action.
+     *
      * @param item The item that will be added to the inventory array of a player object
-     * @param add Whether this action will add or consume the item specified in the <code>item</code>-argument.
+     * @param add  Whether this action will add or consume the item specified in
+     *             the <code>item</code>-argument.
      */
     public InventoryAction(String item, boolean add) {
         this.item = item;
@@ -35,6 +38,7 @@ public class InventoryAction implements Action {
 
     /**
      * Performs this item action on the inventory of the player-argument.
+     *
      * @param player Player whose inventory will be changed.
      */
     @Override
@@ -62,7 +66,8 @@ public class InventoryAction implements Action {
     }
 
     /**
-     * Gets the item string associated with the inventory action
+     * Gets the item string associated with the inventory action.
+     *
      * @return the item string associated with the inventory action
      */
     public String getItem() {
@@ -71,14 +76,17 @@ public class InventoryAction implements Action {
 
     /**
      * Indicates whether this action adds or consumes an item.
-     * @return <code>true</code> if this action adds an item to a players inventory. Otherwise, returns false.
+     *
+     * @return <code>true</code> if this action adds an item to a players inventory.
+     *      Otherwise, returns false.
      */
     public boolean addsItem() {
         return add;
     }
 
     /**
-     * Creates a hashCode for the inventoryAction
+     * Creates a hashCode for the inventoryAction.
+     *
      * @return hashCode for the InventoryAction
      */
     @Override

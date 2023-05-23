@@ -6,25 +6,27 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 /**
- * A class for executing a change in a player objects health field
+ * A class for executing a change in a player objects health field.
  */
-public class HealthAction implements Action{
+public class HealthAction implements Action {
     public static final String SCRIPT_VARIABLE_KEY = "health";
 
     private final int health;
     private final int hashCode;
 
     /**
-     * Initializes the value to change a player objects health field by
+     * Initializes the value to change a player objects health field by.
+     *
      * @param health amount to change a player objects health field by
      */
-    public HealthAction(int health){
+    public HealthAction(int health) {
         this.health = health;
         this.hashCode = this.getClass().hashCode() * health < 0 ? health : health + 1;
     }
 
     /**
-     * Executes the change to the player object given as a parameter's health field
+     * Executes the change to the player object given as a parameter's health field.
+     *
      * @param player player to change health of
      */
     @Override
@@ -43,7 +45,8 @@ public class HealthAction implements Action{
     }
 
     /**
-     * Gets the health value associated with the health action
+     * Gets the health value associated with the health action.
+     *
      * @return the health value associated with the health action
      */
     public int getHealth() {
@@ -51,7 +54,8 @@ public class HealthAction implements Action{
     }
 
     /**
-     * Creates a hashCode for the HealthAction
+     * Creates a hashCode for the HealthAction.
+     *
      * @return hashCode for the Health Action
      */
     @Override

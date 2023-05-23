@@ -5,27 +5,29 @@ import edu.ntnu.idatt2001.paths.model.Player;
 import java.util.List;
 
 /**
- * Used to check if a player-object has certain items in their inventory
+ * Used to check if a player-object has certain items in their inventory.
  */
 public class InventoryGoal implements GoalInfo {
     private final List<String> mandatoryItems;
 
     /**
-     * Assigns a mandatory array of items
+     * Assigns a mandatory array of items.
+     *
      * @param mandatoryItems array of mandatory items
      */
-    public InventoryGoal(List<String> mandatoryItems){
+    public InventoryGoal(List<String> mandatoryItems) {
         this.mandatoryItems = mandatoryItems;
     }
 
     /**
-     * Checks if a player-object fulfills a mandatory list of items
-     * @param player    player-object to check if it has the mandatory list of items
-     * @return          True if requirement met, false if not
+     * Checks if a player-object fulfills a mandatory list of items.
+     *
+     * @param player player-object to check if it has the mandatory list of items
+     * @return True if requirement met, false if not
      */
     @Override
     public boolean isFulfilled(Player player) {
-        if (mandatoryItems.size() > player.getInventory().size()){
+        if (mandatoryItems.size() > player.getInventory().size()) {
             return false;
         }
         for (String mandatoryItem : mandatoryItems) {
@@ -37,7 +39,8 @@ public class InventoryGoal implements GoalInfo {
     }
 
     /**
-     * Gets the type of the action represented as a string
+     * Gets the type of the action represented as a string.
+     *
      * @return the type of the action represented as a string
      */
     public String getType() {
@@ -46,7 +49,8 @@ public class InventoryGoal implements GoalInfo {
     }
 
     /**
-     * Gets the value associated with the action
+     * Gets the value associated with the action.
+     *
      * @return the value associated with the action
      */
     @Override
@@ -55,7 +59,7 @@ public class InventoryGoal implements GoalInfo {
         return value;
     }
 
-    public List<String> getItems(){
+    public List<String> getItems() {
         return mandatoryItems;
     }
 }
