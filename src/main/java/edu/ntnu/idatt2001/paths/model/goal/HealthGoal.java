@@ -3,24 +3,26 @@ package edu.ntnu.idatt2001.paths.model.goal;
 import edu.ntnu.idatt2001.paths.model.Player;
 
 /**
- * Used to check if a player-object fulfills a minimum health requirement
+ * Used to check if a player-object fulfills a minimum health requirement.
  */
 public class HealthGoal implements GoalInfo {
     private final int minimumHealth;
     private final String type = "Health";
 
     /**
-     * Assigns a minimum health value
+     * Assigns a minimum health value.
+     *
      * @param minimumHealth minimum allowed health value
      */
-    public HealthGoal(int minimumHealth){
+    public HealthGoal(int minimumHealth) {
         this.minimumHealth = minimumHealth;
     }
 
     /**
-     * Checks if a player-object fulfills a minimum health requirement
-     * @param player    player-object to check if fulfills the minimum requirement
-     * @return          True if requirement met, false if not
+     * Checks if a player-object fulfills a minimum health requirement.
+     *
+     * @param player player-object to check if fulfills the minimum requirement
+     * @return True if requirement met, false if not
      */
     @Override
     public boolean isFulfilled(Player player) {
@@ -28,7 +30,8 @@ public class HealthGoal implements GoalInfo {
     }
 
     /**
-     * Gets the type of the action represented as a string
+     * Gets the type of the action represented as a string.
+     *
      * @return the type of the action represented as a string
      */
     @Override
@@ -38,7 +41,8 @@ public class HealthGoal implements GoalInfo {
     }
 
     /**
-     * Gets the value associated with the action
+     * Gets the value associated with the action.
+     *
      * @return the value associated with the action
      */
     @Override
