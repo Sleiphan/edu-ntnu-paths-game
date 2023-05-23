@@ -4,7 +4,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 /**
- * Represents an Image in the asset-framework of this project.
+ * Represents an image in the asset-framework of this project.
  */
 public class ImageAsset implements Asset<Image> {
 
