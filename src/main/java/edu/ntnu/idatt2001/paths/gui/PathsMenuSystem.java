@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import edu.ntnu.idatt2001.paths.model.Link;
 import edu.ntnu.idatt2001.paths.model.Player;
 import edu.ntnu.idatt2001.paths.model.goal.Goal;
-import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -16,31 +16,22 @@ import java.util.List;
 
 public class PathsMenuSystem implements ApplicationStateHandler {
 
-    private PathsMenu currentState;
     private final Stage applicationWindow;
-
-    private String currentAudio = "";
-
-    private String currentFileName = "";
-
-    private String currentPath = "";
-
-    private List<Link> currentBrokenLinks = new ArrayList<>();
-
     StoryLoader storyLoader;
-
     Player initialPlayer;
-
     List<Goal> initialGoals = new ArrayList<>();
-
     SceneConfig sceneConfig = new SceneConfig(1270, 720);
-
     MediaPlayer menuMusic;
+    private PathsMenu currentState;
+    private String currentAudio = "";
+    private String currentFileName = "";
+    private String currentPath = "";
+    private List<Link> currentBrokenLinks = new ArrayList<>();
 
     /**
      * Creates a new instance of FXHandler running an initial FXAppState.
      *
-     * @param initialState The first application state that this handler will be running.
+     * @param initialState      The first application state that this handler will be running.
      * @param applicationWindow A reference to the JavaFX application window.
      */
     public PathsMenuSystem(PathsMenu initialState, Stage applicationWindow) {
@@ -52,6 +43,7 @@ public class PathsMenuSystem implements ApplicationStateHandler {
     public Color getBgColor() {
         return Color.color(1, 1, 1);
     }
+
     public int getSceneWidth() {
         return 1270;
     }
@@ -78,43 +70,53 @@ public class PathsMenuSystem implements ApplicationStateHandler {
         applicationWindow.setScene(newMenu.getScene());
     }
 
-    public void setCurrentAudio(String currentAudio){
-        this.currentAudio = currentAudio;
-    }
-
-    public String getCurrentAudio(){
+    public String getCurrentAudio() {
         return currentAudio;
     }
 
-    public void setCurrentFileName(String currentFileName){this.currentFileName = currentFileName;}
+    public void setCurrentAudio(String currentAudio) {
+        this.currentAudio = currentAudio;
+    }
 
-    public String getCurrentFileName(){return currentFileName;}
+    public String getCurrentFileName() {
+        return currentFileName;
+    }
 
-    public void setCurrentPath(String currentPath){
-        if(currentPath.length() > 50){
+    public void setCurrentFileName(String currentFileName) {
+        this.currentFileName = currentFileName;
+    }
+
+    public String getCurrentPath() {
+        return currentPath;
+    }
+
+    /**
+     * Formats and shortens the path of the file currently in user by the system.
+     *
+     * @param currentPath path to format
+     */
+    public void setCurrentPath(String currentPath) {
+        if (currentPath.length() > 50) {
             String split = "\\\\";
-            if(currentPath.contains("/")){
+            if (currentPath.contains("/")) {
                 split = "/";
             }
-            String[] splitPath= currentPath.split(split);
-            String shortenedPath = splitPath[0] + "/" + splitPath[1] + "/" +splitPath[2] + "/.../" +
-                    splitPath[splitPath.length - 2] + "/" + splitPath[splitPath.length - 1];
+            String[] splitPath = currentPath.split(split);
+            String shortenedPath = splitPath[0] + "/" + splitPath[1] + "/" + splitPath[2] + "/.../"
+                    + splitPath[splitPath.length - 2] + "/" + splitPath[splitPath.length - 1];
             this.currentPath = shortenedPath;
 
-        }
-        else{
+        } else {
             this.currentPath = currentPath;
         }
     }
 
-    public String getCurrentPath() { return currentPath; }
+    public List<Link> getCurrentBrokenLinks() {
+        return currentBrokenLinks;
+    }
 
     public void setCurrentBrokenLinks(List<Link> currentBrokenLinks) {
         this.currentBrokenLinks = currentBrokenLinks;
-    }
-
-    public List<Link> getCurrentBrokenLinks() {
-        return currentBrokenLinks;
     }
 
     public Player getInitialPlayer() {
@@ -145,7 +147,10 @@ public class PathsMenuSystem implements ApplicationStateHandler {
         this.storyLoader = storyLoader;
     }
 
-    public void playMenuMusic(){
+    /**
+     * Plays the MainMenu Music on loop.
+     */
+    public void playMenuMusic() {
         String musicFile = "src/main/resources/Img/MainMenu.mp3";
         Media sound = new Media(new File(musicFile).toURI().toString());
         menuMusic = new MediaPlayer(sound);
@@ -159,7 +164,10 @@ public class PathsMenuSystem implements ApplicationStateHandler {
         menuMusic.play();
     }
 
-    public void stopMenuMusic(){
+    /**
+     * Stops the menu music.
+     */
+    public void stopMenuMusic() {
         menuMusic.stop();
     }
 }
