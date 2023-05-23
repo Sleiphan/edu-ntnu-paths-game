@@ -6,27 +6,28 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 /**
- * A class for executing a change in a player objects gold field
+ * A class for executing a change in a player objects gold field.
  */
-public class GoldAction implements Action{
+public class GoldAction implements Action {
     public static final String SCRIPT_VARIABLE_KEY = "gold";
 
     private final int gold;
     private final int hashCode;
 
     /**
-     * Initializes the value to change a player objects gold field by
+     * Initializes the value to change a player objects gold field by.
+     *
      * @param gold amount to change gold field by
      */
-    public GoldAction(int gold){
+    public GoldAction(int gold) {
         this.gold = gold;
         this.hashCode = this.getClass().hashCode() * gold < 0 ? gold : gold + 1;
     }
 
     /**
-     * Executes the change to the player object given as a parameter's gold field
-     * @param player    player to change gold of
-     * @return          True if gold changed, false if not
+     * Executes the change to the player object given as a parameter's gold field.
+     *
+     * @param player player to change gold of
      */
     @Override
     public void execute(Player player) {
@@ -45,7 +46,8 @@ public class GoldAction implements Action{
     }
 
     /**
-     * Gets the gold value associated with the gold action
+     * Gets the gold value associated with the gold action.
+     *
      * @return the gold value associated with the gold action
      */
     public int getGold() {
@@ -53,7 +55,8 @@ public class GoldAction implements Action{
     }
 
     /**
-     * Creates a hashCode for the GoldAction
+     * Creates a hashCode for the GoldAction.
+     *
      * @return hashCode for the GoldAction
      */
     @Override
