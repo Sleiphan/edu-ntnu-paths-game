@@ -1,16 +1,16 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
 import edu.ntnu.idatt2001.paths.asset.AssetFinder;
+import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
+import edu.ntnu.idatt2001.paths.gui.InGameMenu;
 import edu.ntnu.idatt2001.paths.gui.MainMenu;
+import edu.ntnu.idatt2001.paths.gui.PathsMenu;
+import edu.ntnu.idatt2001.paths.gui.SceneConfig;
+import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import edu.ntnu.idatt2001.paths.model.Game;
 import edu.ntnu.idatt2001.paths.model.Link;
 import edu.ntnu.idatt2001.paths.model.Passage;
 import edu.ntnu.idatt2001.paths.model.action.Action;
-import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
-import edu.ntnu.idatt2001.paths.gui.InGameMenu;
-import edu.ntnu.idatt2001.paths.gui.PathsMenu;
-import edu.ntnu.idatt2001.paths.gui.SceneConfig;
-import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -36,24 +36,23 @@ public class GameScene extends PathsMenu {
     private static final int STATS_YPOS = 20;
     private static final int STATS_YPOS_INTERVAL = 40;
     private static final int STATS_ICON_PADDING = 10;
-    private static final int STATS_ICON_SIZE =  STATS_YPOS_INTERVAL - STATS_ICON_PADDING;
+    private static final int STATS_ICON_SIZE = STATS_YPOS_INTERVAL - STATS_ICON_PADDING;
     private static final int STATS_LABEL_XPOS = STATS_XPOS + STATS_YPOS_INTERVAL;
 
     private final Game game;
+    private final Scene scene;
+    private final SceneConfig sceneConfig;
+    private final PathsAssetStore assetStore;
+    private final AssetFinder assetFinder;
     private ScrollPane linkSelector;
     private TextArea textViewer;
     private Label healthLabel;
     private Label goldLabel;
     private Label scoreLabel;
-
     private Label fileNameLabel;
     private Label pathLabel;
     private Label brokenLinksLabel;
     private AnchorPane root;
-    private final Scene scene;
-    private final SceneConfig sceneConfig;
-    private final PathsAssetStore assetStore;
-    private final AssetFinder assetFinder;
     private ImageView passageViewer;
     private ImageView playerViewer;
     private ImageView lookAtViewer;
@@ -126,6 +125,7 @@ public class GameScene extends PathsMenu {
      * If the submitted link is a broken link (a link that does not point
      * to a Passage),
      * then the transition does not happen.
+     *
      * @param link The link that the user has chosen.
      */
     private void goLink(Link link) {
@@ -140,12 +140,12 @@ public class GameScene extends PathsMenu {
         performLinkActions(link);
         updateContent(newPassage);
 
-        if(game.checkGameOver()){
+        if (game.checkGameOver()) {
             gameEnd("Game Over");
             return;
         }
 
-        if(game.checkGameWon()){
+        if (game.checkGameWon()) {
             gameEnd("Game Won");
             return;
         }
@@ -158,10 +158,11 @@ public class GameScene extends PathsMenu {
     /**
      * Creates an overlay over the current game scene. To be used when the user
      * wins or loses the game
+     *
      * @param type the game result. For example "Game Over" if game lost or
      *             "Game won" if game won
      */
-    private void gameEnd(String type){
+    private void gameEnd(String type) {
         getScene().getStylesheets().add("GameEnd.css");
         ImageView imageView = new ImageView();
         imageView.setId("Overlay");
@@ -269,12 +270,12 @@ public class GameScene extends PathsMenu {
         root.getChildren().add(label);
     }
 
-    private void goToMainMenu(ActionEvent e){
+    private void goToMainMenu(ActionEvent e) {
         audioPlayer.stop();
         changeState(new MainMenu());
     }
 
-    private void quit(ActionEvent e){
+    private void quit(ActionEvent e) {
         Platform.exit();
     }
 
@@ -295,7 +296,6 @@ public class GameScene extends PathsMenu {
         for (Action a : link.getActions())
             itemViewer.processAction(a);
     }
-
 
 
     private void updateContent(Passage newPassage) {
@@ -348,8 +348,8 @@ public class GameScene extends PathsMenu {
 
     private void updatePlayerStats() {
         healthLabel.setText("" + game.getPlayer().getHealth());
-        goldLabel  .setText("" + game.getPlayer().getGold());
-        scoreLabel .setText("" + game.getPlayer().getScore());
+        goldLabel.setText("" + game.getPlayer().getGold());
+        scoreLabel.setText("" + game.getPlayer().getScore());
     }
 
     private void updateText(Passage newPassage) {
@@ -364,7 +364,7 @@ public class GameScene extends PathsMenu {
         playAudio(newPassage);
     }
 
-    private void playAudio(Passage newPassage){
+    private void playAudio(Passage newPassage) {
         MediaPlayer newAudio = assetFinder.getAudio(newPassage.getTitle());
         if (newAudio == null)
             return;
@@ -410,7 +410,7 @@ public class GameScene extends PathsMenu {
         if (lookAtImg == null)
             return;
 
-        final int playerX = (int) ((sceneConfig.getWidth()  * 4) / 5 - lookAtImg.getWidth() / 2);
+        final int playerX = (int) ((sceneConfig.getWidth() * 4) / 5 - lookAtImg.getWidth() / 2);
         final int playerY = (int) ((sceneConfig.getHeight() * 2) / 3 - lookAtImg.getHeight());
 
         lookAtViewer.setImage(lookAtImg);
@@ -424,7 +424,7 @@ public class GameScene extends PathsMenu {
             itemViewer.setInventoryAreaImage(img);
     }
 
-    private void updateInfoLabels(){
+    private void updateInfoLabels() {
         fileNameLabel.setText(handler.getCurrentFileName());
         pathLabel.setText(handler.getCurrentPath());
 
@@ -496,16 +496,16 @@ public class GameScene extends PathsMenu {
         textViewer.setEditable(false);
         textViewer.setTranslateX(x);
         textViewer.setTranslateY(y);
-        textViewer.setPrefWidth (width);
+        textViewer.setPrefWidth(width);
         textViewer.setPrefHeight(height);
         if (hasAssets()) {
             Image img = assetFinder.getTextArea();
             if (img != null) {
                 String url = img.getUrl();
-                textViewer.setStyle("-fx-background-color: null;\n" +
-                        "-fx-background-repeat: no-repeat;\n" +
-                        "-fx-background-size: "+width+" "+height+";\n" +
-                        "-fx-background-image: url(" + url + ");");
+                textViewer.setStyle("-fx-background-color: null;\n"
+                        + "-fx-background-repeat: no-repeat;\n"
+                        + "-fx-background-size: " + width + " " + height + ";\n"
+                        + "-fx-background-image: url(" + url + ");");
             }
         }
 
@@ -552,7 +552,6 @@ public class GameScene extends PathsMenu {
         scoreLabel.setTranslateY(STATS_XPOS + STATS_YPOS_INTERVAL * 2 + STATS_ICON_PADDING);
         scoreLabel.setId("Status_label");
     }
-
 
 
     private ItemViewer createItemViewer(SceneConfig sceneConfig) {
@@ -617,7 +616,7 @@ public class GameScene extends PathsMenu {
         scoreIcon.setFitHeight(STATS_ICON_SIZE);
     }
 
-    private ImageView createPlayerStatsBackground(){
+    private ImageView createPlayerStatsBackground() {
         ImageView viewer = new ImageView();
         viewer.setImage(assetFinder.getItemSlot());
         viewer.setX(0);
@@ -644,21 +643,21 @@ public class GameScene extends PathsMenu {
         changeState(menu);
     }
 
-    private void createFileNameLabel(){
+    private void createFileNameLabel() {
         fileNameLabel = new Label();
         fileNameLabel.setTranslateX(15);
         fileNameLabel.setTranslateY(600);
         fileNameLabel.setId("infoLabel");
     }
 
-    private void createPathLabel(){
+    private void createPathLabel() {
         pathLabel = new Label();
         pathLabel.setTranslateX(15);
         pathLabel.setTranslateY(625);
         pathLabel.setId("infoLabel");
     }
 
-    private void createBrokenLinksLabel(){
+    private void createBrokenLinksLabel() {
         brokenLinksLabel = new Label();
         brokenLinksLabel.setTranslateX(15);
         brokenLinksLabel.setTranslateY(650);
