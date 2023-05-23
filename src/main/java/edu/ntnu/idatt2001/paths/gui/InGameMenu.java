@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import edu.ntnu.idatt2001.paths.model.Game;
 import edu.ntnu.idatt2001.paths.model.Player;
-import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -26,19 +26,19 @@ public class InGameMenu extends PathsMenu {
      * to the opening passage whilst also resetting the player parameters back
      * to their original state. Asks the user for confirmation before resetting.
      */
-    private void restartGame(ActionEvent e){
+    private void restartGame(ActionEvent e) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Reset");
         alert.setHeaderText("Reset game");
         alert.setContentText("Are you sure you want to reset the game?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             Player player = new Player.PlayerBuilder(handler.getInitialPlayer().getName(),
                     handler.getInitialPlayer().getHealth()).setGold(handler.getInitialPlayer().getGold())
                     .build();
-            Game initialGame = new Game(player, handler.getStoryLoader().getStory(),handler.getInitialGoals());
-            changeState(new GameScene(initialGame,handler.getStoryLoader(),handler.getSceneConfig()));
+            Game initialGame = new Game(player, handler.getStoryLoader().getStory(), handler.getInitialGoals());
+            changeState(new GameScene(initialGame, handler.getStoryLoader(), handler.getSceneConfig()));
         }
 
     }
@@ -47,20 +47,21 @@ public class InGameMenu extends PathsMenu {
      * Calling this method returns the user back to the main menu of the application.
      * All progress in current story will be lost.
      */
-    private void mainMenu(ActionEvent e){
+    private void mainMenu(ActionEvent e) {
         changeState(new MainMenu());
     }
 
     /**
-     * Calling this method allows the user to quit the application
+     * Calling this method allows the user to quit the application.
      * All progress in current story will be lost
      */
-    private void quitGame(ActionEvent e){
+    private void quitGame(ActionEvent e) {
         Platform.exit();
     }
 
     /**
-     * Calling this method closes the in game menu and returns the user to the current gameScene passage
+     * Calling this method closes the in game menu and returns the user to the
+     * current gameScene passage.
      */
     private void closeMenu(ActionEvent e) {
         changeState(associatedGameScene);
@@ -78,6 +79,7 @@ public class InGameMenu extends PathsMenu {
 
     /**
      * Calling this method initializes the in game menu scene.
+     *
      * @return the in game menu scene
      */
     @Override
