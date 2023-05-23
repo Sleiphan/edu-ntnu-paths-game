@@ -19,8 +19,9 @@ public class AssetManager<R, T extends Asset<R>> {
     private final HashMap<String, T> assets;
 
     /**
-     *
-     * @param assets
+     * Creates a new AssetManager.
+     * @param assets A map containing all assets relevant for this manager,
+     *               where every asset is mapped to a String key.
      */
     public AssetManager(HashMap<String, T> assets) {
         this.assets = assets;
@@ -76,11 +77,12 @@ public class AssetManager<R, T extends Asset<R>> {
     }
 
     /**
-     * Unloads an asset from memory, freeing up memory space, but increasing the time it takes for the asset to
-     * be accessed through <code>AssetManager::getAsset</code>.
+     * Unloads an asset from memory, freeing up memory space, but increasing the
+     * time it takes for the asset to be accessed through
+     * <code>AssetManager::getAsset</code>.
      * @param key A key mapped to the requested asset.
-     * @return <code>true</code> if the asset was successfully unloaded from memory, or null if no no mapping for the
-     * key exists.
+     * @return <code>true</code> if the asset was successfully found and
+     * unloaded from memory, or false if no no mapping for the key exists.
      */
     public boolean unloadAsset(String key) {
         T asset = assets.get(key);
@@ -115,7 +117,7 @@ public class AssetManager<R, T extends Asset<R>> {
      * Indicates whether there are unread error messages in this class from failed IO-operations.
      * @return <code>true</code> if there are unread error messages. Otherwise, returns <code>false</code>.
      */
-    public boolean unreadErrors() {
+    public boolean hasUnreadErrors() {
         return !errors.isEmpty();
     }
 
@@ -128,7 +130,7 @@ public class AssetManager<R, T extends Asset<R>> {
      * have been read.
      */
     public String getLastError() {
-        if (unreadErrors())
+        if (hasUnreadErrors())
             return errors.remove(0);
         else
             return null;

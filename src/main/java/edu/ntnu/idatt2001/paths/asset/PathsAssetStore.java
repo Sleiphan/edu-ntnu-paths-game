@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * Represents the collection of AssetManagers tailored for the Paths-project.
+ * It contains one manager for each asset type, namely image- and audio-assets.
+ */
 public class PathsAssetStore {
 
     private AssetManager<Image, ImageAsset> imageAssets;
@@ -19,6 +23,8 @@ public class PathsAssetStore {
         this.imageAssets = new AssetManager<>(imageAssets);
         this.audioAssets = new AssetManager<>(audioAssets);
     }
+
+
 
     public AssetManager<Image, ImageAsset> images() {
         return imageAssets;
