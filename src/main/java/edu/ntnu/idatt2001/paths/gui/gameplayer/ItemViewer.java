@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2001.paths.gui.gameplayer;
 
-import edu.ntnu.idatt2001.paths.model.action.Action;
-import edu.ntnu.idatt2001.paths.model.action.InventoryAction;
 import edu.ntnu.idatt2001.paths.asset.PathsAssetStore;
 import edu.ntnu.idatt2001.paths.gui.SceneConfig;
+import edu.ntnu.idatt2001.paths.model.action.Action;
+import edu.ntnu.idatt2001.paths.model.action.InventoryAction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -18,19 +18,19 @@ public class ItemViewer {
     private final PathsAssetStore assetStore;
     private final ImageView[] itemSpots = new ImageView[NUM_ITEM_SPOTS];
     private final ImageView[] itemSlots = new ImageView[NUM_ITEM_SPOTS];
-    private ImageView inventoryArea;
     private final List<String> items = new ArrayList<>();
+    private ImageView inventoryArea;
 
     public ItemViewer(SceneConfig sceneConfig, PathsAssetStore assetStore) {
         this.assetStore = assetStore;
 
         final int xPos = 0;
         final int yPos = (sceneConfig.getHeight() * 2) / 3;
-        final int width  = sceneConfig.getWidth();
+        final int width = sceneConfig.getWidth();
         final int height = 80;
         final int itemPadX = 5;
         final int itemPadY = 5;
-        final int itemWidth  = height - itemPadX * 2;
+        final int itemWidth = height - itemPadX * 2;
         final int itemHeight = height - itemPadY * 2;
 
         inventoryArea = new ImageView();
