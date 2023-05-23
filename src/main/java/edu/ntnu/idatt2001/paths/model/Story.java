@@ -4,20 +4,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * A Story is an interactive, nonlinear narrative consisting of a collection of passages.
+ * A Story is an interactive, nonlinear narrative
+ * consisting of a collection of passages.
  */
 public class Story {
 
     private final String title;
     private final Passage openingPassage;
     private final Map<Link, Passage> passages = new HashMap<>();
-
     private int hashCode;
     private boolean recalculateHash;
 
     /**
-     * Creates a new edu.ntnu.idatt2001.paths.model.Story-object, with a title and an initial passage from where the story begins.
-     * @param title The title of the new story.
+     * Creates a new Story-object, with a title and an initial
+     * passage from where the story begins.
+     *
+     * @param title          The title of the new story.
      * @param openingPassage The initial passage from where the story begins.
      */
     public Story(String title, Passage openingPassage) {
@@ -37,6 +39,7 @@ public class Story {
 
     /**
      * Returns the title of this story.
+     *
      * @return the title of this story.
      */
     public String getTitle() {
@@ -45,6 +48,7 @@ public class Story {
 
     /**
      * Returns the initial passage of this story.
+     *
      * @return the initial passage of this story.
      */
     public Passage getOpeningPassage() {
@@ -54,11 +58,16 @@ public class Story {
     /**
      * Adds a new passage to this story.
      * <br><br>
-     * If any previously added passages contains Link-objects referencing the submitted passage, a mapping between the objects is created.
-     * This counts additionally for links within the submitted passage, referencing existing passages within this story.
+     * If any previously added passages contains Link-objects referencing the
+     * submitted passage, a mapping between the objects is created.
+     * This counts additionally for links within the submitted passage,
+     * referencing existing passages within this story.
      * <br><br>
-     * If the passage has no associated links, a new link is added to the passage.
-     * That new Link-object's title and reference is equal to the Passage-object's title, and contains no registered Action-objects.
+     * If the passage has no associated links,
+     * a new link is added to the passage.
+     * That new Link-object's title and reference is equal
+     * to the Passage-object's title, and contains no registered Action-objects.
+     *
      * @param p The passage to add to this story.
      */
     public void addPassage(Passage p) {
@@ -96,9 +105,10 @@ public class Story {
     }
 
     /**
-     * Returns the passage being linked to by the submitted edu.ntnu.idatt2001.paths.model.Link-object.
-     * @param l The edu.ntnu.idatt2001.paths.model.Link-object pointing to a specific passage.
-     * @return the passage being linked to by the submitted edu.ntnu.idatt2001.paths.model.Link-object.
+     * Returns the passage being linked to by the submitted Link-object.
+     *
+     * @param l The Link-object pointing to a specific passage.
+     * @return the passage being linked to by the submitted Link-object.
      */
     public Passage getPassage(Link l) {
         return passages.get(l);
@@ -106,21 +116,28 @@ public class Story {
 
     /**
      * Returns a collection of all the passages in this story.
+     *
      * @return a collection of all the passages in this story.
      */
     public Collection<Passage> getPassages() {
         return passages.values();
     }
 
-    public void removePassage(Link link){
+    /**
+     * Allows the removal of a passage from the file. It only allows removal
+     * if there is only one link pointing to the passage.
+     *
+     * @param link link to passage you wish to remove
+     */
+    public void removePassage(Link link) {
         int instancesOfPassage = 0;
         Passage toBeRemoved = passages.get(link);
 
         if (toBeRemoved == null)
             throw new IllegalArgumentException("No passage mapped to the submitted link.");
 
-        for(Passage p : passages.values()){
-            if(p.equals(toBeRemoved)){
+        for (Passage p : passages.values()) {
+            if (p.equals(toBeRemoved)) {
                 boolean selfRef = false;
                 for (Link l : toBeRemoved.getLinks())
                     if (l.equals(link)) {
@@ -140,12 +157,15 @@ public class Story {
     }
 
     /**
-     * Gets a list of all links in the passages map that do not have an associated passage value
-     * @return a list of all links in the passages map that do not have an associated passage value
+     * Gets a list of all links in the passages map that do
+     * not have an associated passage value
+     *
+     * @return a list of all links in the passages map that
+     * do not have an associated passage value
      */
-    public List<Link> getBrokenLinks(){
-        Set<Passage> allPass  = new HashSet<>(passages.values());
-        Set<Link>    allLinks = allPass.stream().flatMap(p -> p.getLinks().stream()).collect(Collectors.toSet());
+    public List<Link> getBrokenLinks() {
+        Set<Passage> allPass = new HashSet<>(passages.values());
+        Set<Link> allLinks = allPass.stream().flatMap(p -> p.getLinks().stream()).collect(Collectors.toSet());
 
         List<Link> brokenLinks = allLinks.stream().filter(l -> allPass.stream().noneMatch(p -> p != null && l.getReference().equals(p.getTitle()))).toList();
         return brokenLinks;
