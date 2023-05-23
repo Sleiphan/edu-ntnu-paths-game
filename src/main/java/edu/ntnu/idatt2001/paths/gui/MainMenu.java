@@ -33,22 +33,23 @@ public class MainMenu extends PathsMenu {
     }
 
     /**
-     * Takes the user to the new game menu scene, where the user can initialize a new game
+     * Takes the user to the new game menu scene, where the user can initialize a new game.
      */
-    private void newGame(ActionEvent e){
+    private void newGame(ActionEvent e) {
         changeState(new NewGameMenu());
     }
 
     /**
-     * Allows the user to quit the application
+     * Allows the user to quit the application.
      */
     private void quit(ActionEvent e) {
         Platform.exit();
     }
 
     /**
-     * Checks if a pathsassets file exists for chosen file. Calls generate template asset if a pathassets file
-     * is not found. If file already exist the program will ask the user if they want override the file with a new
+     * Checks if a pathsassets file exists for chosen file. Calls generate template
+     * asset if a pathassets file is not found. If file already exist the program
+     * will ask the user if they want override the file with a new
      * template
      */
     private void generateAssetTemplate(ActionEvent e) {
@@ -65,7 +66,7 @@ public class MainMenu extends PathsMenu {
 
         File targetFile = new File(selectedFile.getAbsolutePath() + "assets");
         boolean exists = Files.exists(Path.of(targetFile.getAbsolutePath()));
-        if(!exists){
+        if (!exists) {
             AssetFinder.generateAssetTemplate(selectedFile);
             return;
         }
@@ -74,18 +75,18 @@ public class MainMenu extends PathsMenu {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Asset file already exists");
         alert.setHeaderText("Asset file already exists");
-        alert.setContentText("The asset file for your chosen file already exists." +
-                " Generating a asset template will delete the old asset template for the chosen file." +
-                " Proceed?");
+        alert.setContentText("The asset file for your chosen file already exists."
+                + " Generating a asset template will delete the old asset template for the chosen file."
+                + " Proceed?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             delete = true;
         }
 
-        if(delete){
+        if (delete) {
             try {
                 Files.delete(Path.of(targetFile.getAbsolutePath()));
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 throw new IllegalArgumentException("File doesn't exist");
             }
 
@@ -95,32 +96,33 @@ public class MainMenu extends PathsMenu {
     }
 
     /**
-     * Initializes the main menu scene. Sets the current audio the main menu music unless the music is already
-     * the main menu music.
+     * Initializes the main menu scene. Sets the current audio the main menu music unless
+     * the music is already the main menu music.
      * Loads the font that gets used throughout the entirety of the user interface.
      * Uses the mainMenu css stylesheet to style the page.
+     *
      * @return the main menu scene
      */
     @Override
     public Scene getScene() {
 
-        if(!handler.getCurrentAudio().equals("MainMenu")){
+        if (!handler.getCurrentAudio().equals("MainMenu")) {
             handler.setCurrentAudio("MainMenu");
             handler.playMenuMusic();
         }
 
-        Button btNewGame                = new Button("New Game");
-        Button btTutorial               = new Button("Tutorial");
-        Button btQuit                   = new Button("Quit");
-        Button btGenerateAssetTemplate  = new Button("Make Asset\nTemplate");
+        Button btNewGame = new Button("New Game");
+        Button btTutorial = new Button("Tutorial");
+        Button btQuit = new Button("Quit");
+        Button btGenerateAssetTemplate = new Button("Make Asset\nTemplate");
         ImageView logo = new ImageView();
         logo.setId("Logo");
 
-        Font.loadFont("file:src/main/resources/alagard/alagard.ttf",20);
+        Font.loadFont("file:src/main/resources/alagard/alagard.ttf", 20);
 
-        btTutorial             .setOnAction(this::Tutorial);
-        btNewGame              .setOnAction(this::newGame);
-        btQuit                 .setOnAction(this::quit);
+        btTutorial.setOnAction(this::Tutorial);
+        btNewGame.setOnAction(this::newGame);
+        btQuit.setOnAction(this::quit);
         btGenerateAssetTemplate.setOnAction(this::generateAssetTemplate);
         btGenerateAssetTemplate.setId("AssetTemplate");
 
@@ -130,25 +132,24 @@ public class MainMenu extends PathsMenu {
         int buttonX = sceneWidth / 2 - buttonWidth / 2;
 
         btTutorial.setTranslateX(buttonX);
-        btNewGame .setTranslateX(buttonX);
-        btQuit    .setTranslateX(buttonX);
+        btNewGame.setTranslateX(buttonX);
+        btQuit.setTranslateX(buttonX);
         btGenerateAssetTemplate.setTranslateX(buttonX);
         logo.setTranslateX(buttonX);
 
         btTutorial.setPrefWidth(buttonWidth);
-        btNewGame .setPrefWidth(buttonWidth);
-        btQuit    .setPrefWidth(buttonWidth);
+        btNewGame.setPrefWidth(buttonWidth);
+        btQuit.setPrefWidth(buttonWidth);
         btGenerateAssetTemplate.setPrefWidth(buttonWidth);
 
         btTutorial.setTranslateY(350);
-        btNewGame .setTranslateY(270);
-        btQuit    .setTranslateY(550);
+        btNewGame.setTranslateY(270);
+        btQuit.setTranslateY(550);
         btGenerateAssetTemplate.setTranslateY(430);
         logo.setTranslateY(40);
 
         logo.setFitHeight(200);
         logo.setFitWidth(200);
-
 
 
         root.getChildren().add(btTutorial);
@@ -158,12 +159,10 @@ public class MainMenu extends PathsMenu {
         root.getChildren().add(logo);
 
 
-
         Scene scene = new Scene(root, handler.getSceneWidth(), handler.getSceneHeight(), handler.getBgColor());
         scene.getStylesheets().add("MainMenu.css");
         return scene;
     }
-
 
 
     @Override
