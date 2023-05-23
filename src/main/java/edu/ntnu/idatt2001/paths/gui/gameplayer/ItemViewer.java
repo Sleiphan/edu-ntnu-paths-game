@@ -11,6 +11,12 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays items along a line of item-slots inside a Pane. This is a specific
+ * object that is exclusively part of GameScene. It defines a connection between item names and
+ * assets in PathsAssetStore, retrieving images from an asset store by using the item name as the
+ * key.
+ */
 public class ItemViewer {
 
     public static final int NUM_ITEM_SPOTS = 14;
@@ -19,8 +25,13 @@ public class ItemViewer {
     private final ImageView[] itemSpots = new ImageView[NUM_ITEM_SPOTS];
     private final ImageView[] itemSlots = new ImageView[NUM_ITEM_SPOTS];
     private final List<String> items = new ArrayList<>();
-    private ImageView inventoryArea;
+    private final ImageView inventoryArea;
 
+    /**
+     * Creates a new ItemViewer to display items from an asset store.
+     * @param sceneConfig The width and height of the scene.
+     * @param assetStore The asset store to read images from.
+     */
     public ItemViewer(SceneConfig sceneConfig, PathsAssetStore assetStore) {
         this.assetStore = assetStore;
 
@@ -61,10 +72,10 @@ public class ItemViewer {
         updateSpots();
     }
 
-    private void initializeWithoutAssets() {
-
-    }
-
+    /**
+     * Adds this ItemViewer to a JavaFX pane.
+     * @param pane The pane to add this ItemViewer to.
+     */
     public void addToPane(Pane pane) {
         pane.getChildren().add(inventoryArea);
         for (int i = 0; i < NUM_ITEM_SPOTS; i++) {
@@ -73,6 +84,11 @@ public class ItemViewer {
         }
     }
 
+    /**
+     * A helper method for iterating over a set of Actions. This method updates this ItemViewer
+     * based on any InventoryActions received as an argument.
+     * @param a An Action. Only InventoryActions changes the state of this ItemViewer.
+     */
     public void processAction(Action a) {
         if (a instanceof InventoryAction inventoryAction) {
             if (inventoryAction.addsItem())
@@ -80,9 +96,13 @@ public class ItemViewer {
             else
                 removeItem(inventoryAction.getItem());
         }
-
     }
 
+    /**
+     * Adds an item to this ItemViewer, adding its image to the item spots. The new item is placed
+     * to the right of any existing items.
+     * @param item The new item to add to this ItemViewer.
+     */
     public void addItem(String item) {
         items.add(item);
 
@@ -92,6 +112,14 @@ public class ItemViewer {
         updateSpots();
     }
 
+    /**
+     * Removes an item from this ItemViewer, removing its image from the item spots. If two items
+     * with the same asset key exists in this ItemViewer, the rightmost item is removed from the
+     * view.
+     * @param item The name of the item to remove, equal to its key in the asset store.
+     * @return <code>true</code> if an item with the submitted name was found and removed.
+     *         Otherwise, returns false.
+     */
     public boolean removeItem(String item) {
         boolean found = false;
 
@@ -110,6 +138,10 @@ public class ItemViewer {
         return found;
     }
 
+    /**
+     * Updates the item spots with the images returned from the asset store. This method is
+     * called after adding or removing items from this viewer.
+     */
     private void updateSpots() {
         int imageCount = Math.min(items.size(), itemSpots.length);
 
@@ -120,11 +152,19 @@ public class ItemViewer {
             itemSpots[i].setImage(null);
     }
 
+    /**
+     * Changes the image representing the item-slots.
+     * @param img the new image to represent the item-slots.
+     */
     public void setInventorySlotImage(Image img) {
         for (ImageView i : itemSlots)
             i.setImage(img);
     }
 
+    /**
+     * Changes the background of this ItemViewer to the submitted image.
+     * @param img the new background of this ItemViewer.
+     */
     public void setInventoryAreaImage(Image img) {
         inventoryArea.setImage(img);
     }
