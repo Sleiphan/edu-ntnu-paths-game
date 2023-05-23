@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class Tutorial extends PathsMenu{
+public class Tutorial extends PathsMenu {
 
     AnchorPane anchorPane = new AnchorPane();
 
@@ -25,7 +25,9 @@ public class Tutorial extends PathsMenu{
     /**
      * Creates the tutorial scene.
      * Iterates through the different tutorial images as the user clicks anywhere in the scene.
-     * When the user reaches the final image in the tutorial series they will be returned to the main menu.
+     * When the user reaches the final image in the tutorial series they will be
+     * returned to the main menu.
+     *
      * @return the tutorial scene.
      */
     @Override
@@ -39,20 +41,20 @@ public class Tutorial extends PathsMenu{
         anchorPane.getChildren().add(tut);
         anchorPane.getChildren().add(btBack);
 
-        Scene scene = new Scene(anchorPane,handler.getSceneWidth(),handler.getSceneHeight(),handler.getBgColor());
+        Scene scene = new Scene(anchorPane, handler.getSceneWidth(), handler.getSceneHeight(), handler.getBgColor());
         scene.getStylesheets().add("Button.css");
         scene.setOnMousePressed(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(javafx.scene.input.MouseEvent mouseEvent) {
                 String currentTut = tut.getImage().getUrl();
                 String tutNumb = currentTut.substring(currentTut.indexOf("_") + 1, currentTut.indexOf("."));
-                if (tutNumb.equals("11")){
+                if (tutNumb.equals("11")) {
                     back(new ActionEvent());
                 } else {
 
                     int newTutNumb = Integer.parseInt(tutNumb) + 1;
 
-                    tut.setImage(new Image("Tutorial/Tutorial_"+newTutNumb+".png"));
+                    tut.setImage(new Image("Tutorial/Tutorial_" + newTutNumb + ".png"));
                 }
 
 
@@ -63,9 +65,9 @@ public class Tutorial extends PathsMenu{
     }
 
     /**
-     * Takes the user back to the mainMenu
+     * Takes the user back to the mainMenu.
      */
-    private void back(ActionEvent e){
+    private void back(ActionEvent e) {
         changeState(new MainMenu());
     }
 }

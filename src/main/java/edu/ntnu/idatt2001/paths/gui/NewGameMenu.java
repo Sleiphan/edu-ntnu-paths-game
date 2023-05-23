@@ -1,10 +1,10 @@
 package edu.ntnu.idatt2001.paths.gui;
 
+import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
+import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import edu.ntnu.idatt2001.paths.model.Game;
 import edu.ntnu.idatt2001.paths.model.Player;
 import edu.ntnu.idatt2001.paths.model.goal.*;
-import edu.ntnu.idatt2001.paths.gui.gameplayer.GameScene;
-import edu.ntnu.idatt2001.paths.io.StoryLoader;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class NewGameMenu extends PathsMenu {
 
-    TableView <Goal> tableView = new TableView<>();
+    TableView<Goal> tableView = new TableView<>();
     TextField txName = new TextField();
     TextField txHealth = new TextField();
     TextField txGold = new TextField();
@@ -55,7 +55,7 @@ public class NewGameMenu extends PathsMenu {
      * If alle the inputs are correct a Game object will be initialized, and the user will be
      * transported to the opening passage gameScene.
      */
-    private void start(ActionEvent e){
+    private void start(ActionEvent e) {
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("Stories"));
@@ -99,8 +99,8 @@ public class NewGameMenu extends PathsMenu {
         String healthText = txHealth.getText();
 
 
-        if(!nameText.trim().isEmpty() && !healthText.trim().isEmpty() && getGoals().size() > 0){
-            if(goldText.trim().isEmpty()){
+        if (!nameText.trim().isEmpty() && !healthText.trim().isEmpty() && getGoals().size() > 0) {
+            if (goldText.trim().isEmpty()) {
                 player = new Player.PlayerBuilder(txName.getText(), Integer.parseInt(txHealth.getText()))
                         .build();
                 handler.setInitialPlayer(new Player.PlayerBuilder(player.getName(), player.getHealth()).build());
@@ -129,13 +129,13 @@ public class NewGameMenu extends PathsMenu {
             alert.setTitle("Missing input");
             alert.setHeaderText("Missing input");
             String missingContent = "";
-            if(nameText.trim().isEmpty()){
+            if (nameText.trim().isEmpty()) {
                 missingContent += "You have to fill the name field" + '\n';
             }
-            if(nameText.trim().isEmpty()){
+            if (nameText.trim().isEmpty()) {
                 missingContent += "You have to fill the health field" + '\n';
             }
-            if(getGoals().size() == 0){
+            if (getGoals().size() == 0) {
                 missingContent += "You have to have a minimum of one goal";
             }
             alert.setContentText(missingContent);
@@ -149,11 +149,12 @@ public class NewGameMenu extends PathsMenu {
      * If the story-file was loaded successfully, but some assets could not be
      * loaded the user is asked whether they want to play the story without
      * some assets.
-     * @param errors The errors to show to the user
+     *
+     * @param errors           The errors to show to the user
      * @param storyLoadSuccess Indicates whether the story-file was loaded
      *                         successfully.
      * @return True if the user wants to continue despite some assets not being
-     * loaded successfully.
+     *      loaded successfully.
      */
     private boolean showErrorsToUser(String[] errors, boolean storyLoadSuccess) {
         Alert alert;
@@ -238,18 +239,18 @@ public class NewGameMenu extends PathsMenu {
     /**
      * Updates the list of goals with a new user defined goal.
      */
-    private void addGoal(ActionEvent e){
+    private void addGoal(ActionEvent e) {
         ObservableList<Goal> goals = tableView.getItems();
-        if(type.getValue().equals("Health")){
+        if (type.getValue().equals("Health")) {
             HealthGoal healthGoalToAdd = new HealthGoal(Integer.parseInt(textField.getText()));
             goals.add(healthGoalToAdd);
-        } else if(type.getValue().equals("Gold")){
+        } else if (type.getValue().equals("Gold")) {
             GoldGoal goldGoalToAdd = new GoldGoal(Integer.parseInt(textField.getText()));
             goals.add(goldGoalToAdd);
-        } else if(type.getValue().equals("Score")){
+        } else if (type.getValue().equals("Score")) {
             ScoreGoal scoreGoalToAdd = new ScoreGoal(Integer.parseInt(textField.getText()));
             goals.add(scoreGoalToAdd);
-        } else if(type.getValue().equals("Inventory")){
+        } else if (type.getValue().equals("Inventory")) {
             List<String> items = new ArrayList<>();
             items.add(textField.getText());
             InventoryGoal inventoryGoalToAdd = new InventoryGoal(items);
@@ -259,7 +260,7 @@ public class NewGameMenu extends PathsMenu {
         stage.close();
     }
 
-    private void cancelAddGoal(ActionEvent e){
+    private void cancelAddGoal(ActionEvent e) {
         stage.close();
     }
 
@@ -268,15 +269,16 @@ public class NewGameMenu extends PathsMenu {
      * To remove the user selects the goal in the list they want to remove
      * Then they press the remove button.
      */
-    private void remove(ActionEvent e){
+    private void remove(ActionEvent e) {
         Goal selected = tableView.getSelectionModel().getSelectedItem();
-        ObservableList<Goal> goals =tableView.getItems();
+        ObservableList<Goal> goals = tableView.getItems();
         goals.remove(selected);
         tableView.setItems(goals);
     }
 
     /**
      * Creates the new game menu scene. Styled through the NewGame.css file
+     *
      * @return the new game scene.
      */
     @Override
