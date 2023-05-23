@@ -24,7 +24,6 @@ public class PathsParser {
     }
 
 
-
     public List<String> readAllErrors() {
         List<String> result = new ArrayList<>();
         for (String error : errors)
@@ -50,6 +49,7 @@ public class PathsParser {
 
     /**
      * Converts a Story-object into a String, using the format of .paths.
+     *
      * @param s The Story-object to be converted to a String.
      * @return The submitted Story-object as a .paths-formatted String.
      */
@@ -79,6 +79,7 @@ public class PathsParser {
     /**
      * Reads a Story-object from a string. The format should be the same as the output of this methods'
      * sibling, namely <code>PathsParser::toPathsFormat(Story s)</code>
+     *
      * @param pathsString A string containing the valid format for a Story object.
      * @return A Story object as configured by the submitted string, or null if the parsing fails.
      */
@@ -137,6 +138,7 @@ public class PathsParser {
 
     /**
      * Converts a Passage-object into a String, using the format of .paths.
+     *
      * @param p The Passage-object to be converted to a String.
      * @return The submitted Passage-object as a .paths-formatted String.
      */
@@ -147,15 +149,17 @@ public class PathsParser {
         StringBuilder passageAsString = new StringBuilder();
         passageAsString.append("::").append(p.getTitle()).append('\n');
         passageAsString.append(p.getContent());
-        for(Link l : p.getLinks()){
+        for (Link l : p.getLinks()) {
             passageAsString.append('\n').append(toPathsFormat(l));
         }
         return passageAsString.toString();
     }
 
     /**
-     * Reads a Passage-object from a string. The format should be the same as the output of this methods'
-     * sibling, namely <code>PathsParser::toPathsFormat(Passage p)</code>
+     * Reads a Passage-object from a string. The format should be the same as
+     * the output of this methods' sibling, namely
+     * <code>PathsParser::toPathsFormat(Passage p)</code>
+     *
      * @param pathsString A string containing the valid format for a Passage object.
      * @return A Passage object as configured by the submitted string, or null if the parsing fails.
      */
@@ -184,8 +188,7 @@ public class PathsParser {
             if (!title.contains("::")) {
                 error("Could not find passage-symbol \"::\" in this passage: \"" + pathsString + "\"");
                 errorOccurred = true; // The title cannot be empty.
-            }
-            else if (title.length() <= 2) {
+            } else if (title.length() <= 2) {
                 error("The title of this passage is empty: \"" + pathsString + "\"");
                 errorOccurred = true; // The title cannot be empty.
             }
@@ -215,7 +218,8 @@ public class PathsParser {
                 return null;
 
             return new Passage(title, content, linkList);
-        } catch (Exception e) { // Should any exception occur during parsing, this Passage could not be parsed.
+        } catch (
+                Exception e) { // Should any exception occur during parsing, this Passage could not be parsed.
             errorBeforeReturn("Unknown exception occurred while parsing a passage: \"" + pathsString + "\"\n" + Arrays.toString(e.getStackTrace()));
             return null;
         }
@@ -223,6 +227,7 @@ public class PathsParser {
 
     /**
      * Converts a Link-object into a String, using the format of .paths.
+     *
      * @param l The Link-object to be converted to a String.
      * @return The submitted Link-object as a .paths-formatted String.
      */
@@ -243,8 +248,9 @@ public class PathsParser {
     }
 
     /**
-     * Reads a Link-object from a string. The format should be the same as the output of this methods'
-     * sibling, namely <code>PathsParser::toPathsFormat(Link l)</code>
+     * Reads a Link-object from a string. The format should be the same as the output of
+     * this methods' sibling, namely <code>PathsParser::toPathsFormat(Link l)</code>
+     *
      * @param pathsString A string containing the valid format for a Link object.
      * @return A Link object as configured by the submitted string, or null if the parsing fails.
      */
@@ -309,7 +315,8 @@ public class PathsParser {
                 return null;
 
             return l;
-        } catch (Exception e) { // Should any exception occur during parsing, this Link could not be parsed.
+        } catch (
+                Exception e) { // Should any exception occur during parsing, this Link could not be parsed.
             errorBeforeReturn("Unknown exception occurred while parsing a link: \"" + pathsString + "\"\n" + Arrays.toString(e.getStackTrace()));
             return null;
         }
@@ -318,19 +325,25 @@ public class PathsParser {
     /**
      * Converts an Action-object into a String, <br> using the format of .paths. <br>
      * <br>
-     * To find the correct conversion instruction, this method uses <code>instanceof</code> against known classes
-     * that implement the Action interface.
-     * These are the known classes: GoldAction, HealthAction, InventoryAction and ScoreAction. This method returns
-     * <code>null</code> if the caller submits an instance of any unknown class that implements the Action interface.
+     * To find the correct conversion instruction, this method uses <code>instanceof</code>
+     * against known classes that implement the Action interface.
+     * These are the known classes: GoldAction, HealthAction, InventoryAction and ScoreAction.
+     * This method returns <code>null</code> if the caller submits an instance of any unknown
+     * class that implements the Action interface.
+     *
      * @param a The Action-object to be converted to a String.
      * @return The submitted Link-object as a .paths-formatted String,
-     * or <code>null</code> if an instance of an unknown Action-type is submitted.
+     *      or <code>null</code> if an instance of an unknown Action-type is submitted.
      */
     public String toPathsFormat(Action a) {
-        if (a instanceof GoldAction)      return "{" +      GoldAction.class.getSimpleName() + ":" + toPathsFormat((GoldAction)      a) + "}";
-        if (a instanceof HealthAction)    return "{" +    HealthAction.class.getSimpleName() + ":" + toPathsFormat((HealthAction)    a) + "}";
-        if (a instanceof InventoryAction) return "{" + InventoryAction.class.getSimpleName() + ":" + toPathsFormat((InventoryAction) a) + "}";
-        if (a instanceof ScoreAction)     return "{" +     ScoreAction.class.getSimpleName() + ":" + toPathsFormat((ScoreAction)     a) + "}";
+        if (a instanceof GoldAction)
+            return "{" + GoldAction.class.getSimpleName() + ":" + toPathsFormat((GoldAction) a) + "}";
+        if (a instanceof HealthAction)
+            return "{" + HealthAction.class.getSimpleName() + ":" + toPathsFormat((HealthAction) a) + "}";
+        if (a instanceof InventoryAction)
+            return "{" + InventoryAction.class.getSimpleName() + ":" + toPathsFormat((InventoryAction) a) + "}";
+        if (a instanceof ScoreAction)
+            return "{" + ScoreAction.class.getSimpleName() + ":" + toPathsFormat((ScoreAction) a) + "}";
 
         return null;
     }
@@ -368,21 +381,21 @@ public class PathsParser {
         pathsString = pathsString.substring(1, pathsString.length() - 1); // Remove the appending and prepending curly brackets.
         pathsString = pathsString.replaceAll("(?!\\s)", ""); // Remove any unnecessary white-space in the data, ignoring content within string literals.
 
-        final String[] actionClassNames = new String[] {
-                     GoldAction.class.getSimpleName(),
-                   HealthAction.class.getSimpleName(),
+        final String[] actionClassNames = new String[]{
+                GoldAction.class.getSimpleName(),
+                HealthAction.class.getSimpleName(),
                 InventoryAction.class.getSimpleName(),
-                    ScoreAction.class.getSimpleName()
+                ScoreAction.class.getSimpleName()
         };
 
         int delimiterIndex = pathsString.indexOf(':');
-        if (delimiterIndex == -1 || delimiterIndex >= pathsString.length() - 1)  { // If we could not find the delimiter, or if the delimiter is the last character in the input data...
+        if (delimiterIndex == -1 || delimiterIndex >= pathsString.length() - 1) { // If we could not find the delimiter, or if the delimiter is the last character in the input data...
             errorBeforeReturn("Could not find delimiter for this action: " + pathsString); // ... signal that the data is invalid.
             return null;
         }
 
         // Split only once. No guarantee that the delimiter shows up in the value-part of the data.
-        String[] parts = new String[] {
+        String[] parts = new String[]{
                 pathsString.substring(0, delimiterIndex),
                 pathsString.substring(delimiterIndex + 1)
         };
@@ -398,10 +411,14 @@ public class PathsParser {
 
         Action a = null;
 
-        if (key.equals(     GoldAction.class.getSimpleName())) a = fromPathsFormatGoldAction     (val);
-        if (key.equals(   HealthAction.class.getSimpleName())) a = fromPathsFormatHealthAction   (val);
-        if (key.equals(InventoryAction.class.getSimpleName())) a = fromPathsFormatInventoryAction(val);
-        if (key.equals(    ScoreAction.class.getSimpleName())) a = fromPathsFormatScoreAction    (val);
+        if (key.equals(GoldAction.class.getSimpleName()))
+            a = fromPathsFormatGoldAction(val);
+        if (key.equals(HealthAction.class.getSimpleName()))
+            a = fromPathsFormatHealthAction(val);
+        if (key.equals(InventoryAction.class.getSimpleName()))
+            a = fromPathsFormatInventoryAction(val);
+        if (key.equals(ScoreAction.class.getSimpleName()))
+            a = fromPathsFormatScoreAction(val);
 
         layer--;
         return a;
